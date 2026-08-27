@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "b": "pnpm --filter backend",
-    "f": "pnpm --filter frontend",
-    "s": "pnpm --filter shared"
+    "back": "pnpm --filter backend",
+    "front": "pnpm --filter frontend",
+    "shared": "pnpm --filter @neurobrew/shared"
   },
   "keywords": [],
   "author": "",
