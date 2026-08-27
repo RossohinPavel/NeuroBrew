@@ -1,5 +1,6 @@
 import { Topbar } from "@/features/topbar";
 
+
 export function Landing() {
   return (
     <>

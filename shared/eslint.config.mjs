@@ -1,7 +1,6 @@
 // @ts-check
 import eslint from "@eslint/js";
 import { defineConfig, globalIgnores } from "eslint/config";
-import globals from "globals";
 import tseslint from "typescript-eslint";
 
 import {
@@ -24,10 +23,6 @@ export default defineConfig([
   codeQualityConfig,
   {
     languageOptions: {
-      globals: {
-        ...globals.node,
-      },
-      sourceType: "commonjs",
       parserOptions: {
         projectService: true,
         tsconfigRootDir: import.meta.dirname,
@@ -42,14 +37,6 @@ export default defineConfig([
           "newlines-between": "never",
         },
       ],
-    },
-  },
-  {
-    files: ["**/*.spec.ts", "test/**/*.ts"],
-    languageOptions: {
-      globals: {
-        ...globals.jest,
-      },
     },
   },
 ]);
