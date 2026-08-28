@@ -1,3 +1,3 @@
-export function SignIn() {
+export function Login() {
   return <main>Вход</main>;
 }
