@@ -1,6 +1,10 @@
-import { Logout } from "@/features/auth";
-
+import { LogoutButton } from "@/features/auth";
 
 export default function LogoutPage() {
-  return <Logout />;
+  return (
+    <main>
+      <h1>Выход</h1>
+      <LogoutButton />
+    </main>
+  );
 }

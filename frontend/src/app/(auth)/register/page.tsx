@@ -1,6 +1,10 @@
-import { Register } from "@/features/auth";
-
+import { RegisterForm } from "@/features/auth";
 
 export default function RegisterPage() {
-  return <Register />;
+  return (
+    <main>
+      <h1>Регистрация</h1>
+      <RegisterForm />
+    </main>
+  );
 }

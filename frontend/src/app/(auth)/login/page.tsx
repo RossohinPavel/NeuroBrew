@@ -1,6 +1,10 @@
-import { Login } from "@/features/auth";
-
+import { LoginForm } from "@/features/auth";
 
 export default function LoginPage() {
-  return <Login />;
+  return (
+    <main>
+      <h1>Вход</h1>
+      <LoginForm />
+    </main>
+  );
 }
