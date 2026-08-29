@@ -1,10 +1,6 @@
-import { RegisterForm } from "@/features/auth";
+import { Register } from "@/pages/register";
 
-export default function RegisterPage() {
-  return (
-    <main>
-      <h1>Регистрация</h1>
-      <RegisterForm />
-    </main>
-  );
+
+export default function Route() {
+  return <Register />;
 }

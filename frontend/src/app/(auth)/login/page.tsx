@@ -1,10 +1,6 @@
-import { LoginForm } from "@/features/auth";
+import { Login } from "@/pages/login";
 
-export default function LoginPage() {
-  return (
-    <main>
-      <h1>Вход</h1>
-      <LoginForm />
-    </main>
-  );
+
+export default function Route() {
+  return <Login />;
 }

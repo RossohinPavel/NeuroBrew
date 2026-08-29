@@ -1,5 +1,6 @@
 import { registerAction } from "./action";
 
+
 export function RegisterForm() {
   return (
     <form action={registerAction}>

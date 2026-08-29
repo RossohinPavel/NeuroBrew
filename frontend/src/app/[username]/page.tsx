@@ -1,7 +1,8 @@
+import { Profile } from "@/pages/profile";
+
+
 type Props = PageProps<"/[username]">;
 
-export default async function ProfilePage({ params }: Props) {
-  const { username } = await params;
-
-  return <main>{username}</main>;
+export default function Route(props: Props) {
+  return <Profile {...props} />;
 }
