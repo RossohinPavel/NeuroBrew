@@ -1,6 +1,6 @@
-import { Landing } from "@/features/landing";
+import { Home } from "@/pages/home";
 
 
-export default function Home() {
-  return <Landing />;
+export default function Route() {
+  return <Home />;
 }

@@ -1,3 +1,3 @@
-export { SignIn } from "./components/signin";
-export { SignOut } from "./components/signout";
-export { SignUp } from "./components/signup";
+export { LoginForm } from "./login/form";
+export { LogoutButton } from "./logout/button";
+export { RegisterForm } from "./register/form";
