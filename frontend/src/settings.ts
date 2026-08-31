@@ -22,3 +22,5 @@ export const DB = new Datebase({
   password: ENV.DB_PASSWORD,
   database: ENV.DB_NAME,
 });
+
+await DB.checkConnection();

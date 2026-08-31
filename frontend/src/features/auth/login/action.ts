@@ -7,5 +7,5 @@ export const loginAction = async (formData: FormData) => {
     password: formData.get("password"),
   };
 
-  () => data;
+  await (() => Promise.resolve(data))();
 };
