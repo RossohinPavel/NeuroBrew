@@ -48,7 +48,7 @@ export const importsConfig = {
   },
   rules: {
     "import/export": "error",
-    "import/newline-after-import": ["error", { count: 2, exactCount: true }],
+    "import/newline-after-import": ["error", { count: 2, exactCount: true, considerComments: true }],
   },
 };
 
