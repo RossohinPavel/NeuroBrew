@@ -23,4 +23,11 @@ export const DB = new Datebase({
   database: ENV.DB_NAME,
 });
 
-await DB.checkConnection();
+try {
+  await DB.checkConnection();
+} catch (error) {
+  throw new Error(
+    "Не удалось выполнить запрос к БД. Проверьте подключение и параметры доступа.",
+    { cause: error },
+  );
+}

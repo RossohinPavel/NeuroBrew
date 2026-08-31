@@ -38,15 +38,7 @@ export class Datebase {
     return drizzle(client, { schema });
   }
 
-  async checkConnection() {
-    try {
-      await this.connection.execute(sql`select 1`);
-      return true;
-    } catch (error) {
-      throw new Error(
-        "Не удалось выполнить запрос к БД. Проверьте подключение и параметры доступа.",
-        { cause: error },
-      );
-    }
+  checkConnection() {
+    return this.connection.execute(sql`select 1`);
   }
 }
