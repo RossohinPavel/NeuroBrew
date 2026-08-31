@@ -1,5 +1,5 @@
 ---
-name: typescript-type-inference
+name: ts-type-inference
 description: Apply project type-inference rules when writing or editing TypeScript code.
 ---
 
