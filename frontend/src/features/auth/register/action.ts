@@ -3,6 +3,7 @@
 import { DB } from "@/settings";
 
 
+/** Создает пользователя по электронной почте из формы регистрации. */
 export const registerAction = async (formData: FormData) => {
   const email = formData.get("email");
   if (typeof email !== "string") {

@@ -1,6 +1,7 @@
 import { registerAction } from "./action";
 
 
+/** Предоставляет форму создания нового аккаунта. */
 export function RegisterForm() {
   return (
     <form action={registerAction}>

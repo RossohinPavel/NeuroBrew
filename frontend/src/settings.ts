@@ -12,8 +12,10 @@ const envSchema = z.object({
   DB_NAME: z.string().min(1),
 });
 
+/** Содержит проверенные переменные серверного окружения. */
 export const ENV = envSchema.parse(process.env);
 
+/** Предоставляет общее подключение к базе данных для серверного кода фронтенда. */
 export const DB = new Datebase({
   protocol: "postgresql",
   hostname: ENV.DB_HOST,
@@ -23,6 +25,7 @@ export const DB = new Datebase({
   database: ENV.DB_NAME,
 });
 
+// Проверяет доступность базы данных при первой загрузке серверных настроек.
 try {
   await DB.checkConnection();
 } catch (error) {

@@ -1,6 +1,7 @@
 import { LogoutButton } from "@/features/auth";
 
 
+/** Представляет страницу выхода из аккаунта. */
 export function Logout() {
   return (
     <main>

@@ -1,6 +1,7 @@
 import { loginAction } from "./action";
 
 
+/** Предоставляет форму входа в аккаунт по электронной почте и паролю. */
 export function LoginForm() {
   return (
     <form action={loginAction}>

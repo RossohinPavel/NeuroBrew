@@ -1,6 +1,7 @@
 import { RegisterForm } from "@/features/auth";
 
 
+/** Представляет страницу регистрации аккаунта. */
 export function Register() {
   return (
     <main>
