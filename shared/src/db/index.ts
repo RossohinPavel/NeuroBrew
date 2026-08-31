@@ -39,7 +39,14 @@ export class Datebase {
   }
 
   async checkConnection() {
-    const [result] = await this.connection.execute<{ value: number }>(sql`select 1 as value`);
-    return result?.value === 1;
+    try {
+      await this.connection.execute(sql`select 1`);
+      return true;
+    } catch (error) {
+      throw new Error(
+        "Не удалось выполнить запрос к БД. Проверьте подключение и параметры доступа.",
+        { cause: error },
+      );
+    }
   }
 }
