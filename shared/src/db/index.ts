@@ -1,5 +1,6 @@
 import { AuthRepository } from "./repo/auth";
 import * as schema from "./schema";
+import { sql } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
 
@@ -14,11 +15,12 @@ export interface BuildUrlParams {
 }
 
 export class Datebase {
+  private readonly connection;
   readonly auth;
 
   constructor(readonly params: BuildUrlParams) {
-    const connection = this.createPostgresConnection();
-    this.auth = new AuthRepository(connection);
+    this.connection = this.createPostgresConnection();
+    this.auth = new AuthRepository(this.connection);
   }
 
   get url() {
@@ -34,5 +36,10 @@ export class Datebase {
   createPostgresConnection() {
     const client = postgres(this.url);
     return drizzle(client, { schema });
+  }
+
+  async checkConnection() {
+    const [result] = await this.connection.execute<{ value: number }>(sql`select 1 as value`);
+    return result?.value === 1;
   }
 }
