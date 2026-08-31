@@ -1,5 +1,5 @@
-import * as schema from "../schema";
-import { AuthRepository } from "./auth";
+import { AuthRepository } from "./repo/auth";
+import * as schema from "./schema";
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
 
@@ -13,7 +13,7 @@ export interface BuildUrlParams {
   database: string;
 }
 
-export class Connection {
+export class Datebase {
   readonly auth;
 
   constructor(readonly params: BuildUrlParams) {

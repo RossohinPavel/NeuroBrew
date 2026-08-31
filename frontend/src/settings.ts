@@ -1,6 +1,6 @@
 import "server-only";
 
-import { Connection } from "@neurobrew/shared";
+import { Datebase } from "@neurobrew/shared";
 import { z } from "zod";
 
 
@@ -14,7 +14,7 @@ const envSchema = z.object({
 
 export const ENV = envSchema.parse(process.env);
 
-export const DB = new Connection({
+export const DB = new Datebase({
   protocol: "postgresql",
   hostname: ENV.DB_HOST,
   port: ENV.DB_PORT,

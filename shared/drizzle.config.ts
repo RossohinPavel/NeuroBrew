@@ -1,6 +1,6 @@
 import { loadEnvFile } from 'node:process';
 import { defineConfig } from 'drizzle-kit';
-import { Connection, type BuildUrlParams } from './src/db/repo';
+import { Datebase, type BuildUrlParams } from './src/db';
 
 if (process.env.DB_HOST === undefined) {
   loadEnvFile('../.env');
@@ -20,6 +20,6 @@ export default defineConfig({
   schema: './src/db/schema/index.ts',
   dialect: 'postgresql',
   dbCredentials: {
-    url: new Connection(databaseParams).url,
+    url: new Datebase(databaseParams).url,
   },
 });

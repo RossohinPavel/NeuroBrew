@@ -1,1 +1,1 @@
-export * from "./db/repo";
+export * from "./db";
