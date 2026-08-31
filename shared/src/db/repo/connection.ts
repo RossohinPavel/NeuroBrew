@@ -1,4 +1,4 @@
-import * as databaseSchema from "../schema";
+import * as schema from "../schema";
 import { AuthRepository } from "./auth";
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
@@ -31,15 +31,8 @@ export class Connection {
     return url.toString();
   }
 
-  getSchema() {
-    const schema = {
-      ...databaseSchema,
-    };
-    return { schema };
-  }
-
   createPostgresConnection() {
     const client = postgres(this.url);
-    return drizzle(client, this.getSchema());
+    return drizzle(client, { schema });
   }
 }

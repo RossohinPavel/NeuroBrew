@@ -1,4 +1,4 @@
-import { Profile } from "@/pages/profile";
+import { Profile } from "@/pages-flat/profile";
 
 
 type Props = PageProps<"/[username]">;

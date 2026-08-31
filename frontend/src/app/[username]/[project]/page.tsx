@@ -1,4 +1,4 @@
-import { Project } from "@/pages/project";
+import { Project } from "@/pages-flat/project";
 
 
 type Props = PageProps<"/[username]/[project]">;

@@ -1,8 +1,5 @@
 "use server";
 
-export const loginStub = (argument: unknown) => {
-  return Promise.resolve(argument);
-};
 
 export const loginAction = async (formData: FormData) => {
   const data = {
@@ -10,5 +7,5 @@ export const loginAction = async (formData: FormData) => {
     password: formData.get("password"),
   };
 
-  await loginStub(data);
+  () => data;
 };

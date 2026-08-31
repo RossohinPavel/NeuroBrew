@@ -1,4 +1,4 @@
-import { Register } from "@/pages/register";
+import { Register } from "@/pages-flat/register";
 
 
 export default function Route() {

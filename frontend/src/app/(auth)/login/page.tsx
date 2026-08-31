@@ -1,4 +1,4 @@
-import { Login } from "@/pages/login";
+import { Login } from "@/pages-flat/login";
 
 
 export default function Route() {
