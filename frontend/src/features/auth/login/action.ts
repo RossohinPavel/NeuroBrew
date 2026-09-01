@@ -1,11 +1,11 @@
 "use server";
 
-import { redirect } from "next/navigation";
 import { DB } from "@/settings";
 import { verifyPassword } from "../password";
+import { authenticateUser } from "../service";
 
 
-/** Проверяет учетные данные и перенаправляет пользователя на главную страницу. */
+/** Проверяет учетные данные и завершает аутентификацию пользователя. */
 export const loginAction = async (formData: FormData) => {
   const email = formData.get("email") as string;
   const password = formData.get("password") as string;
@@ -17,5 +17,5 @@ export const loginAction = async (formData: FormData) => {
   if (!isPasswordValid) {
     throw new Error("Неверный пароль");
   }
-  redirect("/");
+  return authenticateUser({ sub: user.id.toString() });
 };
