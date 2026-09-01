@@ -3,5 +3,7 @@ packages:
   - 'backend'
   - 'shared'
 allowBuilds:
+  argon2: true
+  bcrypt: true
   esbuild: true
   unrs-resolver: true

@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "@neurobrew/shared": "workspace:*",
+    "argon2": "^0.45.1",
+    "jose": "^6.2.10",
     "next": "16.3.1",
     "react": "19.2.8",
     "react-dom": "19.2.8",
