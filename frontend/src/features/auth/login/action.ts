@@ -1,12 +1,19 @@
 "use server";
 
+import { DB } from "@/settings";
+import { verifyPassword } from "../password";
+
 
 /** Принимает учетные данные из формы входа для серверной аутентификации. */
 export const loginAction = async (formData: FormData) => {
-  const data = {
-    email: formData.get("email"),
-    password: formData.get("password"),
-  };
-
-  await (() => Promise.resolve(data))();
+  const email = formData.get("email") as string;
+  const password = formData.get("password") as string;
+  const user = await DB.auth.getUserByEmail(email);
+  if (!user) {
+    throw new Error("Пользователь не найден");
+  }
+  const isPasswordValid = await verifyPassword(user.passwordHash, password);
+  if (!isPasswordValid) {
+    throw new Error("Неверный пароль");
+  }
 };
