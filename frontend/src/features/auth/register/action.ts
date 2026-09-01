@@ -1,10 +1,11 @@
 "use server";
 
+import { redirect } from "next/navigation";
 import { DB } from "@/settings";
 import { hashPassword } from "../password";
 
 
-/** Создает пользователя из данных формы регистрации. */
+/** Создает пользователя и перенаправляет его на главную страницу. */
 export const registerAction = async (formData: FormData) => {
   const email = formData.get("email") as string;
   const password = formData.get("password") as string;
@@ -15,4 +16,5 @@ export const registerAction = async (formData: FormData) => {
   }
   const passwordHash = await hashPassword(password);
   await DB.auth.createUser({ email, passwordHash, username });
+  redirect("/");
 };
