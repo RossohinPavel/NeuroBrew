@@ -23,6 +23,6 @@ export const authenticateUser = async (payload: AuthenticateUserPayload) => {
   ]);
   const cookieStore = await cookies();
   cookieStore.set("access-token", accessToken, { ...COOKIE_OPTIONS, path: "/" });
-  cookieStore.set("refresh-token", refreshToken, { ...COOKIE_OPTIONS, path: "/refresh" });
+  cookieStore.set("refresh-token", refreshToken, { ...COOKIE_OPTIONS, path: "/auth/refresh" });
   redirect("/");
 };
