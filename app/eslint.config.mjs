@@ -18,7 +18,6 @@ const eslintConfig = defineConfig([
   ...tseslint.configs.recommendedTypeChecked,
   stylisticConfig,
   unusedCodeConfig,
-  importsConfig,
   codeQualityConfig,
   {
     languageOptions: {
@@ -28,6 +27,7 @@ const eslintConfig = defineConfig([
       },
     },
     rules: {
+      ...importsConfig.rules,
       "import/order": [
         "error",
         {

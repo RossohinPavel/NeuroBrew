@@ -1,6 +1,6 @@
 packages:
-  - 'frontend'
-  - 'backend'
+  - 'app'
+  - 'mcp'
   - 'shared'
 allowBuilds:
   argon2: true
