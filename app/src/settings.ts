@@ -27,13 +27,3 @@ export const DB = new Datebase({
   password: ENV.DB_PASSWORD,
   database: ENV.DB_NAME,
 });
-
-// Проверяет доступность базы данных при первой загрузке серверных настроек.
-try {
-  await DB.checkConnection();
-} catch (error) {
-  throw new Error(
-    "Не удалось выполнить запрос к БД. Проверьте подключение и параметры доступа.",
-    { cause: error },
-  );
-}
