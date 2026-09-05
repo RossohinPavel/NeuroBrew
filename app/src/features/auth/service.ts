@@ -1,10 +1,9 @@
-import type { JWTPayload } from "jose";
 import type { ResponseCookie } from "next/dist/compiled/@edge-runtime/cookies";
 import { cookies } from "next/headers";
 import { cache } from "react";
 import { ENV } from "@/settings";
 import { createToken, verifyToken } from "./jwt";
-import type { TokenType } from "./types";
+import type { CreateAuthSessionPayload, TokenType } from "./types";
 
 
 const COOKIE_OPTIONS: Partial<ResponseCookie> = {
@@ -16,22 +15,14 @@ const COOKIE_OPTIONS: Partial<ResponseCookie> = {
 const ACCESS_COOKIE: Partial<ResponseCookie> = { ...COOKIE_OPTIONS, path: "/" };
 const REFRESH_COOKIE: Partial<ResponseCookie> = { ...COOKIE_OPTIONS, path: "/auth/refresh" };
 
-interface CreateAuthSessionPayload extends JWTPayload {
-  sub: string;
-}
-
-/** Возвращает содержимое действительного токена текущей сессии или null. */
+/** Возвращает содержимое токена сессии, null при отсутствии или ошибку при невалидном токене. */
 export const getAuthSession = cache(async (type: TokenType) => {
   const cookieStore = await cookies();
   const token = cookieStore.get(type)?.value;
   if (!token) {
     return null;
   }
-  try {
-    return await verifyToken(type, token);
-  } catch {
-    return null;
-  }
+  return verifyToken(type, token);
 });
 
 /** Создает сессию пользователя и сохраняет ее токены в cookies. */
