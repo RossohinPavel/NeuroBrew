@@ -7,15 +7,15 @@ import { ENV } from "@/settings";
 
 const JWT_ALGORITHM = "HS256";
 
-const JWT_PROTECTED_HEADER = {
+const JWT_PROTECTED_HEADER: JWTHeaderParameters = {
   alg: JWT_ALGORITHM,
   typ: "JWT",
-} satisfies JWTHeaderParameters;
+};
 
-const JWT_VERIFY_OPTIONS = {
+const JWT_VERIFY_OPTIONS: JWTVerifyOptions = {
   algorithms: [JWT_ALGORITHM],
   typ: "JWT",
-} satisfies JWTVerifyOptions;
+};
 
 type TokenType = "access" | "refresh";
 
@@ -25,20 +25,20 @@ interface TokenConfig {
 }
 
 // NOTE: В качестве оптимизации можно заранее создать CryptoKey и переиспользовать их.
-const ACCESS_TOKEN_CONFIG = {
+const ACCESS_TOKEN_CONFIG: TokenConfig = {
   secret: new TextEncoder().encode(ENV.JWT_ACCESS_SECRET),
   expirationTime: "15m",
-} satisfies TokenConfig;
+};
 
-const REFRESH_TOKEN_CONFIG = {
+const REFRESH_TOKEN_CONFIG: TokenConfig = {
   secret: new TextEncoder().encode(ENV.JWT_REFRESH_SECRET),
   expirationTime: "7d",
-} satisfies TokenConfig;
+};
 
-const TOKEN_CONFIG = {
+const TOKEN_CONFIG: Record<TokenType, TokenConfig> = {
   access: ACCESS_TOKEN_CONFIG,
   refresh: REFRESH_TOKEN_CONFIG,
-} satisfies Record<TokenType, TokenConfig>;
+};
 
 /** Создает подписанный JWT указанного вида с соответствующим сроком действия. */
 export const createToken = (type: TokenType, payload: JWTPayload) => {
