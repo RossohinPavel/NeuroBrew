@@ -1,8 +1,9 @@
 "use server";
 
+import { redirect } from "next/navigation";
 import { DB } from "@/settings";
 import { hashPassword } from "../password";
-import { authenticateUser } from "../service";
+import { createAuthSession } from "../service";
 
 
 /** Создает пользователя и завершает его аутентификацию. */
@@ -19,5 +20,6 @@ export const registerAction = async (formData: FormData) => {
   if (!user) {
     throw new Error("Не удалось создать пользователя");
   }
-  return authenticateUser({ sub: user.id.toString() });
+  await createAuthSession({ sub: user.id.toString() });
+  redirect("/");
 };

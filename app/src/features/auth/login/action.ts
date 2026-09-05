@@ -1,8 +1,9 @@
 "use server";
 
+import { redirect } from "next/navigation";
 import { DB } from "@/settings";
 import { verifyPassword } from "../password";
-import { authenticateUser } from "../service";
+import { createAuthSession } from "../service";
 
 
 /** Проверяет учетные данные и завершает аутентификацию пользователя. */
@@ -17,5 +18,6 @@ export const loginAction = async (formData: FormData) => {
   if (!isPasswordValid) {
     throw new Error("Неверный пароль");
   }
-  return authenticateUser({ sub: user.id.toString() });
+  await createAuthSession({ sub: user.id.toString() });
+  redirect("/");
 };
