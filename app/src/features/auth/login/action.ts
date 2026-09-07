@@ -1,11 +1,9 @@
 "use server";
 
-import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { DB } from "@/settings";
-import { SessionCookie } from "../cookie";
-import { Token } from "../jwt";
 import { verifyPassword } from "../password";
+import { createSession } from "../service";
 
 
 /** Проверяет учетные данные и завершает аутентификацию пользователя. */
@@ -20,14 +18,6 @@ export const loginAction = async (formData: FormData) => {
   if (!isPasswordValid) {
     throw new Error("Неверный пароль");
   }
-  const payload = { userId: user.id };
-  const [accessToken, refreshToken] = await Promise.all([
-    new Token("access").create(payload),
-    new Token("refresh").create(payload),
-  ]);
-  const cookieStore = await cookies();
-  new SessionCookie(cookieStore)
-    .setToken("access-token", accessToken.getToken())
-    .setToken("refresh-token", refreshToken.getToken());
+  await createSession({ userId: user.id });
   redirect("/");
 };

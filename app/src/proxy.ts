@@ -1,37 +1,37 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { SessionCookie } from "@/features/auth/cookie";
-import { Token } from "@/features/auth/jwt";
+import { isTokenExpiringSoon, SessionCookie } from "@/features/auth/service";
+import { verifyToken } from "@/features/auth/jwt";
 
 
 export const proxy = async (request: NextRequest) => {
-  const cookieStore = request.cookies;
-  const accessTokenString = new SessionCookie(cookieStore).getToken("access-token");
-  // Продолжает запрос как гость при отсутствии access-токена.
-  if (!accessTokenString) {
-    return NextResponse.next();
-  }
-  const accessToken = await new Token("access").verify(accessTokenString);
-  if (accessToken.hasExpired(60)) {
-    // Обновляет токен обычного запроса через редирект.
-    if (request.method === "GET" || request.method === "HEAD") {
-      const refreshUrl = new URL(SessionCookie.refreshPath, request.url);
-      const callbackUrl = `${request.nextUrl.pathname}${request.nextUrl.search}`;
-      refreshUrl.searchParams.set("callbackUrl", callbackUrl);
-      return NextResponse.redirect(refreshUrl);
+  const accessTokenString = request.cookies.get(SessionCookie.accessToken.name)?.value;
+  if (accessTokenString) {
+    const accessToken = await verifyToken("access", accessTokenString);
+    // Удаляет access-токен при ошибке его проверки.
+    if (accessToken.isMalformed() || accessToken.isSystemError()) {
+      const response = NextResponse.next();
+      response.cookies.delete(SessionCookie.accessToken.name);
+      return response;
     }
-    // Отклоняет Server Action, если токен истёк или скоро истечёт.
-    if (request.method === "POST" && request.headers.has("next-action")) {
-      return new NextResponse("Token expired", { status: 401 });
+    if (accessToken.isExpired() || isTokenExpiringSoon(accessToken, 60)) {
+      // Обновляет токен обычного запроса через редирект.
+      if (request.method === "GET" || request.method === "HEAD") {
+        const refreshUrl = new URL(SessionCookie.refreshToken.path, request.url);
+        const response = NextResponse.redirect(refreshUrl);
+        const callbackTo = `${request.nextUrl.pathname}${request.nextUrl.search}`;
+        response.cookies.set(SessionCookie.callbackTo.name, callbackTo, SessionCookie.callbackTo.config);
+        return response;
+      }
+      // Отклоняет Server Action, если токен истёк или скоро истечёт.
+      if (request.method === "POST" && request.headers.has("next-action")) {
+        return new NextResponse("Token expired", { status: 401 });
+      }
+    }
+    if (accessToken.isValid()) {
+      // TODO: Здесь можно записать payload токена в заголовки.
     }
   }
-  // Удаляет некорректный access-токен из cookies.
-  if (accessToken.hasError()) {
-    const response = NextResponse.next();
-    response.cookies.delete(SessionCookie.accessToken);
-    return response;
-  }
-  // TODO: Здесь можно записать payload токена в заголовки.
   return NextResponse.next();
 };
 
