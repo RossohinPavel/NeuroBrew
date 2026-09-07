@@ -2,91 +2,55 @@ import "server-only";
 
 import { errors, SignJWT, jwtVerify } from "jose";
 import type { JWTHeaderParameters, JWTPayload, JWTVerifyOptions } from "jose";
-import { ENV } from "@/settings";
 
-
-export type TokenType = "access" | "refresh";
 
 const PARAMS: JWTHeaderParameters = {
   alg: "HS256",
   typ: "JWT",
 };
 
+/** Создаёт и подписывает JWT с переданным payload. */
+export const create = (payload: JWTPayload, expirationTime: string, key: CryptoKey) => {
+  return new SignJWT(payload)
+    .setProtectedHeader(PARAMS)
+    .setIssuedAt()
+    .setExpirationTime(expirationTime)
+    .sign(key);
+};
+
+export type VerifyResult = JWTPayload | Error;
+
 const OPTIONS: JWTVerifyOptions = {
   algorithms: ["HS256"],
   typ: "JWT",
 };
 
-/** Создаёт криптографический ключ из секрета для подписи и проверки JWT. */
-const createCryptoKey = (secret: string) => {
-  return crypto.subtle.importKey(
-    "raw",
-    new TextEncoder().encode(secret),
-    { name: "HMAC", hash: "SHA-256" },
-    false,
-    ["sign", "verify"],
-  );
-};
-
-const KEYS: Record<TokenType, CryptoKey> = {
-  access: await createCryptoKey(ENV.JWT_ACCESS_SECRET),
-  refresh: await createCryptoKey(ENV.JWT_REFRESH_SECRET),
-};
-
-const EXPIRATION_TIMES: Record<TokenType, string> = {
-  access: "30m",
-  refresh: "7d",
-};
-
-/** Создаёт JWT указанного типа с переданным payload. */
-export const createToken = async (type: TokenType, payload: JWTPayload) => {
-  return new SignJWT(payload)
-    .setProtectedHeader(PARAMS)
-    .setIssuedAt()
-    .setExpirationTime(EXPIRATION_TIMES[type])
-    .sign(KEYS[type]);
-};
-
-/** Проверяет JWT и возвращает объект с результатом проверки. */
-export const verifyToken = async (type: TokenType, token: string) => {
+/** Возвращает payload проверенного JWT или ошибку верификации. */
+export const verify = async (token: string, key: CryptoKey): Promise<VerifyResult> => {
   try {
-    const verification = await jwtVerify(token, KEYS[type], OPTIONS);
-    return new Token("valid", verification.payload);
+    const { payload } = await jwtVerify(token, key, OPTIONS);
+    return payload;
   } catch (error) {
-    if (error instanceof errors.JWTExpired) {
-      return new Token("expired", error.payload, error);
-    }
-    if (error instanceof errors.JOSEError) {
-      return new Token("malformed", undefined, error);
-    }
-    return new Token("system_error", undefined, error as Error);
+    return error as Error;
   }
 };
 
-export class Token {
-  constructor(
-    readonly status: "valid" | "expired" | "malformed" | "system_error",
-    readonly payload?: JWTPayload,
-    readonly error?: Error,
-  ) {}
+/** Указывает, содержит ли результат верификации валидный payload. */
+export const isValid = (result: VerifyResult): result is JWTPayload => {
+  return !(result instanceof Error);
+};
 
-  /** Указывает, прошёл ли токен проверку. */
-  isValid(): this is Token & { status: "valid"; payload: JWTPayload } {
-    return this.status === "valid";
-  }
+/** Указывает, завершилась ли верификация из-за истечения срока действия JWT. */
+export const isExpired = (result: VerifyResult): result is errors.JWTExpired => {
+  return result instanceof errors.JWTExpired;
+};
 
-  /** Указывает, истёк ли срок действия токена. */
-  isExpired(): this is Token & { status: "expired"; payload: JWTPayload; error: Error } {
-    return this.status === "expired";
-  }
+/** Указывает, завершилась ли верификация общей ошибкой JWT. */
+export const isJWTError = (result: VerifyResult): result is errors.JOSEError => {
+  return result instanceof errors.JOSEError && !isExpired(result);
+};
 
-  /** Указывает, является ли токен некорректным. */
-  isMalformed(): this is Token & { status: "malformed"; error: Error } {
-    return this.status === "malformed";
-  }
-
-  /** Указывает, завершилась ли проверка системной ошибкой. */
-  isSystemError(): this is Token & { status: "system_error"; error: Error } {
-    return this.status === "system_error";
-  }
-}
+/** Указывает, завершилась ли верификация системной ошибкой. */
+export const isSystemError = (result: VerifyResult): result is Error => {
+  return result instanceof Error && !(result instanceof errors.JOSEError);
+};

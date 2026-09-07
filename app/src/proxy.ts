@@ -1,35 +1,46 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { isTokenExpiringSoon, SessionCookie } from "@/features/auth/service";
-import { verifyToken } from "@/features/auth/jwt";
+import { parsePayload, SessionCookie as SC, setAuthPayload, verifyToken } from "@/features/auth/service";
+import * as JWT from "@/features/auth/jwt";
 
 
 export const proxy = async (request: NextRequest) => {
-  const accessTokenString = request.cookies.get(SessionCookie.accessToken.name)?.value;
+  const accessTokenString = request.cookies.get(SC.accessToken.name)?.value;
   if (accessTokenString) {
     const accessToken = await verifyToken("access", accessTokenString);
-    // Удаляет access-токен при ошибке его проверки.
-    if (accessToken.isMalformed() || accessToken.isSystemError()) {
-      const response = NextResponse.next();
-      response.cookies.delete(SessionCookie.accessToken.name);
-      return response;
+    // Прерывает запрос при системной ошибке проверки access-токена.
+    if (JWT.isSystemError(accessToken)) {
+      // TODO: Реализовать логгирование ошибки.
+      return new NextResponse("Internal Server Error", { status: 500 });
     }
-    if (accessToken.isExpired() || isTokenExpiringSoon(accessToken, 60)) {
+    if (JWT.isExpired(accessToken)) {
       // Обновляет токен обычного запроса через редирект.
       if (request.method === "GET" || request.method === "HEAD") {
-        const refreshUrl = new URL(SessionCookie.refreshToken.path, request.url);
+        const refreshUrl = new URL(SC.refreshToken.path, request.url);
         const response = NextResponse.redirect(refreshUrl);
         const callbackTo = `${request.nextUrl.pathname}${request.nextUrl.search}`;
-        response.cookies.set(SessionCookie.callbackTo.name, callbackTo, SessionCookie.callbackTo.config);
+        response.cookies.set(SC.callbackTo.name, callbackTo, SC.callbackTo.config);
         return response;
-      }
-      // Отклоняет Server Action, если токен истёк или скоро истечёт.
-      if (request.method === "POST" && request.headers.has("next-action")) {
+      } else {
+        // Рассчитано на Server Actions с методом POST и специальным заголовком next-action.
         return new NextResponse("Token expired", { status: 401 });
       }
     }
-    if (accessToken.isValid()) {
-      // TODO: Здесь можно записать payload токена в заголовки.
+    let isAuthPayloadSet = false;
+    if (JWT.isValid(accessToken)) {
+      const payload = parsePayload(accessToken);
+      if (payload.success) {
+        const requestHeaders = new Headers(request.headers);
+        setAuthPayload(requestHeaders, payload.output);
+        isAuthPayloadSet = true;
+        return NextResponse.next({ request: { headers: requestHeaders } });
+      }
+    }
+    // Удаляет access-токен при ошибке JWT или невалидном payload.
+    if (JWT.isJWTError(accessToken) || !isAuthPayloadSet) {
+      const response = NextResponse.next();
+      response.cookies.delete(SC.accessToken.name);
+      return response;
     }
   }
   return NextResponse.next();

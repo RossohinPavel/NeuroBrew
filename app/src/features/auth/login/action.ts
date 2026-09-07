@@ -2,8 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { DB } from "@/settings";
-import { verifyPassword } from "../password";
-import { createSession } from "../service";
+import { createSession, Password } from "../service";
 
 
 /** Проверяет учетные данные и завершает аутентификацию пользователя. */
@@ -14,7 +13,7 @@ export const loginAction = async (formData: FormData) => {
   if (!user) {
     throw new Error("Пользователь не найден");
   }
-  const isPasswordValid = await verifyPassword(user.passwordHash, password);
+  const isPasswordValid = await Password.verify(user.passwordHash, password);
   if (!isPasswordValid) {
     throw new Error("Неверный пароль");
   }
