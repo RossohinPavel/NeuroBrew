@@ -1,6 +1,6 @@
-import { Home } from "@/pages-flat/home";
+import { Dashboard } from "@/pages-flat/dashboard";
 
 
 export default function Route() {
-  return <Home />;
+  return <Dashboard />;
 }
