@@ -45,7 +45,7 @@ const TOKEN_CONFIG = {
     key: await createCryptoKey(ENV.JWT_ACCESS_SECRET),
   },
   refresh: {
-    expirationTime: "7d",
+    expirationTime: "30d",
     key: await createCryptoKey(ENV.JWT_REFRESH_SECRET),
   },
 };
