@@ -1,7 +1,7 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { DB } from "@/settings";
+import { DB } from "@/common/config/db";
 import { createSession, Password } from "../service";
 
 

@@ -1,4 +1,4 @@
-import { Dashboard } from "@/pages-flat/dashboard";
+import { Dashboard } from "@/views/dashboard";
 
 
 export default function Route() {

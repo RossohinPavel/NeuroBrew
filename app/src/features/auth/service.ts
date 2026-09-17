@@ -6,7 +6,7 @@ import type { ResponseCookie } from "next/dist/compiled/@edge-runtime/cookies";
 import { cookies, headers } from "next/headers";
 import { cache } from "react";
 import * as v from "valibot";
-import { ENV } from "@/settings";
+import { ENV } from "@/common/config/env";
 import * as JWT from "./jwt";
 
 

@@ -1,6 +1,5 @@
 import "server-only";
 
-import { Datebase } from "@neurobrew/shared";
 import * as v from "valibot";
 
 
@@ -17,13 +16,3 @@ const EnvSchema = v.object({
 
 /** Содержит проверенные переменные серверного окружения. */
 export const ENV = v.parse(EnvSchema, process.env);
-
-/** Предоставляет общее подключение к базе данных для серверного кода фронтенда. */
-export const DB = new Datebase({
-  protocol: "postgresql",
-  hostname: ENV.DB_HOST,
-  port: ENV.DB_PORT,
-  username: ENV.DB_USER,
-  password: ENV.DB_PASSWORD,
-  database: ENV.DB_NAME,
-});

@@ -1,4 +1,4 @@
-import { Settings } from "@/pages-flat/settings";
+import { Settings } from "@/views/settings";
 
 
 export default function Route() {

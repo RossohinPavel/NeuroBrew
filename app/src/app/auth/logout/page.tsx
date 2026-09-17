@@ -1,4 +1,4 @@
-import { Logout } from "@/pages-flat/logout";
+import { Logout } from "@/views/logout";
 
 
 export default function Route() {
