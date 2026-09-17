@@ -1,4 +1,6 @@
 .env
 node_modules
-.codex/
+.codex
+.agents
+AGENTS.md
 .DS_STORE
