@@ -6,7 +6,7 @@ import { cookies, headers } from "next/headers";
 import { cache } from "react";
 import * as v from "valibot";
 import { ENV } from "@/common/config";
-import * as JWT from "./jwt";
+import { JWT } from "@/common/libs";
 
 
 // Работа с JWT-токенами.
