@@ -1,6 +1,5 @@
 import "server-only";
 
-import { hash as argonHash, verify as argonVerify } from "argon2";
 import type { JWTPayload } from "jose";
 import type { ResponseCookie } from "next/dist/compiled/@edge-runtime/cookies";
 import { cookies, headers } from "next/headers";
@@ -8,22 +7,6 @@ import { cache } from "react";
 import * as v from "valibot";
 import { ENV } from "@/common/config";
 import * as JWT from "./jwt";
-
-
-// Работа с паролем.
-
-/** Предоставляет операции хеширования и проверки паролей. */
-export const Password = {
-  /** Создаёт хеш переданного пароля. */
-  hash(password: string) {
-    return argonHash(password);
-  },
-
-  /** Проверяет соответствие пароля сохранённому хешу. */
-  verify(hash: string, password: string) {
-    return argonVerify(hash, password);
-  },
-};
 
 
 // Работа с JWT-токенами.

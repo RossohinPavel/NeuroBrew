@@ -2,7 +2,8 @@
 
 import { redirect } from "next/navigation";
 import { DB } from "@/common/db";
-import { createSession, Password } from "../service";
+import { PWD } from "@/common/libs";
+import { createSession } from "../service";
 
 
 /** Создает пользователя и завершает его аутентификацию. */
@@ -14,7 +15,7 @@ export const registerAction = async (formData: FormData) => {
   if (password !== passwordConfirmation) {
     throw new Error("Пароли не совпадают");
   }
-  const passwordHash = await Password.hash(password);
+  const passwordHash = await PWD.hash(password);
   const user = await DB.auth.createUser({ email, passwordHash, username });
   if (!user) {
     throw new Error("Не удалось создать пользователя");
