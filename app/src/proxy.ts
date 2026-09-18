@@ -1,7 +1,12 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { parsePayload, SessionCookie as SC, setAuthPayload, verifyToken } from "@/features/auth/service";
 import * as JWT from "@/features/auth/jwt";
+import { 
+  parsePayload, 
+  SessionCookie as SC, 
+  setAuthPayload, 
+  verifyToken, 
+} from "@/features/auth/service";
 
 
 export const proxy = async (request: NextRequest) => {

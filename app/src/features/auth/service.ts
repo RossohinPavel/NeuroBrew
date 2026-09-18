@@ -6,7 +6,7 @@ import type { ResponseCookie } from "next/dist/compiled/@edge-runtime/cookies";
 import { cookies, headers } from "next/headers";
 import { cache } from "react";
 import * as v from "valibot";
-import { ENV } from "@/common/config/env";
+import { ENV } from "@/common/config";
 import * as JWT from "./jwt";
 
 
@@ -125,5 +125,5 @@ export const getAuthPayload = cache(async () => {
   const headerStore = await headers();
   const userId = headerStore.get(AUTH_USER_ID_HEADER);
   if (userId === null) return null;
-  return { userId: Number(userId) } as TokenPayload;
+  return { userId: Number(userId) };
 });

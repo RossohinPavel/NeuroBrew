@@ -1,7 +1,8 @@
 import "server-only";
 
 import { Datebase } from "@neurobrew/shared";
-import { ENV } from "./env";
+import { ENV } from "@/common/config";
+
 
 /** Предоставляет общее подключение к базе данных для серверного кода фронтенда. */
 export const DB = new Datebase({
