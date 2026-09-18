@@ -1,4 +1,4 @@
-import { LoginForm } from "@/features/auth";
+import { LoginForm } from "@/features/login";
 
 
 /** Представляет страницу входа в аккаунт. */

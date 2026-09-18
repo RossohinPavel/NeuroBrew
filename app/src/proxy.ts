@@ -1,16 +1,11 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { JWT } from "@/common/libs";
-import { 
-  parsePayload, 
-  SessionCookie as SC, 
-  setAuthPayload, 
-  verifyToken, 
-} from "@/features/auth/service";
+import { CookieConf, parsePayload, setAuthPayload, verifyToken } from "@/entities/session";
 
 
 export const proxy = async (request: NextRequest) => {
-  const accessTokenString = request.cookies.get(SC.accessToken.name)?.value;
+  const accessTokenString = request.cookies.get(CookieConf.accessToken.name)?.value;
   if (accessTokenString) {
     const accessToken = await verifyToken("access", accessTokenString);
     // Прерывает запрос при системной ошибке проверки access-токена.
@@ -21,10 +16,10 @@ export const proxy = async (request: NextRequest) => {
     if (JWT.isExpired(accessToken)) {
       // Обновляет токен обычного запроса через редирект.
       if (request.method === "GET" || request.method === "HEAD") {
-        const refreshUrl = new URL(SC.refreshToken.path, request.url);
+        const refreshUrl = new URL(CookieConf.refreshToken.path, request.url);
         const response = NextResponse.redirect(refreshUrl);
         const callbackTo = `${request.nextUrl.pathname}${request.nextUrl.search}`;
-        response.cookies.set(SC.callbackTo.name, callbackTo, SC.callbackTo.config);
+        response.cookies.set({ ...CookieConf.callbackTo, value: callbackTo });
         return response;
       } else {
         // Рассчитано на Server Actions с методом POST и специальным заголовком next-action.
@@ -36,7 +31,7 @@ export const proxy = async (request: NextRequest) => {
       const payload = parsePayload(accessToken);
       if (payload.success) {
         const requestHeaders = new Headers(request.headers);
-        setAuthPayload(requestHeaders, payload.output);
+        setAuthPayload(request.headers, payload.output);
         isAuthPayloadSet = true;
         return NextResponse.next({ request: { headers: requestHeaders } });
       }
@@ -44,7 +39,7 @@ export const proxy = async (request: NextRequest) => {
     // Удаляет access-токен при ошибке JWT или невалидном payload.
     if (JWT.isJWTError(accessToken) || !isAuthPayloadSet) {
       const response = NextResponse.next();
-      response.cookies.delete(SC.accessToken.name);
+      response.cookies.delete(CookieConf.accessToken);
       return response;
     }
   }

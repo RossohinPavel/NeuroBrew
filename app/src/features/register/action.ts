@@ -1,9 +1,10 @@
 "use server";
 
+import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { DB } from "@/common/db";
 import { PWD } from "@/common/libs";
-import { createSession } from "../service";
+import { CookieConf, createToken } from "@/entities/session";
 
 
 /** Создает пользователя и завершает его аутентификацию. */
@@ -20,6 +21,12 @@ export const registerAction = async (formData: FormData) => {
   if (!user) {
     throw new Error("Не удалось создать пользователя");
   }
-  await createSession({ userId: user.id });
+  const [accessToken, refreshToken] = await Promise.all([
+    createToken("access", { userId: user.id }),
+    createToken("refresh", { userId: user.id }),
+  ]);
+  const cookieStore = await cookies();
+  cookieStore.set({ ...CookieConf.accessToken, value: accessToken });
+  cookieStore.set({ ...CookieConf.refreshToken, value: refreshToken });
   redirect("/");
 };
