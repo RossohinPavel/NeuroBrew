@@ -1,5 +1,5 @@
-import {refreshSessionOnClientRequest, refreshSessionOnNavigation} from "@/entities/session";
+import { onClientRequest, onNavigation } from "@/entities/session";
 
 
-export const GET = refreshSessionOnNavigation;
-export const POST = refreshSessionOnClientRequest;
+export const GET = onNavigation;
+export const POST = onClientRequest;

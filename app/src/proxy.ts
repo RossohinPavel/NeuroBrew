@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { JWT } from "@/common/libs";
-import { CookieConf, parsePayload, setAuthPayload, verifyToken } from "@/entities/session";
+import { CookieConf, parsePayload, setSession, verifyToken } from "@/entities/session";
 
 
 export const proxy = async (request: NextRequest) => {
@@ -26,18 +26,18 @@ export const proxy = async (request: NextRequest) => {
         return new NextResponse("Token expired", { status: 401 });
       }
     }
-    let isAuthPayloadSet = false;
+    let isSessionSet = false;
     if (JWT.isValid(accessToken)) {
       const payload = parsePayload(accessToken);
       if (payload.success) {
         const requestHeaders = new Headers(request.headers);
-        setAuthPayload(request.headers, payload.output);
-        isAuthPayloadSet = true;
+        setSession(requestHeaders, payload.output);
+        isSessionSet = true;
         return NextResponse.next({ request: { headers: requestHeaders } });
       }
     }
     // Удаляет access-токен при ошибке JWT или невалидном payload.
-    if (JWT.isJWTError(accessToken) || !isAuthPayloadSet) {
+    if (JWT.isJWTError(accessToken) || !isSessionSet) {
       const response = NextResponse.next();
       response.cookies.delete(CookieConf.accessToken);
       return response;

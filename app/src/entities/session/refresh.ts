@@ -9,7 +9,7 @@ import { createToken, verifyToken } from "./token";
 
 
 /** Обновляет сессию при навигации и возвращает пользователя на исходную страницу. */
-export const refreshSessionOnNavigation = async (request: NextRequest) => {
+export const onNavigation = async (request: NextRequest) => {
   const redirectTo = request.cookies.get(CookieConf.callbackTo.name)?.value ?? "/";
   const response = NextResponse.redirect(new URL(redirectTo, request.url));
   response.cookies.delete(CookieConf.callbackTo);
@@ -34,7 +34,7 @@ export const refreshSessionOnNavigation = async (request: NextRequest) => {
 };
 
 /** Обновляет сессию по запросу интерактивного клиента и сообщает результат статусом ответа. */
-export const refreshSessionOnClientRequest = async (request: NextRequest) => {
+export const onClientRequest = async (request: NextRequest) => {
   let response: NextResponse | null = null;
   const refreshTokenString = request.cookies.get(CookieConf.refreshToken.name)?.value;
   if (refreshTokenString) {

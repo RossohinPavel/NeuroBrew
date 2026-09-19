@@ -1,6 +1,1 @@
-import { Login } from "@/views/login";
-
-
-export default function Route() {
-  return <Login />;
-}
+export { Login as default } from "@/views/login";

@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   title: "NeuroBrew",
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default function Layout({ children }: LayoutProps<"/">) {
   return (
     <html lang="ru">
       <body>{children}</body>
