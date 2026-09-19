@@ -1,10 +1,11 @@
 import { loginAction } from "./action";
+import styles from "./form.module.css";
 
 
 /** Предоставляет форму входа в аккаунт по электронной почте и паролю. */
 export function LoginForm() {
   return (
-    <form action={loginAction} style={{ display: "grid", justifyItems: "start" }}>
+    <form action={loginAction} className={styles.form}>
       <label htmlFor="email">Email</label>
       <input
         id="email"
