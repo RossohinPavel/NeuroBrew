@@ -1,2 +1,7 @@
 reference
 .DS_Store
+
+# Не скрываю, что использую нейросети. Скрываю, как я их использую.
+.agents
+.codex
+AGENTS.md
