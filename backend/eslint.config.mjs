@@ -43,7 +43,7 @@ export default defineConfig([
       "@typescript-eslint/no-unused-vars": "off",
       "unused-imports/no-unused-imports": "error",
       "unused-imports/no-unused-vars": [
-        "warn",
+        "error",
         {
           args: "after-used",
           argsIgnorePattern: "^_",
