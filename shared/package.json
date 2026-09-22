@@ -1,0 +1,9 @@
+{
+  "name": "shared",
+  "version": "0.0.1",
+  "description": "Shared protobuf contracts for NeuroBrew services",
+  "private": true,
+  "files": [
+    "proto"
+  ]
+}
