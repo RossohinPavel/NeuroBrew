@@ -1,0 +1,7 @@
+packages:
+  - backend
+  - frontend
+  - mcp
+  - shared
+allowBuilds:
+  unrs-resolver: true

@@ -1,5 +1,6 @@
 reference
 .DS_Store
+node_modules/
 
 # Не скрываю, что использую нейросети. Скрываю, как я их использую.
 .agents
