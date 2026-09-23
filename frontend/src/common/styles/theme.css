@@ -1,0 +1,34 @@
+@theme {
+  /* Цветовая палитра */
+  --clr-gray-28: #1c1c1c;
+  --clr-gray-40: #282828;
+  --clr-gray-55: #373737;
+  --clr-gray-85: #555555;
+  --clr-gray-180: #b4b4b4;
+  --clr-gray-220: #dcdcdc;
+  --clr-gray-255: #ffffff;
+
+  --clr-purple-1: #3c3264;
+  --clr-purple-2: #a08cf0;
+  --clr-purple-3: #c8b4fa;
+
+  --clr-red-1: #e65555;
+  --clr-red-2: #ff7d5f;
+
+  /* Семантические цвета */
+  --color-surface-1: var(--clr-gray-28);
+  --color-surface-2: var(--clr-gray-40);
+  --color-surface-3: var(--clr-gray-55);
+  --color-surface-4: var(--clr-gray-85);
+
+  --color-text-muted: var(--clr-gray-180);
+  --color-text-secondary: var(--clr-gray-220);
+  --color-text-primary: var(--clr-gray-255);
+
+  --color-primary-muted: var(--clr-purple-1);
+  --color-primary: var(--clr-purple-2);
+  --color-primary-hover: var(--clr-purple-3);
+
+  --color-danger: var(--clr-red-1);
+  --color-danger-hover: var(--clr-red-2);
+}

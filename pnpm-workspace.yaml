@@ -2,5 +2,6 @@ packages:
   - frontend
   - shared/database
 allowBuilds:
+  argon2: true
   esbuild: true
   unrs-resolver: true
