@@ -1,6 +1,1 @@
-import { Dashboard } from "@/views/dashboard";
-
-
-export default function Route() {
-  return <Dashboard />;
-}
+export { Dashboard as default } from "@/views/dashboard";

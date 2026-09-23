@@ -1,8 +1,1 @@
-import { Profile } from "@/views/profile";
-
-
-type Props = PageProps<"/[username]">;
-
-export default function Route(props: Props) {
-  return <Profile {...props} />;
-}
+export { Profile as default } from "@/views/profile";

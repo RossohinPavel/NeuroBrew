@@ -1,6 +1,1 @@
-import { Settings } from "@/views/settings";
-
-
-export default function Route() {
-  return <Settings />;
-}
+export { Settings as default } from "@/views/settings";

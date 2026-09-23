@@ -1,8 +1,1 @@
-import { Project } from "@/views/project";
-
-
-type Props = PageProps<"/[username]/[project]">;
-
-export default function Route(props: Props) {
-  return <Project {...props} />;
-}
+export { Project as default } from "@/views/project";
