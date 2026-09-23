@@ -3,7 +3,7 @@ import { defineConfig } from 'drizzle-kit';
 import { Connection, type BuildUrlParams } from './src/';
 
 if (process.env.DB_HOST === undefined) {
-  loadEnvFile('../.env');
+  loadEnvFile('../../.env');
 }
 
 const databaseParams: BuildUrlParams = {
