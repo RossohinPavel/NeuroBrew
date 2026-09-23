@@ -5,23 +5,30 @@
   "license": "MIT",
   "version": "0.0.1",
   "private": true,
-  "type": "module",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/index.js"
+      "default": "./dist/index.js"
     }
   },
   "files": [
     "dist"
   ],
   "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "generate": "drizzle-kit generate",
+    "migrate": "drizzle-kit migrate",
     "lint": "eslint \"src/**/*.ts\" --fix"
+  },
+  "dependencies": {
+    "drizzle-orm": "^0.45.3",
+    "postgres": "^3.4.9"
   },
   "devDependencies": {
     "@eslint/js": "9.39.5",
     "@stylistic/eslint-plugin": "5.10.0",
     "@types/node": "^26.6.2",
+    "drizzle-kit": "^0.31.11",
     "eslint": "^9",
     "eslint-plugin-import-x": "4.17.1",
     "eslint-plugin-unused-imports": "4.4.1",
