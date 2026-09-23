@@ -1,9 +1,5 @@
 packages:
-  - backend
   - frontend
-  - mcp
-  - shared
+  - shared/database
 allowBuilds:
   unrs-resolver: true
-minimumReleaseAgeExclude:
-  - '@oxlint/binding-linux-riscv64-gnu@1.84.0'
