@@ -1,0 +1,13 @@
+{
+  "name": "neurobrew",
+  "description": "NeuroBrew monorepository",
+  "author": "df17",
+  "license": "MIT",
+  "version": "0.0.1",
+  "private": true,
+  "packageManager": "pnpm@12.5.1",
+  "scripts": {
+    "frontend": "pnpm --filter frontend",
+    "shared:database": "pnpm --filter @shared/database"
+  }
+}

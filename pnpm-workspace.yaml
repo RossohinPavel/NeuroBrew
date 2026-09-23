@@ -1,0 +1,5 @@
+packages:
+  - frontend
+  - shared/database
+allowBuilds:
+  unrs-resolver: true
