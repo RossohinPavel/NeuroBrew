@@ -1,13 +1,12 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { JWT } from "@/common/libs";
-import { CookieConf, parsePayload, setSession, verifyToken } from "@/entities/session";
+import { Cookies, JWT, Payload } from "@/entities/session";
 
 
 export const proxy = async (request: NextRequest) => {
-  const accessTokenString = request.cookies.get(CookieConf.accessToken.name)?.value;
+  const accessTokenString = request.cookies.get(Cookies.accessToken.name)?.value;
   if (accessTokenString) {
-    const accessToken = await verifyToken("access", accessTokenString);
+    const accessToken = await JWT.verify("access", accessTokenString);
     // Прерывает запрос при системной ошибке проверки access-токена.
     if (JWT.isSystemError(accessToken)) {
       // TODO: Реализовать логгирование ошибки.
@@ -16,10 +15,10 @@ export const proxy = async (request: NextRequest) => {
     if (JWT.isExpired(accessToken)) {
       // Обновляет токен обычного запроса через редирект.
       if (request.method === "GET" || request.method === "HEAD") {
-        const refreshUrl = new URL(CookieConf.refreshToken.path, request.url);
+        const refreshUrl = new URL(Cookies.refreshToken.path, request.url);
         const response = NextResponse.redirect(refreshUrl);
         const callbackTo = `${request.nextUrl.pathname}${request.nextUrl.search}`;
-        response.cookies.set({ ...CookieConf.callbackTo, value: callbackTo });
+        response.cookies.set({ ...Cookies.callbackTo, value: callbackTo });
         return response;
       } else {
         // Рассчитано на Server Actions с методом POST и специальным заголовком next-action.
@@ -28,10 +27,10 @@ export const proxy = async (request: NextRequest) => {
     }
     let isSessionSet = false;
     if (JWT.isValid(accessToken)) {
-      const payload = parsePayload(accessToken);
+      const payload = Payload.parseJWT(accessToken);
       if (payload.success) {
         const requestHeaders = new Headers(request.headers);
-        setSession(requestHeaders, payload.output);
+        Payload.writeToHeaders(requestHeaders, payload.output);
         isSessionSet = true;
         return NextResponse.next({ request: { headers: requestHeaders } });
       }
@@ -39,7 +38,7 @@ export const proxy = async (request: NextRequest) => {
     // Удаляет access-токен при ошибке JWT или невалидном payload.
     if (JWT.isJWTError(accessToken) || !isSessionSet) {
       const response = NextResponse.next();
-      response.cookies.delete(CookieConf.accessToken);
+      response.cookies.delete(Cookies.accessToken);
       return response;
     }
   }
@@ -61,6 +60,6 @@ export const config = {
      * - auth/refresh — маршрут обновления токенов сессии.
      */
     // eslint-disable-next-line @stylistic/max-len
-    "/((?!_next(?:/|$)|__nextjs|\\.well-known(?:/|$)|assets(?:/|$)|favicon\\.ico$|robots\\.txt$|sitemap\\.xml$|manifest\\.(?:json|webmanifest)$|auth/refresh(?:/|$)).*)",
+    "/((?!_next(?:/|$)|__nextjs|\\.well-known(?:/|$)|assets(?:/|$)|favicon\\.ico$|robots\\.txt$|sitemap\\.xml$|manifest\\.(?:json|webmanifest)$|/refresh(?:/|$)).*)",
   ],
 };

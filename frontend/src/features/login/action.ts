@@ -1,10 +1,10 @@
 "use server";
 
+import { verify } from "argon2";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { DB } from "@/common/db";
-import { PWD } from "@/common/libs";
-import { CookieConf, createToken } from "@/entities/session";
+import { Cookies, JWT } from "@/entities/session";
 
 
 /** Проверяет учетные данные и завершает аутентификацию пользователя. */
@@ -15,16 +15,16 @@ export const loginAction = async (formData: FormData) => {
   if (!user) {
     throw new Error("Пользователь не найден");
   }
-  const isPasswordValid = await PWD.verify(user.passwordHash, password);
+  const isPasswordValid = await verify(user.passwordHash, password);
   if (!isPasswordValid) {
     throw new Error("Неверный пароль");
   }
   const [accessToken, refreshToken] = await Promise.all([
-    createToken("access", { userId: user.id }),
-    createToken("refresh", { userId: user.id }),
+    JWT.create("access", { userId: user.id }),
+    JWT.create("refresh", { userId: user.id }),
   ]);
   const cookieStore = await cookies();
-  cookieStore.set({ ...CookieConf.accessToken, value: accessToken });
-  cookieStore.set({ ...CookieConf.refreshToken, value: refreshToken });
+  cookieStore.set({ ...Cookies.accessToken, value: accessToken });
+  cookieStore.set({ ...Cookies.refreshToken, value: refreshToken });
   redirect("/");
 };

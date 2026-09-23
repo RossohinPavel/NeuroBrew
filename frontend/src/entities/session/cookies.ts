@@ -11,7 +11,7 @@ const COMMON_CONFIG: Partial<ResponseCookie> = {
 };
 
 /** Описывает cookie с токенами пользовательской сессии. */
-export const CookieConf = {
+const Cookies = {
   accessToken: {
     name: "access-token",
     path: "/",
@@ -29,3 +29,5 @@ export const CookieConf = {
     ...COMMON_CONFIG,
   },
 } as const;
+
+export default Cookies;

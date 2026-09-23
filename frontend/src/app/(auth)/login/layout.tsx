@@ -1,9 +1,9 @@
 import { redirect } from "next/navigation";
-import { getSession } from "@/entities/session";
+import { Payload } from "@/entities/session";
 
 
 export default async function Layout({ children }: LayoutProps<"/login">) {
-  const session = await getSession();
+  const session = await Payload.readFromHeaders();
   if (session !== null) redirect("/");
   return children;
 }
