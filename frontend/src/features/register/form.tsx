@@ -1,10 +1,11 @@
 import { registerAction } from "./action";
 
+import styles from "./form.module.css";
 
 /** Предоставляет форму создания нового аккаунта. */
 export function RegisterForm() {
   return (
-    <form action={registerAction} style={{ display: "grid", justifyItems: "start" }}>
+    <form action={registerAction} className={styles.form}>
       <label htmlFor="email">Email</label>
       <input
         id="email"
