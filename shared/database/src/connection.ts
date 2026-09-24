@@ -1,50 +1,44 @@
 import { AuthRepository } from "./repo/auth";
+import { UtilsRepository } from "./repo/utils";
 import * as schema from "./schema";
-import { sql } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
 
 
-export interface BuildUrlParams {
-  protocol: string;
+export interface Options {
   hostname: string;
   port: string;
   username: string;
   password: string;
   database: string;
+  logger?: boolean;
 }
 
-/** Хранит URL и клиент подключения к базе данных и предоставляет связанные репозитории. */
+/** Создает подключение к базе данных и связанные с ним репозитории. */
 export class Connection {
-  readonly url;
-  private readonly connection;
-  readonly auth;
+  constructor(public readonly options: Options) {}
 
-  constructor(readonly params: BuildUrlParams) {
-    this.url = Connection.buildUrl(params);
-    this.connection = this.createPostgresConnection();
-    this.auth = new AuthRepository(this.connection);
-  }
-
-  /** Формирует строку URL подключения к PostgreSQL из переданных параметров. */
-  static buildUrl(params: BuildUrlParams) {
-    const url = new URL(`${params.protocol}://localhost`);
-    url.hostname = params.hostname;
-    url.port = params.port;
-    url.username = params.username;
-    url.password = params.password;
-    url.pathname = params.database;
-    return url.toString();
-  }
-
-  /** Создает клиент Drizzle, общий для всех репозиториев этого экземпляра. */
-  createPostgresConnection() {
+  /** Создает подключение и возвращает работающие через него репозитории. */
+  build() {
     const client = postgres(this.url);
-    return drizzle(client, { schema });
+    const connection = drizzle(client, {
+      schema,
+      logger: this.options.logger ?? false,
+    });
+    return {
+      auth: new AuthRepository(connection),
+      utils: new UtilsRepository(connection),
+    } as const;
   }
 
-  /** Проверяет готовность базы данных принять запрос. */
-  checkConnection() {
-    return this.connection.execute(sql`select 1`);
+  /** Возвращает URL подключения к PostgreSQL, сформированный из текущих параметров. */
+  get url() {
+    const url = new URL("postgres://localhost");
+    url.hostname = this.options.hostname;
+    url.port = this.options.port;
+    url.username = this.options.username;
+    url.password = this.options.password;
+    url.pathname = this.options.database;
+    return url.toString();
   }
 }

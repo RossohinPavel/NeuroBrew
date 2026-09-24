@@ -1,5 +1,5 @@
-import { users, type UserInsert, type UserSelect } from "../../schema";
-import { Repository } from "../repo";
+import { users, type UserInsert, type UserSelect } from "../schema";
+import { Repository } from "./abstract-repository";
 import { eq, or } from "drizzle-orm";
 
 
@@ -17,16 +17,14 @@ export class AuthRepository extends Repository {
 
   /** Ищет пользователя по электронной почте или имени, объединяя критерии через «или». */
   async searchUser(lookup: Partial<Pick<UserSelect, "email" | "username">>) {
-    const conditions = Object.keys(lookup)
-      .map((key) => {
-        const field = key as keyof typeof lookup;
-        const value = lookup[field];
-        if (value === undefined) {
-          return value;
-        }
-        return eq(users[field], value);
-      })
-      .filter((condition) => condition !== undefined);
+    const conditions = [];
+    for (const key in lookup) {
+      const field = key as keyof typeof lookup;
+      const value = lookup[field];
+      if (value !== undefined) {
+        conditions.push(eq(users[field], value));
+      }
+    }
     if (conditions.length === 0) {
       return undefined;
     }
