@@ -1,3 +1,4 @@
+import { notFound } from "next/navigation";
 import { DB } from "@/common/db";
 import { Payload } from "@/entities/session";
 
@@ -11,13 +12,13 @@ export async function Profile({ params }: Props) {
     DB.auth.searchUser({ username }),
     Payload.readFromHeaders(),
   ]);
-  const profileOwner = user!;
-  const isGuest = session === null || session.userId !== profileOwner.id;
+  if (user === undefined) notFound();
+  const isGuest = session === null || session.userId !== user.id;
   return (
     <main className="flex flex-col gap-2">
-      <p>Имя: {profileOwner.username}</p>
-      <p>Электронная почта: {profileOwner.email}</p>
-      <p>Дата создания: {profileOwner.createdAt.toLocaleDateString("ru-RU")}</p>
+      <p>Имя: {user.username}</p>
+      <p>Электронная почта: {user.email}</p>
+      <p>Дата создания: {user.createdAt.toISOString()}</p>
       <p>Статус: {isGuest ? "Гость" : "Пользователь"}</p>
     </main>
   );
