@@ -60,6 +60,6 @@ export const config = {
      * - auth/refresh — маршрут обновления токенов сессии.
      */
     // eslint-disable-next-line @stylistic/max-len
-    "/((?!_next(?:/|$)|__nextjs|\\.well-known(?:/|$)|assets(?:/|$)|favicon\\.ico$|robots\\.txt$|sitemap\\.xml$|manifest\\.(?:json|webmanifest)$|/refresh(?:/|$)).*)",
+    "/((?!_next(?:/|$)|__nextjs|\\.well-known(?:/|$)|assets(?:/|$)|favicon\\.ico$|robots\\.txt$|sitemap\\.xml$|manifest\\.(?:json|webmanifest)$|refresh(?:/|$)).*)",
   ],
 };

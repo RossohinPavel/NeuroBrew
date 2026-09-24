@@ -19,12 +19,12 @@ const Cookies = {
   },
   refreshToken: {
     name: "refresh-token",
-    path: "/auth/refresh",
+    path: "/refresh",
     ...COMMON_CONFIG,
   },
   callbackTo: {
     name: "callback-to",
-    path: "/auth/refresh",
+    path: "/refresh",
     maxAge: 60,
     ...COMMON_CONFIG,
   },
