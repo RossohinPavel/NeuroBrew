@@ -9,6 +9,8 @@ import {
 } from "@/features/refresh-session";
 
 
+export const dynamic = 'force-dynamic'; 
+
 /** Обновляет сессию при навигации и возвращает пользователя на исходную страницу. */
 export const GET = async (request: NextRequest) => {
   const redirectTo = request.cookies.get(Cookies.callbackTo.name)?.value ?? "/";
