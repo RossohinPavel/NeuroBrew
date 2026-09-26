@@ -4,6 +4,8 @@ import { integer, pgSchema, timestamp, varchar } from "drizzle-orm/pg-core";
 
 export const authSchema = pgSchema("auth");
 
+// Таблицы в PostgreSQL принято именовать в единственном числе, 
+// за исключением зарезервированных слов. `users` — допустимый вариант.
 export const users = authSchema.table("users", {
   id: (
     integer()
