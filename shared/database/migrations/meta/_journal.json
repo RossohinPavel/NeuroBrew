@@ -5,15 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1790163208104,
-      "tag": "0000_add-user-schema",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1790411748422,
-      "tag": "0001_add registry schema and project table",
+      "when": 1790412469030,
+      "tag": "0000_add-users-and-project-table",
       "breakpoints": true
     }
   ]

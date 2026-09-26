@@ -24,6 +24,7 @@ export class Connection {
     const connection = drizzle(client, {
       schema,
       logger: this.options.logger ?? false,
+      casing: "snake_case"
     });
     return {
       auth: new AuthRepository(connection),
