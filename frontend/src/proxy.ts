@@ -13,6 +13,8 @@ import { Cookies, JWT, Payload } from "@/entities/session";
  * @returns 
  */
 export const proxy = async (request: NextRequest) => {
+  const requestHeaders = new Headers(request.headers);
+  Payload.sanitizeHeaders(requestHeaders);
   const accessTokenString = request.cookies.get(Cookies.accessToken.name)?.value;
   if (accessTokenString) {
     const accessToken = await JWT.verify("access", accessTokenString);
@@ -38,7 +40,6 @@ export const proxy = async (request: NextRequest) => {
     if (JWT.isValid(accessToken)) {
       const payload = Payload.parseJWT(accessToken);
       if (payload.success) {
-        const requestHeaders = new Headers(request.headers);
         Payload.writeToHeaders(requestHeaders, payload.output);
         isSessionSet = true;
         return NextResponse.next({ request: { headers: requestHeaders } });
@@ -46,12 +47,12 @@ export const proxy = async (request: NextRequest) => {
     }
     // Удаляет access-токен при ошибке JWT или невалидном payload.
     if (JWT.isJWTError(accessToken) || !isSessionSet) {
-      const response = NextResponse.next();
+      const response = NextResponse.next({ request: { headers: requestHeaders } });
       response.cookies.delete(Cookies.accessToken);
       return response;
     }
   }
-  return NextResponse.next();
+  return NextResponse.next({ request: { headers: requestHeaders } });
 };
 
 export const config = {

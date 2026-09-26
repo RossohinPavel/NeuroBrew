@@ -24,6 +24,11 @@ export const writeToHeaders = (headers: Headers, payload: SessionPayload) => {
   headers.set(AUTH_USER_ID_HEADER, String(payload.userId));
 };
 
+/** Удаляет недоверенные данные сессии из служебных заголовков запроса. */
+export const sanitizeHeaders = (headers: Headers) => {
+  headers.delete(AUTH_USER_ID_HEADER);
+};
+
 /** Возвращает данные сессии из служебных заголовков запроса. */
 export const readFromHeaders = cache(async (): Promise<SessionPayload | null> => {
   const headerStore = await headers();
