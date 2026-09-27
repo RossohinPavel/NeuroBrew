@@ -15,7 +15,7 @@ const connection = new Connection({
 });
 
 export default defineConfig({
-  out: './migrations/',
+  out: './drizzle/',
   schema: './src/schema/index.ts',
   dialect: 'postgresql',
   casing: 'snake_case',
