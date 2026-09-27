@@ -1,4 +1,4 @@
-import { sql, type InferInsertModel, type InferSelectModel } from "drizzle-orm";
+import { type InferInsertModel, type InferSelectModel } from "drizzle-orm";
 import { integer, pgSchema, timestamp, varchar } from "drizzle-orm/pg-core";
 
 
@@ -29,12 +29,6 @@ export const users = authSchema.table("users", {
   createdAt: (
     timestamp({ withTimezone: true })
       .defaultNow()
-      .notNull()
-  ),
-  updatedAt: (
-    timestamp({ withTimezone: true })
-      .defaultNow()
-      .$onUpdate(() => sql`now()`)
       .notNull()
   ),
 });
