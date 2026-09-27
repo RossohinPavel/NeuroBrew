@@ -1,4 +1,5 @@
 import { AuthRepository } from "./repo/auth";
+import { RegistryRepository } from "./repo/registry";
 import { UtilsRepository } from "./repo/utils";
 import * as schema from "./schema";
 import { drizzle } from "drizzle-orm/postgres-js";
@@ -28,6 +29,7 @@ export class Connection {
     });
     return {
       auth: new AuthRepository(connection),
+      registry: new RegistryRepository(connection),
       utils: new UtilsRepository(connection),
     } as const;
   }
