@@ -1,11 +1,7 @@
-type Props = PageProps<"/[username]/brew/[project]">;
+type Props = PageProps<"/[username]/brew">;
 
-/** Представляет среду редактирования проекта пользователя. */
+/** Показывает раздел Brew пользователя. */
 export async function Brew({ params }: Props) {
-  const { username, project } = await params;
-  return (
-    <main>
-      {username}/brew/{project}
-    </main>
-  );
+  const { username } = await params;
+  return <main>{username}/brew</main>;
 }

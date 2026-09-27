@@ -1,1 +1,1 @@
-export { Brew as default } from "@/views/brew";
+export { BrewProject as default } from "@/views/brew-project";
