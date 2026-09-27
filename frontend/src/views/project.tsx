@@ -1,12 +1,16 @@
+import { DB } from "@/common/db";
+
+
 type Props = PageProps<"/[username]/[project]">;
 
-/** Представляет проект пользователя из параметров маршрута. */
+/** Показывает основные сведения о проекте пользователя. */
 export async function Project({ params }: Props) {
-  const { username, project } = await params;
-
+  const { project } = await params;
+  const foundProject = await DB.registry.searchProject(project);
   return (
-    <main>
-      {username}/{project}
+    <main className="flex flex-col gap-2">
+      <p>ID пользователя: {foundProject!.userId}</p>
+      <p>Название проекта: {foundProject!.name}</p>
     </main>
   );
 }
