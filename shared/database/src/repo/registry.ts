@@ -24,4 +24,13 @@ export class RegistryRepository extends Repository {
       .limit(1);
     return foundProject;
   }
+
+  /** Возвращает все проекты пользователя. */
+  async getUserProjects(userId: number) {
+    const projects = await this.connection
+      .select()
+      .from(project)
+      .where(eq(project.userId, userId));
+    return projects;
+  }
 }
