@@ -38,7 +38,7 @@ export const proxy = async (request: NextRequest) => {
     }
     let isSessionSet = false;
     if (JWT.isValid(accessToken)) {
-      const payload = Payload.parseJWT(accessToken);
+      const payload = await Payload.parseJWT(accessToken);
       if (payload.success) {
         Payload.writeToHeaders(requestHeaders, payload.output);
         isSessionSet = true;

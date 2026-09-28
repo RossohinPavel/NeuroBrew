@@ -14,9 +14,9 @@ const SessionPayloadSchema = v.object({
 
 export type SessionPayload = v.InferOutput<typeof SessionPayloadSchema>;
 
-/** Безопасно проверяет JWT payload и возвращает результат преобразования в payload приложения. */
+/** Асинхронно проверяет JWT payload и возвращает результат преобразования в payload приложения. */
 export const parseJWT = (payload: JWTPayload) => {
-  return v.safeParse(SessionPayloadSchema, payload);
+  return v.safeParseAsync(SessionPayloadSchema, payload);
 };
 
 /** Записывает данные сессии в служебные заголовки запроса. */

@@ -26,7 +26,7 @@ export const onClientRequest = async (accessToken: Token, refreshToken: Token) =
   if (refreshToken !== undefined && accessToken !== undefined) {
     const refreshResult = await JWT.verify("refresh", refreshToken);
     if (JWT.isValid(refreshResult)) {
-      const payload = Payload.parseJWT(refreshResult);
+      const payload = await Payload.parseJWT(refreshResult);
       if (payload.success) {
         return {
           accessToken: await JWT.create("access", payload.output),
