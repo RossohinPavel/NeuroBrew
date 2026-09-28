@@ -1,8 +1,8 @@
 import * as v from "valibot";
 
 
-/** Проверяет отдельные поля формы регистрации. */
-const RegisterFieldsSchema = v.object({
+/** Проверяет данные, необходимые серверу для регистрации пользователя. */
+export const RegisterDataSchema = v.object({
   email: v.pipe(
     v.string(),
     v.email(),
@@ -16,7 +16,6 @@ const RegisterFieldsSchema = v.object({
     v.regex(/[A-Z]/), // Требует хотя бы одну заглавную латинскую букву.
     v.regex(/[0-9]/), // Требует хотя бы одну цифру.
   ),
-  passwordConfirmation: v.string(), // Повторная проверка требований к паролю здесь избыточна.
   username: v.pipe(
     v.string(),
     v.maxLength(64),
@@ -25,9 +24,12 @@ const RegisterFieldsSchema = v.object({
   ),
 });
 
-/** Проверяет поля регистрации и совпадение паролей. */
-export const RegisterSchema = v.pipe(
-  RegisterFieldsSchema,
+/** Проверяет клиентскую форму регистрации, включая подтверждение пароля. */
+export const RegisterFormSchema = v.pipe(
+  v.object({
+    ...RegisterDataSchema.entries,
+    passwordConfirmation: v.string(),
+  }),
   v.forward(
     v.partialCheck(
       [["password"], ["passwordConfirmation"]],
@@ -37,3 +39,6 @@ export const RegisterSchema = v.pipe(
     ["passwordConfirmation"],
   ),
 );
+
+export type RegisterData = v.InferInput<typeof RegisterDataSchema>;
+export type RegisterFormData = v.InferInput<typeof RegisterFormSchema>;

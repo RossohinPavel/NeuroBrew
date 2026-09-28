@@ -12,6 +12,7 @@
     "lint": "eslint \"src/**/*.{ts,tsx}\" --fix"
   },
   "dependencies": {
+    "@hookform/resolvers": "^5.9.1",
     "@shared/database": "workspace:*",
     "argon2": "^0.45.1",
     "jose": "^6.2.12",

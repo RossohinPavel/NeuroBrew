@@ -6,13 +6,13 @@ import { redirect } from "next/navigation";
 import * as v from "valibot";
 import { DB } from "@/common/db";
 import { Cookies, JWT } from "@/entities/session";
-import { RegisterSchema } from "./schema";
+import { RegisterDataSchema } from "./schema";
 
 
 /** Создает пользователя и завершает его аутентификацию. */
 export const registerAction = async (formData: FormData) => {
   const { email, password, username } = await v.parseAsync(
-    RegisterSchema,
+    RegisterDataSchema,
     Object.fromEntries(formData),
   );
   const passwordHash = await hash(password);
