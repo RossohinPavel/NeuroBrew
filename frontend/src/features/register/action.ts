@@ -3,19 +3,18 @@
 import { hash } from "argon2";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import * as v from "valibot";
 import { DB } from "@/common/db";
 import { Cookies, JWT } from "@/entities/session";
+import { RegisterSchema } from "./schema";
 
 
 /** Создает пользователя и завершает его аутентификацию. */
 export const registerAction = async (formData: FormData) => {
-  const email = formData.get("email") as string;
-  const password = formData.get("password") as string;
-  const passwordConfirmation = formData.get("passwordConfirmation") as string;
-  const username = formData.get("username") as string;
-  if (password !== passwordConfirmation) {
-    throw new Error("Пароли не совпадают");
-  }
+  const { email, password, username } = await v.parseAsync(
+    RegisterSchema,
+    Object.fromEntries(formData),
+  );
   const passwordHash = await hash(password);
   const user = await DB.auth.createUser({ email, passwordHash, username });
   if (!user) {
