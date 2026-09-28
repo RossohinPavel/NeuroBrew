@@ -13,17 +13,17 @@ export const users = authSchema.table("users", {
       .generatedAlwaysAsIdentity()
   ),
   email: (
-    varchar({ length: 255 })
+    varchar({ length: 255 }) // Стандартное ограничение для адресов
       .notNull()
       .unique()
   ),
   passwordHash: (
-    varchar({ length: 255 })
-      .notNull()
+    varchar({ length: 255 }) // Нужно ставить в зависимости от либы.
+      .notNull()             // Аргон2 генерирует хеш нефиксированной длинны, поэтому с запасом.
   ),
   username: (
-    varchar({ length: 255 })
-      .notNull()
+    varchar({ length: 64 })  // Это поле ограничиваем, чтобы не раздувать индекс.
+      .notNull()             // Конкретное значение уже зависит от бизнес-логики.
       .unique()
   ),
   createdAt: (
