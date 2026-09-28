@@ -1,28 +1,55 @@
 "use client";
 
 import { valibotResolver } from "@hookform/resolvers/valibot";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { registerAction } from "./action";
-import { RegisterFormSchema, type RegisterFormData } from "./schema";
+import {
+  RegisterFormSchema,
+  type RegisterData,
+  type RegisterFormData,
+} from "./schema";
 
 import styles from "./form.module.css";
 
 /** Предоставляет форму создания нового аккаунта. */
 export function RegisterForm() {
+  const router = useRouter();
   const {
+    clearErrors,
     formState: { errors, isSubmitting },
     handleSubmit,
     register,
+    setError,
   } = useForm<RegisterFormData>({
     resolver: valibotResolver(RegisterFormSchema),
   });
+
   const submitForm = handleSubmit(async (values) => {
-    const formData = new FormData();
-    formData.set("email", values.email);
-    formData.set("password", values.password);
-    formData.set("username", values.username);
-    await registerAction(formData);
+    clearErrors("root.server");
+    const data = {
+      email: values.email,
+      password: values.password,
+      username: values.username,
+    } satisfies RegisterData;
+    try {
+      const result = await registerAction(data);
+      if (!result.success) {
+        setError("root.server", {
+          message: result.message,
+          type: "server",
+        });
+        return;
+      }
+      router.push("/");
+    } catch {
+      setError("root.server", {
+        message: "Не удалось создать аккаунт. Попробуйте еще раз.",
+        type: "server",
+      });
+    }
   });
+
   return (
     <form
       className={styles.form}
@@ -83,7 +110,12 @@ export function RegisterForm() {
       {errors.username?.message && (
         <p id="username-error" role="alert">{errors.username.message}</p>
       )}
-      <button disabled={isSubmitting} type="submit">Создать аккаунт</button>
+      {errors.root?.server?.message && (
+        <p role="alert">{errors.root.server.message}</p>
+      )}
+      <button disabled={isSubmitting} type="submit">
+        {isSubmitting ? "Создание аккаунта..." : "Создать аккаунт"}
+      </button>
     </form>
   );
 }
