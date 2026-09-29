@@ -1,47 +1,50 @@
-import { AuthRepository } from "./repo/auth";
-import { RegistryRepository } from "./repo/registry";
-import { UtilsRepository } from "./repo/utils";
+import {
+  createAuthRepository,
+  createRegistryRepository,
+  createUtilsRepository,
+} from "./repo";
 import * as schema from "./schema";
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
 
 
-export interface Options {
+/** Описывает реквизиты доступа к базе данных. */
+export interface DatabaseCredentials {
   hostname: string;
   port: string;
   username: string;
   password: string;
   database: string;
+}
+
+/** Описывает реквизиты базы данных и настройки Drizzle-подключения. */
+export interface ConnectionOptions {
+  credentials: DatabaseCredentials;
   logger?: boolean;
 }
 
-/** Создает подключение к базе данных и связанные с ним репозитории. */
-export class Connection {
-  constructor(public readonly options: Options) {}
+/** Возвращает URL подключения к PostgreSQL, сформированный из переданных параметров. */
+export function buildConnectionUrl(credentials: DatabaseCredentials) {
+  const url = new URL("postgres://localhost");
+  url.hostname = credentials.hostname;
+  url.port = credentials.port;
+  url.username = credentials.username;
+  url.password = credentials.password;
+  url.pathname = credentials.database;
+  return url.toString();
+}
 
-  /** Создает подключение и возвращает работающие через него репозитории. */
-  build() {
-    const client = postgres(this.url);
-    const connection = drizzle(client, {
-      schema,
-      logger: this.options.logger ?? false,
-      casing: "snake_case",
-    });
-    return {
-      auth: new AuthRepository(connection),
-      registry: new RegistryRepository(connection),
-      utils: new UtilsRepository(connection),
-    } as const;
-  }
-
-  /** Возвращает URL подключения к PostgreSQL, сформированный из текущих параметров. */
-  get url() {
-    const url = new URL("postgres://localhost");
-    url.hostname = this.options.hostname;
-    url.port = this.options.port;
-    url.username = this.options.username;
-    url.password = this.options.password;
-    url.pathname = this.options.database;
-    return url.toString();
-  }
+/** Создает подключение к базе данных и работающие через него репозитории. */
+export function createConnection(options: ConnectionOptions) {
+  const client = postgres(buildConnectionUrl(options.credentials));
+  const connection = drizzle(client, {
+    schema,
+    logger: options.logger ?? false,
+    casing: "snake_case",
+  });
+  return {
+    auth: createAuthRepository(connection),
+    registry: createRegistryRepository(connection),
+    utils: createUtilsRepository(connection),
+  } as const;
 }

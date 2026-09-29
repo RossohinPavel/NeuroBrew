@@ -1,36 +1,43 @@
+import { withConstraint } from "../errors";
 import { project, type ProjectInsert } from "../schema";
-import { Repository } from "./abstract-repository";
+import type { DatabaseConnection } from "./types";
 import { eq } from "drizzle-orm";
 
 
-/** Управляет данными реестра. */
-export class RegistryRepository extends Repository {
+/** Создает репозиторий для управления данными реестра. */
+export function createRegistryRepository(connection: DatabaseConnection) {
 
   /** Создает проект и возвращает сохраненную запись. */
-  async createProject(data: ProjectInsert) {
-    const [createdProject] = await this.connection
+  const createProject = withConstraint(async (data: ProjectInsert) => {
+    const [createdProject] = await connection
       .insert(project)
       .values(data)
       .returning();
     return createdProject;
-  }
+  });
 
   /** Ищет проект по имени. */
-  async searchProject(name: string) {
-    const [foundProject] = await this.connection
+  const searchProject = async (name: string) => {
+    const [foundProject] = await connection
       .select()
       .from(project)
       .where(eq(project.name, name))
       .limit(1);
     return foundProject;
-  }
+  };
 
   /** Возвращает все проекты пользователя. */
-  async getUserProjects(userId: number) {
-    const projects = await this.connection
+  const getUserProjects = async (userId: number) => {
+    const projects = await connection
       .select()
       .from(project)
       .where(eq(project.userId, userId));
     return projects;
-  }
+  };
+
+  return {
+    createProject,
+    searchProject,
+    getUserProjects,
+  };
 }

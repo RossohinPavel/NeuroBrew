@@ -1,12 +1,12 @@
 import { loadEnvFile } from 'node:process';
 import { defineConfig } from 'drizzle-kit';
-import { Connection } from './src/';
+import { buildConnectionUrl } from './src/';
 
 if (process.env.DB_HOST === undefined) {
   loadEnvFile('../../.env');
 }
 
-const connection = new Connection({
+const url = buildConnectionUrl({
   hostname: process.env.DB_HOST!,
   port: process.env.DB_PORT!,
   username: process.env.DB_USER!,
@@ -20,6 +20,6 @@ export default defineConfig({
   dialect: 'postgresql',
   casing: 'snake_case',
   dbCredentials: {
-    url: connection.url,
+    url,
   },
 });
