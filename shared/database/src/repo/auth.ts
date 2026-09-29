@@ -1,3 +1,4 @@
+import { translateUniqueConstraint } from "../errors";
 import { users, type UserInsert, type UserSelect } from "../schema";
 import { Repository } from "./abstract-repository";
 import { eq, or } from "drizzle-orm";
@@ -7,6 +8,7 @@ import { eq, or } from "drizzle-orm";
 export class AuthRepository extends Repository {
 
   /** Создает пользователя и возвращает сохраненную запись. */
+  @translateUniqueConstraint
   async createUser(user: UserInsert) {
     const [createdUser] = await this.connection
       .insert(users)
