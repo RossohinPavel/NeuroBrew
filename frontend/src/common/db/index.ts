@@ -1,7 +1,7 @@
 import "server-only";
 
 import { Connection } from "@shared/database";
-import { ENV } from "@/common/config";
+import { ENV } from "@/common/env";
 
 
 /** Предоставляет общее подключение к базе данных для серверного кода фронтенда. */

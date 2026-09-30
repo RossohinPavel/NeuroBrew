@@ -1,7 +1,7 @@
 import "server-only";
 
 import type { ResponseCookie } from "next/dist/compiled/@edge-runtime/cookies";
-import { ENV } from "@/common/config";
+import { ENV } from "@/common/env";
 
 
 const COMMON_CONFIG: Partial<ResponseCookie> = {
