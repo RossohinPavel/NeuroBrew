@@ -1,4 +1,4 @@
-import type { DatabaseConnection } from "./types";
+import type { DatabaseConnection } from "../connection";
 import { sql } from "drizzle-orm";
 
 

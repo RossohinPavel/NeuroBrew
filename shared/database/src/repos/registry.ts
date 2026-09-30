@@ -1,6 +1,6 @@
+import type { DatabaseConnection } from "../connection";
 import { withConstraint } from "../errors";
 import { project, type ProjectInsert } from "../schema";
-import type { DatabaseConnection } from "./types";
 import { eq } from "drizzle-orm";
 
 
