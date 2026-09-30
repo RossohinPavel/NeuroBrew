@@ -3,9 +3,13 @@
 import { hash } from "argon2";
 import { cookies } from "next/headers";
 import * as v from "valibot";
-import { DB } from "@/common/db";
+import { createAuthRepository } from "@shared/database";
+import { DB } from "@/common/db-connection";
 import { Cookies, JWT } from "@/entities/session";
 import { RegisterDataSchema, type RegisterData } from "./schema";
+
+
+const { createUser } = createAuthRepository(DB);
 
 
 /** Создает пользователя и завершает его аутентификацию. */
@@ -13,7 +17,7 @@ export const registerAction = async (data: RegisterData) => {
   try {
     const { email, password, username } = await v.parseAsync(RegisterDataSchema, data);
     const passwordHash = await hash(password);
-    const user = await DB.auth.createUser({ email, passwordHash, username });
+    const user = await createUser({ email, passwordHash, username });
     if (!user) {
       throw new Error("Не удалось создать пользователя");
     }

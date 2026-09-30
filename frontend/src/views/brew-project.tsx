@@ -1,4 +1,8 @@
-import { DB } from "@/common/db";
+import { createRegistryRepository } from "@shared/database";
+import { DB } from "@/common/db-connection";
+
+
+const { searchProject } = createRegistryRepository(DB);
 
 
 type Props = PageProps<"/[username]/brew/[project]">;
@@ -6,7 +10,7 @@ type Props = PageProps<"/[username]/brew/[project]">;
 /** Представляет среду редактирования проекта пользователя. */
 export async function BrewProject({ params }: Props) {
   const { project } = await params;
-  const foundProject = await DB.registry.searchProject(project);
+  const foundProject = await searchProject(project);
   return (
     <main className="flex flex-col gap-2">
       <p>ID проекта: {foundProject!.id}</p>

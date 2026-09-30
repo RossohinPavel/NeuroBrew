@@ -1,4 +1,9 @@
-import { DB } from "@/common/db";
+import { createAuthRepository, createRegistryRepository } from "@shared/database";
+import { DB } from "@/common/db-connection";
+
+
+const { searchUser } = createAuthRepository(DB);
+const { getUserProjects } = createRegistryRepository(DB);
 
 
 type Props = PageProps<"/[username]/brew">;
@@ -6,8 +11,8 @@ type Props = PageProps<"/[username]/brew">;
 /** Показывает раздел Brew пользователя. */
 export async function Brew({ params }: Props) {
   const { username } = await params;
-  const user = await DB.auth.searchUser({ username });
-  const projects = await DB.registry.getUserProjects(user!.id);
+  const user = await searchUser({ username });
+  const projects = await getUserProjects(user!.id);
   return (
     <main className="flex flex-col gap-2">
       <p>{username}/brew</p>

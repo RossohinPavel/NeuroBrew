@@ -1,6 +1,11 @@
-import { DB } from "@/common/db";
+import { createAuthRepository, createRegistryRepository } from "@shared/database";
+import { DB } from "@/common/db-connection";
 import { Payload } from "@/entities/session";
 import { CreateProjectForm } from "@/features/create-project";
+
+
+const { searchUser } = createAuthRepository(DB);
+const { getUserProjects } = createRegistryRepository(DB);
 
 
 type Props = PageProps<"/[username]">;
@@ -9,10 +14,10 @@ type Props = PageProps<"/[username]">;
 export async function Profile({ params }: Props) {
   const { username } = await params;
   const [user, session] = await Promise.all([
-    DB.auth.searchUser({ username }),
+    searchUser({ username }),
     Payload.readFromHeaders(),
   ]);
-  const projects = await DB.registry.getUserProjects(user!.id);
+  const projects = await getUserProjects(user!.id);
   const isGuest = session === null || session.userId !== user!.id;
   return (
     <main className="flex flex-col gap-2">
