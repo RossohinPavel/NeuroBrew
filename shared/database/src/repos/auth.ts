@@ -1,8 +1,16 @@
 import type { DatabaseConnection } from "../connection";
 import { withConstraint } from "../errors";
 import { users, type UserInsert, type UserSelect } from "../schema";
-import { eq, or } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 
+
+type UserLookupField = "id" | "email" | "username";
+type SingleProperty<Type, Field extends keyof Type> = Pick<Type, Field> &
+  Partial<Record<Exclude<keyof Type, Field>, never>>;
+type UserLookup =
+  | SingleProperty<UserSelect, "id">
+  | SingleProperty<UserSelect, "email">
+  | SingleProperty<UserSelect, "username">;
 
 /** Создает репозиторий для управления учетными записями пользователей. */
 export function createAuthRepository(connection: DatabaseConnection) {
@@ -16,29 +24,22 @@ export function createAuthRepository(connection: DatabaseConnection) {
     return createdUser;
   });
 
-  /** Ищет пользователя по электронной почте или имени, объединяя критерии через «или». */
-  const searchUser = async (lookup: Partial<Pick<UserSelect, "email" | "username">>) => {
-    const conditions = [];
-    for (const key in lookup) {
-      const field = key as keyof typeof lookup;
-      const value = lookup[field];
-      if (value !== undefined) {
-        conditions.push(eq(users[field], value));
-      }
-    }
-    if (conditions.length === 0) {
-      return undefined;
-    }
+  /** Возвращает пользователя по идентификатору, электронной почте или имени. */
+  const getUser = async (lookup: UserLookup) => {
+    const [field, value] = Object.entries(lookup)[0] as [
+      UserLookupField,
+      UserSelect[UserLookupField],
+    ];
     const [user] = await connection
       .select()
       .from(users)
-      .where(or(...conditions))
+      .where(eq(users[field], value))
       .limit(1);
     return user;
   };
 
   return {
     createUser,
-    searchUser,
+    getUser,
   };
 }
