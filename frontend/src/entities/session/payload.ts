@@ -1,6 +1,7 @@
 import "server-only";
 
 import { headers } from "next/headers";
+import { notFound } from "next/navigation";
 import { cache } from "react";
 import * as v from "valibot";
 import type { JWTPayload } from "jose";
@@ -30,11 +31,20 @@ export const sanitizeHeaders = (headers: Headers) => {
 };
 
 /** Возвращает данные сессии из служебных заголовков запроса. */
-export const readFromHeaders = cache(async (): Promise<SessionPayload | null> => {
+export const get = cache(async (): Promise<SessionPayload | null> => {
   const headerStore = await headers();
   const userId = headerStore.get(AUTH_USER_ID_HEADER);
   if (userId === null) {
     return null;
   }
   return { userId: Number(userId) };
+});
+
+/** Возвращает данные сессии или отвечает страницей 404. */
+export const getOr404 = cache(async () => {
+  const payload = await get();
+  if (payload === null) {
+    notFound();
+  }
+  return payload;
 });

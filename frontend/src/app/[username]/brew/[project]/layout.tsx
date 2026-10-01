@@ -11,13 +11,9 @@ export default async function Layout({ children, params }: Props) {
   const [user, foundProject, session] = await Promise.all([
     getUserOr404(username),
     getProjectOr404(project),
-    Payload.readFromHeaders(),
+    Payload.getOr404(),
   ]);
-  if (
-    session === null
-    || session.userId !== user.id
-    || foundProject.userId !== user.id
-  ) {
+  if (session.userId !== user.id || foundProject.userId !== user.id) {
     notFound();
   }
   return children;

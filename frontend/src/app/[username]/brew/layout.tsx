@@ -7,9 +7,9 @@ export default async function Layout({ children, params }: LayoutProps<"/[userna
   const { username } = await params;
   const [user, session] = await Promise.all([
     getUserOr404(username),
-    Payload.readFromHeaders(),
+    Payload.getOr404(),
   ]);
-  if (session === null || session.userId !== user.id) {
+  if (session.userId !== user.id) {
     notFound();
   }
   return children;

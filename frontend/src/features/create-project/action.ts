@@ -10,7 +10,7 @@ const { createProject } = createRegistryRepository(DB);
 
 /** Создает проект для текущего пользователя. */
 export const createProjectAction = async (formData: FormData) => {
-  const session = await Payload.readFromHeaders();
+  const session = await Payload.get();
   if (session === null) {
     throw new Error("Необходимо войти в аккаунт");
   }

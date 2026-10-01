@@ -15,7 +15,7 @@ export async function UserPage({ params }: Props) {
   const { username } = await params;
   const [user, session] = await Promise.all([
     getUserOr404(username),
-    Payload.readFromHeaders(),
+    Payload.get(),
   ]);
   const projects = await listProjects({ userId: user.id });
   const isGuest = session === null || session.userId !== user.id;

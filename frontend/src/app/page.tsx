@@ -5,7 +5,7 @@ import { Landing } from "@/views/landing";
 
 /** Показывает посадочную страницу гостю и дашборд авторизованному пользователю. */
 export default async function Page() {
-  const payload = await Payload.readFromHeaders();
+  const payload = await Payload.get();
   if (payload === null) {
     return <Landing />;
   }
