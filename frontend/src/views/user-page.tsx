@@ -5,7 +5,7 @@ import { getUserOr404 } from "@/entities/user";
 import { CreateProjectForm } from "@/features/create-project";
 
 
-const { getUserProjects } = createRegistryRepository(DB);
+const { listProjects } = createRegistryRepository(DB);
 
 
 type Props = PageProps<"/[username]">;
@@ -17,7 +17,7 @@ export async function UserPage({ params }: Props) {
     getUserOr404(username),
     Payload.readFromHeaders(),
   ]);
-  const projects = await getUserProjects(user.id);
+  const projects = await listProjects({ userId: user.id });
   const isGuest = session === null || session.userId !== user.id;
   return (
     <main className="flex flex-col gap-2">

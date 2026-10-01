@@ -8,14 +8,14 @@ import { DB } from "@/common/db-connection";
 import { Cookies, JWT } from "@/entities/session";
 
 
-const { getUser } = createAuthRepository(DB);
+const { findUser } = createAuthRepository(DB);
 
 
 /** Проверяет учетные данные и завершает аутентификацию пользователя. */
 export const loginAction = async (formData: FormData) => {
   const email = formData.get("email") as string;
   const password = formData.get("password") as string;
-  const user = await getUser({ email });
+  const user = await findUser({ email });
   if (!user) {
     throw new Error("Пользователь не найден");
   }

@@ -22,8 +22,8 @@ export function createAuthRepository(connection: DatabaseConnection) {
     return createdUser;
   });
 
-  /** Возвращает пользователя по идентификатору, электронной почте или имени. */
-  const getUser = async (lookup: UserLookup) => {
+  /** Ищет пользователя по идентификатору, электронной почте или имени. */
+  const findUser = async (lookup: UserLookup) => {
     const [field, value] = Object.entries(lookup)[0] as [
       keyof UserSelect,
       UserSelect[keyof UserSelect],
@@ -38,6 +38,6 @@ export function createAuthRepository(connection: DatabaseConnection) {
 
   return {
     createUser,
-    getUser,
+    findUser,
   };
 }

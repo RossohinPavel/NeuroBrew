@@ -3,11 +3,11 @@ import { notFound } from "next/navigation";
 import { DB } from "@/common/db-connection";
 
 
-const { searchProject } = createRegistryRepository(DB);
+const { findProject } = createRegistryRepository(DB);
 
 export default async function Layout({ children, params }: LayoutProps<"/[username]/[project]">) {
   const { project } = await params;
-  const foundProject = await searchProject(project);
+  const foundProject = await findProject({ name: project });
   if (foundProject === undefined) {
     notFound();
   }
