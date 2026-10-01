@@ -1,16 +1,16 @@
-import { notFound } from "next/navigation";
 import { createAuthRepository } from "@shared/database";
+import { notFound } from "next/navigation";
 import { DB } from "@/common/db-connection";
 import { Payload } from "@/entities/session";
 
 
-const { searchUser } = createAuthRepository(DB);
+const { getUser } = createAuthRepository(DB);
 
 
 export default async function Layout({ children, params }: LayoutProps<"/[username]/brew">) {
   const { username } = await params;
   const [user, session] = await Promise.all([
-    searchUser({ username }),
+    getUser({ username }),
     Payload.readFromHeaders(),
   ]);
   if (user === undefined || session === null || session.userId !== user.id) {

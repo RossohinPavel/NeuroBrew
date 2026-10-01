@@ -1,6 +1,6 @@
 import { RegisterForm } from "@/features/register";
-
 import styles from "./register.module.css";
+
 
 /** Представляет страницу регистрации аккаунта. */
 export function Register() {

@@ -1,9 +1,9 @@
 "use server";
 
+import { createAuthRepository } from "@shared/database";
 import { hash } from "argon2";
 import { cookies } from "next/headers";
 import * as v from "valibot";
-import { createAuthRepository } from "@shared/database";
 import { DB } from "@/common/db-connection";
 import { Cookies, JWT } from "@/entities/session";
 import { RegisterDataSchema, type RegisterData } from "./schema";

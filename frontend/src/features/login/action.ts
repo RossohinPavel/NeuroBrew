@@ -1,21 +1,21 @@
 "use server";
 
+import { createAuthRepository } from "@shared/database";
 import { verify } from "argon2";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { createAuthRepository } from "@shared/database";
 import { DB } from "@/common/db-connection";
 import { Cookies, JWT } from "@/entities/session";
 
 
-const { searchUser } = createAuthRepository(DB);
+const { getUser } = createAuthRepository(DB);
 
 
 /** Проверяет учетные данные и завершает аутентификацию пользователя. */
 export const loginAction = async (formData: FormData) => {
   const email = formData.get("email") as string;
   const password = formData.get("password") as string;
-  const user = await searchUser({ email });
+  const user = await getUser({ email });
   if (!user) {
     throw new Error("Пользователь не найден");
   }

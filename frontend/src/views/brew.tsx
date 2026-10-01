@@ -2,7 +2,7 @@ import { createAuthRepository, createRegistryRepository } from "@shared/database
 import { DB } from "@/common/db-connection";
 
 
-const { searchUser } = createAuthRepository(DB);
+const { getUser } = createAuthRepository(DB);
 const { getUserProjects } = createRegistryRepository(DB);
 
 
@@ -11,7 +11,7 @@ type Props = PageProps<"/[username]/brew">;
 /** Показывает раздел Brew пользователя. */
 export async function Brew({ params }: Props) {
   const { username } = await params;
-  const user = await searchUser({ username });
+  const user = await getUser({ username });
   const projects = await getUserProjects(user!.id);
   return (
     <main className="flex flex-col gap-2">

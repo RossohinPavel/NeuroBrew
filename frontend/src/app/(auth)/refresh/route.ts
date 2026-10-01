@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
 import { Cookies } from "@/entities/session";
 import {
   ExpiredError,
@@ -7,9 +6,10 @@ import {
   onClientRequest,
   onNavigation,
 } from "@/features/refresh-session";
+import type { NextRequest } from "next/server";
 
 
-export const dynamic = 'force-dynamic'; 
+export const dynamic = "force-dynamic"; 
 
 /** Обновляет сессию при навигации и возвращает пользователя на исходную страницу. */
 export const GET = async (request: NextRequest) => {

@@ -1,9 +1,9 @@
 import "server-only";
 
-import type { JWTPayload } from "jose";
 import { headers } from "next/headers";
 import { cache } from "react";
 import * as v from "valibot";
+import type { JWTPayload } from "jose";
 
 
 const AUTH_USER_ID_HEADER = "x-auth-user-id";
@@ -33,6 +33,8 @@ export const sanitizeHeaders = (headers: Headers) => {
 export const readFromHeaders = cache(async (): Promise<SessionPayload | null> => {
   const headerStore = await headers();
   const userId = headerStore.get(AUTH_USER_ID_HEADER);
-  if (userId === null) return null;
+  if (userId === null) {
+    return null;
+  }
   return { userId: Number(userId) };
 });

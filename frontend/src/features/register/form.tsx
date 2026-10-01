@@ -4,13 +4,13 @@ import { valibotResolver } from "@hookform/resolvers/valibot";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { registerAction } from "./action";
+import styles from "./form.module.css";
 import {
   RegisterFormSchema,
   type RegisterData,
   type RegisterFormData,
 } from "./schema";
 
-import styles from "./form.module.css";
 
 /** Предоставляет форму создания нового аккаунта. */
 export function RegisterForm() {
