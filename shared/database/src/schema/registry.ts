@@ -17,9 +17,8 @@ export const project = registrySchema.table("project", {
       .references(() => users.id, { onDelete: "cascade" })
   ),
   name: (
-    varchar({ length: 255 })
+    varchar({ length: 128 })
       .notNull()
-      .unique()
   ),
 });
 
