@@ -1,6 +1,6 @@
 .root {
   display: grid;
-  min-height: 100vh;
+  flex: 1;
   place-items: center;
   background-color: var(--color-surface-1);
 }
