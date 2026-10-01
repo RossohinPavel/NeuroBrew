@@ -6,12 +6,12 @@ import { cache } from "react";
 import { DB } from "@/common/db-connection";
 
 
-const { findProject } = createRegistryRepository(DB);
+const { findProjectByUsername } = createRegistryRepository(DB);
 
 
 /** Возвращает найденный проект или отвечает страницей 404. */
-export const getProjectOr404 = cache(async (name: string) => {
-  const project = await findProject({ name });
+export const getProjectByUsernameOr404 = cache(async (username: string, name: string) => {
+  const project = await findProjectByUsername({ username, name });
   if (project === undefined) {
     notFound();
   }

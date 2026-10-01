@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { getProjectOr404 } from "@/entities/project";
+import { getProjectByUsernameOr404 } from "@/entities/project";
 import { getUserOr404 } from "@/entities/user";
 
 
@@ -7,7 +7,7 @@ export default async function Layout({ children, params }: LayoutProps<"/[userna
   const { project, username } = await params;
   const [user, foundProject] = await Promise.all([
     getUserOr404(username),
-    getProjectOr404(project),
+    getProjectByUsernameOr404(username, project),
   ]);
   if (user.id !== foundProject.userId) {
     notFound();

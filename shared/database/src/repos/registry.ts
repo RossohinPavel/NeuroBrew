@@ -40,7 +40,7 @@ export function createRegistryRepository(connection: DatabaseConnection) {
   };
 
   /** Ищет проект по имени пользователя и имени проекта. */
-  const findProjectByUsernameAndName = async (lookup: ProjectNameLookup) => {
+  const findProjectByUsername = async (lookup: ProjectNameLookup) => {
     const [foundProject] = await connection
       .select({ project })
       .from(project)
@@ -69,7 +69,7 @@ export function createRegistryRepository(connection: DatabaseConnection) {
   return {
     createProject,
     findProject,
-    findProjectByUsernameAndName,
+    findProjectByUsername,
     listProjects,
   };
 }

@@ -1,20 +1,16 @@
-import { createRegistryRepository } from "@shared/database";
-import { DB } from "@/common/db-connection";
-
-
-const { findProject } = createRegistryRepository(DB);
+import { getProjectByUsernameOr404 } from "@/entities/project";
 
 
 type Props = PageProps<"/[username]/[project]">;
 
 /** Показывает основные сведения о проекте пользователя. */
 export async function Project({ params }: Props) {
-  const { project } = await params;
-  const foundProject = await findProject({ name: project });
+  const { project, username } = await params;
+  const foundProject = await getProjectByUsernameOr404(username, project);
   return (
     <main className="flex flex-col gap-2">
-      <p>ID пользователя: {foundProject!.userId}</p>
-      <p>Название проекта: {foundProject!.name}</p>
+      <p>ID пользователя: {foundProject.userId}</p>
+      <p>Название проекта: {foundProject.name}</p>
     </main>
   );
 }
