@@ -1,19 +1,17 @@
 import { notFound } from "next/navigation";
 import { getProjectByUsernameOr404 } from "@/entities/project";
 import { Payload } from "@/entities/session";
-import { getUserOr404 } from "@/entities/user";
 
 
 type Props = LayoutProps<"/[username]/brew/[project]">;
 
 export default async function Layout({ children, params }: Props) {
   const { project, username } = await params;
-  const [user, foundProject, session] = await Promise.all([
-    getUserOr404(username),
+  const [foundProject, session] = await Promise.all([
     getProjectByUsernameOr404(username, project),
     Payload.getOr404(),
   ]);
-  if (session.userId !== user.id || foundProject.userId !== user.id) {
+  if (session.userId !== foundProject.userId) {
     notFound();
   }
   return children;
