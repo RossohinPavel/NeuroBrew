@@ -1,19 +1,25 @@
 import type { DatabaseConnection } from "../connection";
 import { withConstraint } from "../errors";
-import { project, type ProjectInsert, type ProjectSelect } from "../schema";
+import {
+  project,
+  type ProjectInsert,
+  type ProjectSelect,
+  users,
+  type UserSelect,
+} from "../schema";
 import type { SingleProperty } from "../utility-types";
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 
 
-type ProjectLookup =
-  | SingleProperty<ProjectSelect, "id">
-  | SingleProperty<ProjectSelect, "name">;
+type ProjectLookup = SingleProperty<ProjectSelect, "id">;
 
-type ProjectListLookup = SingleProperty<ProjectSelect, "userId">;
+type ProjectNameLookup = {
+  username: UserSelect["username"];
+  name: ProjectSelect["name"];
+};
 
 /** Создает репозиторий для управления данными реестра. */
 export function createRegistryRepository(connection: DatabaseConnection) {
-
   /** Создает проект и возвращает сохраненную запись. */
   const createProject = withConstraint(async (data: ProjectInsert) => {
     const [createdProject] = await connection
@@ -23,36 +29,47 @@ export function createRegistryRepository(connection: DatabaseConnection) {
     return createdProject;
   });
 
-  /** Ищет проект по идентификатору или названию. */
+  /** Ищет проект по полю, однозначно идентифицирующему запись. */
   const findProject = async (lookup: ProjectLookup) => {
-    const [field, value] = Object.entries(lookup)[0] as [
-      keyof ProjectSelect,
-      ProjectSelect[keyof ProjectSelect],
-    ];
     const [foundProject] = await connection
       .select()
       .from(project)
-      .where(eq(project[field], value))
+      .where(eq(project.id, lookup.id))
       .limit(1);
     return foundProject;
   };
 
-  /** Возвращает все проекты пользователя. */
-  const listProjects = async (lookup: ProjectListLookup) => {
-    const [field, value] = Object.entries(lookup)[0] as [
+  /** Ищет проект по имени пользователя и имени проекта. */
+  const findProjectByUsernameAndName = async (lookup: ProjectNameLookup) => {
+    const [foundProject] = await connection
+      .select({ project })
+      .from(project)
+      .innerJoin(users, eq(project.userId, users.id))
+      .where(and(
+        eq(users.username, lookup.username),
+        eq(project.name, lookup.name),
+      ))
+      .limit(1);
+    return foundProject?.project;
+  };
+
+  /** Возвращает проекты, соответствующие всем переданным условиям. */
+  const listProjects = async (lookup: Partial<ProjectSelect>) => {
+    const conditions = (Object.entries(lookup) as [
       keyof ProjectSelect,
       ProjectSelect[keyof ProjectSelect],
-    ];
+    ][]).map(([field, value]) => eq(project[field], value));
     const projects = await connection
       .select()
       .from(project)
-      .where(eq(project[field], value));
+      .where(and(...conditions));
     return projects;
   };
 
   return {
     createProject,
     findProject,
+    findProjectByUsernameAndName,
     listProjects,
   };
 }
