@@ -31,4 +31,7 @@
 
   --color-danger: var(--clr-red-1);
   --color-danger-hover: var(--clr-red-2);
+
+  /* Скругления элементов управления */
+  --radius-control: 8px;
 }

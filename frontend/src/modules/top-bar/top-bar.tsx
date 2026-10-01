@@ -1,21 +1,27 @@
-import { Payload } from "@/entities/session";
-import { AuthenticatedTopBar } from "./authenticated-top-bar";
-import { UnauthenticatedTopBar } from "./unauthenticated-top-bar";
+import Image from "next/image";
+import Link from "next/link";
+import { Navigation } from "./navigation";
 
 
 /** Отображает верхнюю панель приложения. */
-export async function TopBar() {
-  const session = await Payload.get();
+export function TopBar() {
   return (
-    <header>
-      <div className="flex justify-end">
-        {session === null ? (
-          <UnauthenticatedTopBar />
-        ) : (
-          <AuthenticatedTopBar userId={session.userId} />
-        )}
+    <header className="bg-surface-3">
+      <div className="flex items-center justify-between px-[10px] py-[5px]">
+        <div>
+          <Link href="/" className="relative block h-7 w-48 overflow-hidden">
+            <Image
+              src="/neurobrew_refined_black_mug.png"
+              alt="NeuroBrew"
+              fill
+              sizes="182px"
+              className="object-cover object-[center_85%]"
+              loading="eager"
+            />
+          </Link>
+        </div>
+        <Navigation />
       </div>
-      <hr />
     </header>
   );
 }

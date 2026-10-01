@@ -1,7 +1,7 @@
 import { createAuthRepository } from "@shared/database";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { DB } from "@/common/db-connection";
+import { LinkButton } from "./link-button";
 
 
 const { findUser } = createAuthRepository(DB);
@@ -12,7 +12,7 @@ type Props = {
 };
 
 /** Отображает навигацию для авторизованного пользователя. */
-export async function AuthenticatedTopBar({ userId }: Props) {
+export async function AuthenticatedNavigation({ userId }: Props) {
   const user = await findUser({ id: userId });
   if (user === undefined) {
     notFound();
@@ -20,7 +20,7 @@ export async function AuthenticatedTopBar({ userId }: Props) {
   return (
     <nav className="flex w-full justify-between" aria-label="Основная навигация">
       <span>{user.username}</span>
-      <Link href="/logout">Log Out</Link>
+      <LinkButton href="/logout" title="Log Out" />
     </nav>
   );
 }
