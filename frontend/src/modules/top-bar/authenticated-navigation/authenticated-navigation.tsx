@@ -1,7 +1,8 @@
 import { createAuthRepository } from "@shared/database";
 import { notFound } from "next/navigation";
 import { DB } from "@/common/db-connection";
-import { LinkButton } from "./link-button";
+import { LinkButton } from "../link-button";
+import styles from "./authenticated-navigation.module.css";
 
 
 const { findUser } = createAuthRepository(DB);
@@ -18,9 +19,12 @@ export async function AuthenticatedNavigation({ userId }: Props) {
     notFound();
   }
   return (
-    <nav className="flex w-full justify-between" aria-label="Основная навигация">
-      <span>{user.username}</span>
-      <LinkButton href="/logout" title="Log Out" />
+    <nav
+      className="grid w-full grid-cols-[1fr_auto_1fr] items-center gap-1"
+      aria-label="Основная навигация"
+    >
+      <span className={`${styles.username} col-start-2`}>{user.username}</span>
+      <LinkButton className="justify-self-end" href="/logout" title="Log Out" />
     </nav>
   );
 }
