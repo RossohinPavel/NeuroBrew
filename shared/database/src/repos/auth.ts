@@ -1,12 +1,10 @@
 import type { DatabaseConnection } from "../connection";
 import { withConstraint } from "../errors";
 import { users, type UserInsert, type UserSelect } from "../schema";
+import type { SingleProperty } from "../utility-types";
 import { eq } from "drizzle-orm";
 
 
-type UserLookupField = "id" | "email" | "username";
-type SingleProperty<Type, Field extends keyof Type> = Pick<Type, Field> &
-  Partial<Record<Exclude<keyof Type, Field>, never>>;
 type UserLookup =
   | SingleProperty<UserSelect, "id">
   | SingleProperty<UserSelect, "email">
@@ -27,8 +25,8 @@ export function createAuthRepository(connection: DatabaseConnection) {
   /** Возвращает пользователя по идентификатору, электронной почте или имени. */
   const getUser = async (lookup: UserLookup) => {
     const [field, value] = Object.entries(lookup)[0] as [
-      UserLookupField,
-      UserSelect[UserLookupField],
+      keyof UserSelect,
+      UserSelect[keyof UserSelect],
     ];
     const [user] = await connection
       .select()
