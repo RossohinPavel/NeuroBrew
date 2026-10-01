@@ -1,19 +1,15 @@
-import { createAuthRepository } from "@shared/database";
 import { notFound } from "next/navigation";
-import { DB } from "@/common/db-connection";
 import { Payload } from "@/entities/session";
-
-
-const { findUser } = createAuthRepository(DB);
+import { getUserOr404 } from "@/entities/user";
 
 
 export default async function Layout({ children, params }: LayoutProps<"/[username]/brew">) {
   const { username } = await params;
   const [user, session] = await Promise.all([
-    findUser({ username }),
+    getUserOr404(username),
     Payload.readFromHeaders(),
   ]);
-  if (user === undefined || session === null || session.userId !== user.id) {
+  if (session === null || session.userId !== user.id) {
     notFound();
   }
   return children;

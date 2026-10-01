@@ -1,15 +1,23 @@
-import { createRegistryRepository } from "@shared/database";
 import { notFound } from "next/navigation";
-import { DB } from "@/common/db-connection";
+import { getProjectOr404 } from "@/entities/project";
+import { Payload } from "@/entities/session";
+import { getUserOr404 } from "@/entities/user";
 
 
-const { findProject } = createRegistryRepository(DB);
+type Props = LayoutProps<"/[username]/brew/[project]">;
 
-
-export default async function Layout({ children, params }: LayoutProps<"/[username]/brew/[project]">) {
-  const { project } = await params;
-  const foundProject = await findProject({ name: project });
-  if (foundProject === undefined) {
+export default async function Layout({ children, params }: Props) {
+  const { project, username } = await params;
+  const [user, foundProject, session] = await Promise.all([
+    getUserOr404(username),
+    getProjectOr404(project),
+    Payload.readFromHeaders(),
+  ]);
+  if (
+    session === null
+    || session.userId !== user.id
+    || foundProject.userId !== user.id
+  ) {
     notFound();
   }
   return children;
