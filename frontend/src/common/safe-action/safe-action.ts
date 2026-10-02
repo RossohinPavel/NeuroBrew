@@ -1,3 +1,4 @@
+import { ENV } from "@/common/env";
 import { ExpectedActionError } from "./errors";
 
 
@@ -28,7 +29,10 @@ export function safeAction<Args extends unknown[], R>(actionFn: (...args: Args) 
           error: { name: error.name, code: error.code, details: error.details },
         };
       }
-      throw error;
+      if (ENV.NODE_ENV !== "production") {
+        throw error;
+      }
+      throw new Error("Internal Server Error");
     }
   };
 }
