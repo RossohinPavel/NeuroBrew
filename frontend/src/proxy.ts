@@ -1,33 +1,38 @@
 import { NextResponse } from "next/server";
-import { Payload } from "@/entities/session";
-import { onNavigation } from "@/features/check-session";
-import type { NextRequest } from "next/server";
+import { NextRequest } from "next/server";
+import * as Session from "@/entities/session";
+import { refreshSession } from "./features/refresh-session";
 
 
 /** Направляет запрос к соответствующей проверке сессии. */
-export const proxy = (request: NextRequest) => {
-  const headers = Payload.sanitizeHeaders(request.headers);
-  if (request.method === "GET" || request.method === "HEAD") {
-    return onNavigation(request, headers);
+export const proxy = async (request: NextRequest): Promise<NextResponse> => {
+  const headers = new Headers(request.headers);
+  Session.sanitize(headers);
+  const accessTokenString = request.cookies.get(Session.cookies.accessToken.name)?.value;
+  if (accessTokenString) {
+    const accessToken = await Session.verifyAccessToken(accessTokenString);
+    if (accessToken.status === "valid") {
+      Session.set(headers, accessToken.payload);
+      return NextResponse.next({ request: { headers } });
+    }
+    if (accessToken.status === "expired") {
+      const refreshTokenString = request.cookies.get(Session.cookies.refreshToken.name)?.value;
+      if (refreshTokenString) {
+        const result = await refreshSession(refreshTokenString);
+        if (result) {
+          Session.set(headers, result.session);
+          const response = NextResponse.next({ request: { headers } });
+          response.cookies.set({ ...Session.cookies.accessToken, value: result.accessToken });
+          response.cookies.set({ ...Session.cookies.refreshToken, value: result.refreshToken });
+          return response;
+        }
+      }
+    }
+    // Тут ошибки обработки токенов. Чтобы не спамило - удаляем из браузера клиента.
+    const response = NextResponse.next({ request: { headers } });
+    response.cookies.delete(Session.cookies.accessToken);
+    response.cookies.delete(Session.cookies.refreshToken);
+    return response;
   }
   return NextResponse.next({ request: { headers } });
-};
-
-export const config = {
-  matcher: [
-    /*
-     * Исключает:
-     * - _next — внутренние ресурсы Next.js;
-     * - __nextjs — служебные маршруты сервера разработки;
-     * - .well-а known — стандартизированные служебные файлы;
-     * - assets — публичную статику приложения;
-     * - favicon.ico — иконку сайта;
-     * - robots.txt — правила для поисковых роботов;
-     * - sitemap.xml — карту сайта;
-     * - manifest.json и manifest.webmanifest — манифест веб-приложения.
-     * - auth/refresh — маршрут обновления токенов сессии.
-     */
-    // eslint-disable-next-line @stylistic/max-len
-    "/((?!_next(?:/|$)|__nextjs|\\.well-known(?:/|$)|assets(?:/|$)|favicon\\.ico$|robots\\.txt$|sitemap\\.xml$|manifest\\.(?:json|webmanifest)$|refresh(?:/|$)).*)",
-  ],
 };

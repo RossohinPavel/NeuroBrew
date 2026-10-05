@@ -2,7 +2,7 @@ import { createAuthRepository } from "@shared/database";
 import { notFound } from "next/navigation";
 import { DB } from "@/common/db-connection";
 import { LinkButton } from "../link-button";
-import styles from "./authenticated-navigation.module.css";
+import styles from "./auth-nav.module.css";
 
 
 const { findUser } = createAuthRepository(DB);

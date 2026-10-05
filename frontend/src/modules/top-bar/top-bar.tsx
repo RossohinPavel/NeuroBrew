@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Navigation } from "./navigation";
+import { Suspense } from "react";
+import { Router } from "./router";
 
 
 /** Отображает верхнюю панель приложения. */
@@ -20,7 +21,11 @@ export function TopBar() {
             />
           </Link>
         </div>
-        <Navigation />
+        <div className="flex justify-end">
+          <Suspense fallback={null} >
+            <Router />
+          </Suspense>
+        </div>
       </div>
     </header>
   );

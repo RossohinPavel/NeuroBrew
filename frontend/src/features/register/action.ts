@@ -5,7 +5,7 @@ import { hash } from "argon2";
 import { cookies } from "next/headers";
 import * as v from "valibot";
 import { DB } from "@/common/db-connection";
-import { Cookies, JWT } from "@/entities/session";
+import * as Session from "@/entities/session";
 import { RegisterDataSchema, type RegisterData } from "./schema";
 
 
@@ -22,12 +22,12 @@ export const registerAction = async (data: RegisterData) => {
       throw new Error("Не удалось создать пользователя");
     }
     const [accessToken, refreshToken] = await Promise.all([
-      JWT.create("access", { userId: user.id }),
-      JWT.create("refresh", { userId: user.id }),
+      Session.createAccessToken({ userId: user.id }),
+      Session.createRefreshToken({ userId: user.id }),
     ]);
     const cookieStore = await cookies();
-    cookieStore.set({ ...Cookies.accessToken, value: accessToken });
-    cookieStore.set({ ...Cookies.refreshToken, value: refreshToken });
+    cookieStore.set({ ...Session.cookies.accessToken, value: accessToken });
+    cookieStore.set({ ...Session.cookies.refreshToken, value: refreshToken });
     return { success: true } as const; // Успешный результат.
   } catch (error) {
     if (v.isValiError(error)) {

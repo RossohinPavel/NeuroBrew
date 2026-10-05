@@ -8,25 +8,18 @@ const COMMON_CONFIG: Partial<ResponseCookie> = {
   httpOnly: true,
   secure: ENV.NODE_ENV === "production",
   sameSite: "lax",
+  path: "/",
 };
 
-/** Описывает cookie с токенами пользовательской сессии. */
+/** Задаёт имена и общие параметры cookie для хранения токенов сессии. */
 const Cookies = {
   accessToken: {
-    name: "access-token",
-    path: "/",
     ...COMMON_CONFIG,
+    name: "access-token",
   },
   refreshToken: {
+    ...COMMON_CONFIG,
     name: "refresh-token",
-    path: "/refresh",
-    ...COMMON_CONFIG,
-  },
-  callbackTo: {
-    name: "callback-to",
-    path: "/refresh",
-    maxAge: 60,
-    ...COMMON_CONFIG,
   },
 } as const;
 

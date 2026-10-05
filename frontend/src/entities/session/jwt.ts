@@ -1,83 +1,46 @@
 import "server-only";
 
 import { errors, jwtVerify, SignJWT } from "jose";
-import { ENV } from "@/common/env";
-import type { JWTHeaderParameters, JWTPayload, JWTVerifyOptions } from "jose";
+import type { JWTHeaderParameters, JWTPayload, JWTVerifyOptions, KeyInput } from "jose";
 
 
-const PARAMS: JWTHeaderParameters = {
-  alg: "HS256",
-  typ: "JWT",
-};
+/** Определяет параметры подписи, срока действия и проверки JWT. */
+export interface JWTParams {
+  expirationTime: string,
+  key: KeyInput,
+  headers: JWTHeaderParameters,
+  options: JWTVerifyOptions
+}
 
-const OPTIONS: JWTVerifyOptions = {
-  algorithms: ["HS256"],
-  typ: "JWT",
-};
-
-/** Создаёт криптографический ключ из секрета для подписи и проверки JWT. */
-const createCryptoKey = (secret: string) => {
-  return crypto.subtle.importKey(
-    "raw",
-    new TextEncoder().encode(secret),
-    { name: "HMAC", hash: "SHA-256" },
-    false,
-    ["sign", "verify"],
-  );
-};
-
-/** Содержит параметры подписи и срока действия токенов сессии. */
-const TOKEN_CONFIG = {
-  access: {
-    expirationTime: "15m",
-    key: await createCryptoKey(ENV.JWT_ACCESS_SECRET),
-  },
-  refresh: {
-    expirationTime: "30d",
-    key: await createCryptoKey(ENV.JWT_REFRESH_SECRET),
-  },
-};
-
-export type TokenType = keyof typeof TOKEN_CONFIG;
-export type VerifyResult = JWTPayload | Error;
-
-/** Создаёт токен пользовательской сессии указанного типа. */
-export const create = (type: TokenType, payload: JWTPayload) => {
-  const config = TOKEN_CONFIG[type];
-  return new SignJWT(payload)
-    .setProtectedHeader(PARAMS)
+/** Создаёт подписанный JWT из payload и переданных криптографических параметров. */
+export const createToken = async (payload: JWTPayload, params: JWTParams) => {
+  const token = await new SignJWT(payload)
+    .setProtectedHeader(params.headers)
     .setIssuedAt()
-    .setExpirationTime(config.expirationTime)
-    .sign(config.key);
+    .setExpirationTime(params.expirationTime)
+    .sign(params.key);
+  return token;
 };
 
-/** Возвращает payload проверенного токена сессии или ошибку верификации. */
-export const verify = async (type: TokenType, token: string): Promise<VerifyResult> => {
-  const config = TOKEN_CONFIG[type];
+/** Представляет проверенный JWT либо классифицированную ошибку его проверки. */
+export type JWTVerifyResult =
+  | { status: "valid"; payload: JWTPayload }
+  | { status: "expired"; error: errors.JWTExpired }
+  | { status: "jwtError"; error: errors.JOSEError }
+  | { status: "systemError"; error: Error };
+
+/** Проверяет JWT и классифицирует ошибки срока действия, формата и выполнения. */
+export const verifyToken = async (token: string, params: JWTParams): Promise<JWTVerifyResult> => {
   try {
-    const { payload } = await jwtVerify(token, config.key, OPTIONS);
-    return payload;
+    const { payload } = await jwtVerify(token, params.key, params.options);
+    return { status: "valid", payload };
   } catch (error) {
-    return error as Error;
+    if (error instanceof errors.JWTExpired) {
+      return { status: "expired", error };
+    }
+    if (error instanceof errors.JOSEError) {
+      return { status: "jwtError", error };
+    }
+    return { status: "systemError", error: error as Error };
   }
-};
-
-/** Указывает, содержит ли результат верификации валидный payload. */
-export const isValid = (result: VerifyResult): result is JWTPayload => {
-  return !(result instanceof Error);
-};
-
-/** Указывает, завершилась ли верификация из-за истечения срока действия JWT. */
-export const isExpired = (result: VerifyResult): result is errors.JWTExpired => {
-  return result instanceof errors.JWTExpired;
-};
-
-/** Указывает, завершилась ли верификация общей ошибкой JWT. */
-export const isJWTError = (result: VerifyResult): result is errors.JOSEError => {
-  return result instanceof errors.JOSEError && !isExpired(result);
-};
-
-/** Указывает, завершилась ли верификация системной ошибкой. */
-export const isSystemError = (result: VerifyResult): result is Error => {
-  return result instanceof Error && !(result instanceof errors.JOSEError);
 };

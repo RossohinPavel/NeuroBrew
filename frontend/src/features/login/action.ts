@@ -5,11 +5,10 @@ import { verify } from "argon2";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { DB } from "@/common/db-connection";
-import { Cookies, JWT } from "@/entities/session";
+import * as Session from "@/entities/session";
 
 
 const { findUser } = createAuthRepository(DB);
-
 
 /** Проверяет учетные данные и завершает аутентификацию пользователя. */
 export const loginAction = async (formData: FormData) => {
@@ -24,11 +23,11 @@ export const loginAction = async (formData: FormData) => {
     throw new Error("Неверный пароль");
   }
   const [accessToken, refreshToken] = await Promise.all([
-    JWT.create("access", { userId: user.id }),
-    JWT.create("refresh", { userId: user.id }),
+    Session.createAccessToken({ userId: user.id }),
+    Session.createRefreshToken({ userId: user.id }),
   ]);
   const cookieStore = await cookies();
-  cookieStore.set({ ...Cookies.accessToken, value: accessToken });
-  cookieStore.set({ ...Cookies.refreshToken, value: refreshToken });
+  cookieStore.set({ ...Session.cookies.accessToken, value: accessToken });
+  cookieStore.set({ ...Session.cookies.refreshToken, value: refreshToken });
   redirect("/");
 };
