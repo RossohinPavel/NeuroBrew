@@ -14,6 +14,7 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    "src/common/components/**",
   ]),
   eslint.configs.recommended,
   ...nextVitals,

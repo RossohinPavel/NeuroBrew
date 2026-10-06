@@ -1,15 +1,16 @@
-import NeuroBrewLogo from "@/common/assets/NeuroBrew.svg";
 import Image from "next/image";
 import Link from "next/link";
 import { Suspense } from "react";
+import NeuroBrewLogo from "@/common/assets/NeuroBrew.svg";
 import { Router } from "./router";
+import { Separator } from "@/common/components/ui/separator";
 
 
 /** Отображает верхнюю панель приложения. */
 export function TopBar() {
   return (
     <header className="min-h-[45px] bg-surface-3">
-      <div className="flex items-center justify-between px-[10px] py-[5px]">
+      <div className="flex items-center justify-between px-[15px] py-[10px]">
         <div>
           <Link href="/" className="block">
             <Image
@@ -26,6 +27,7 @@ export function TopBar() {
           </Suspense>
         </div>
       </div>
+      <Separator />
     </header>
   );
 }

@@ -1,7 +1,6 @@
 import "server-only";
 
 import { headers } from "next/headers";
-import { notFound } from "next/navigation";
 import { cache } from "react";
 import * as v from "valibot";
 import { ENV } from "@/common/env";

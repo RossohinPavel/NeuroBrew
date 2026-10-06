@@ -1,6 +1,6 @@
+import { getSessionUser } from "@/entities/user";
 import { LinkButton } from "../link-button";
 import styles from "./auth-nav.module.css";
-import { getSessionUser } from "@/entities/user";
 
 
 /** Отображает навигацию для авторизованного пользователя. */

@@ -1,10 +1,11 @@
+import { Inter } from "next/font/google";
+import { cn } from "@/common/lib/utils";
 import { TopBar } from "@/modules/top-bar";
 import type { Metadata } from "next";
 import "./globals.css";
-import { Inter } from "next/font/google";
-import { cn } from "@/common/lib/utils";
 
-const inter = Inter({subsets:['latin'],variable:'--font-sans'});
+
+const inter = Inter({ subsets:["latin"],variable:"--font-sans" });
 
 export const metadata: Metadata = {
   title: "NeuroBrew",
