@@ -1,23 +1,11 @@
-import { createAuthRepository } from "@shared/database";
-import { notFound } from "next/navigation";
-import { DB } from "@/common/db-connection";
 import { LinkButton } from "../link-button";
 import styles from "./auth-nav.module.css";
+import { getSessionUser } from "@/entities/user";
 
-
-const { findUser } = createAuthRepository(DB);
-
-
-type Props = {
-  userId: number;
-};
 
 /** Отображает навигацию для авторизованного пользователя. */
-export async function AuthenticatedNavigation({ userId }: Props) {
-  const user = await findUser({ id: userId });
-  if (user === undefined) {
-    notFound();
-  }
+export async function AuthenticatedNavigation() {
+  const user = await getSessionUser();
   return (
     <nav
       className="grid w-full grid-cols-[1fr_auto_1fr] items-center gap-1"

@@ -9,7 +9,7 @@ import { UnauthenticatedNavigation } from "./unauth-nav";
 export async function Router() {
   const session = await get();
   if (session) {
-    return <AuthenticatedNavigation userId={session.userId} />;
+    return <AuthenticatedNavigation />;
   }
   return <UnauthenticatedNavigation />;
 }

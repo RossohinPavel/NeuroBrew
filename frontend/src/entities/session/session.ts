@@ -122,12 +122,3 @@ export const get = cache(async () => {
   }
   return { userId: Number(userId) } satisfies AccessTokenPayload;
 });
-
-/** Возвращает подтверждённую сессию текущего запроса или отвечает страницей 404. */
-export const getOr404 = cache(async () => {
-  const session = await get();
-  if (session === undefined) {
-    notFound();
-  }
-  return session;
-});
