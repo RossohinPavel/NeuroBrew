@@ -1,7 +1,10 @@
 import { TopBar } from "@/modules/top-bar";
 import type { Metadata } from "next";
-import "../common/styles/globals.css";
+import "./globals.css";
+import { Inter } from "next/font/google";
+import { cn } from "@/common/lib/utils";
 
+const inter = Inter({subsets:['latin'],variable:'--font-sans'});
 
 export const metadata: Metadata = {
   title: "NeuroBrew",
@@ -9,7 +12,7 @@ export const metadata: Metadata = {
 
 export default function Layout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="ru">
+    <html lang="ru" className={cn("dark font-sans", inter.variable)}>
       <body>
         <TopBar />
         {children}
