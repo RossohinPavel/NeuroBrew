@@ -1,6 +1,7 @@
 import "server-only";
 
 import { headers } from "next/headers";
+import { notFound } from "next/navigation";
 import { cache } from "react";
 import * as v from "valibot";
 import { ENV } from "@/common/env";
@@ -120,4 +121,13 @@ export const get = cache(async () => {
     return;
   }
   return { userId: Number(userId) } satisfies AccessTokenPayload;
+});
+
+/** Возвращает подтверждённую сессию текущего запроса или отвечает страницей 404. */
+export const getOr404 = cache(async () => {
+  const session = await get();
+  if (session === undefined) {
+    notFound();
+  }
+  return session;
 });
