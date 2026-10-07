@@ -5,7 +5,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 
-const inter = Inter({ subsets:["latin"],variable:"--font-sans" });
+const inter = Inter({subsets:['latin'],variable:'--font-sans'});
 
 export const metadata: Metadata = {
   title: "NeuroBrew",
@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 
 export default function Layout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="ru" className={cn("dark font-sans", inter.variable)}>
+    <html lang="ru" className={cn("dark font-sans", "font-sans", inter.variable)}>
       <body>
         <TopBar />
         {children}
