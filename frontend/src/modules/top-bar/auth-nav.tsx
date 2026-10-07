@@ -24,7 +24,7 @@ export function AuthenticatedNavigation({ username }: { username: string }) {
         if (eventDetails.reason === "trigger-hover") {
           return;
         }
-        setValue(nextValue);
+        setValue(nextValue as string | null);
       }}
     >
       <NavigationMenuList>

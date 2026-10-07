@@ -23,6 +23,7 @@
     }
   },
   "include": [
+    "src/common/types/svg.d.ts",
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",

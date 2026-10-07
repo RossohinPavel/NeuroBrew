@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 import { Suspense } from "react";
 import NeuroBrewLogo from "@/common/assets/NeuroBrew.svg";
@@ -13,11 +12,10 @@ export function TopBar() {
       <div className="flex items-center justify-between px-[15px] py-[10px]">
         <div>
           <Link href="/" className="block">
-            <Image
-              src={NeuroBrewLogo}
-              alt="NeuroBrew"
-              className="h-7 w-auto"
-              priority
+            <NeuroBrewLogo
+              width={188}
+              height={28}
+              aria-label="NeuroBrew"
             />
           </Link>
         </div>
