@@ -2,6 +2,8 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { loginAction } from "./action";
 import styles from "./form.module.css";
 import { Button } from "@/common/components/ui/button";
+import { Field, FieldGroup, FieldLabel, FieldDescription, FieldError } from "@/common/components/ui/field";
+import { Input } from "@/common/components/ui/input";
 
 
 /** Предоставляет форму входа в аккаунт по электронной почте и паролю. */
@@ -11,27 +13,33 @@ export function LoginForm() {
       <CardHeader>
         <CardTitle>Login</CardTitle>
         <CardDescription>
-          Enter your email below to login to your account
+          Введите ваши данные для входа в аккаунт
         </CardDescription>
       </CardHeader>
       <CardContent>
         <form action={loginAction} className={styles.form} id="form-login">
-          <label htmlFor="email">Email</label>
-          <input
-            id="email"
-            name="email"
-            type="email"
-            placeholder="Email"
-            required
-          />
-          <label htmlFor="password">Пароль</label>
-          <input
-            id="password"
-            name="password"
-            type="password"
-            placeholder="Пароль"
-            required
-          />
+          <FieldGroup>
+            <Field>
+              <FieldLabel htmlFor="email">Email</FieldLabel>
+              <Input 
+                id="email"
+                name="email"
+                type="email"
+                placeholder="email@example.com"
+                required
+              />
+            </Field>
+            <Field>
+              <FieldLabel htmlFor="password">Пароль</FieldLabel>
+              <Input 
+                id="password"
+                name="password"
+                type="password"
+                placeholder="Пароль"
+                required
+              />
+            </Field>
+          </FieldGroup>
         </form>
       </CardContent>
       <CardFooter className="justify-end">
