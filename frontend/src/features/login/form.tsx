@@ -1,14 +1,21 @@
 "use client";
 
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/common/components/ui/card";
-import { loginAction } from "./action";
-import { Button } from "@/common/components/ui/button";
-import { Field, FieldError, FieldGroup, FieldLabel } from "@/common/components/ui/field";
-import { Input } from "@/common/components/ui/input";
-import { Controller, useForm } from "react-hook-form";
-import { LoginFormData, LoginFormSchema } from "./schema";
 import { valibotResolver } from "@hookform/resolvers/valibot";
 import { useRouter } from "next/navigation";
+import { Controller, useForm } from "react-hook-form";
+import { Button } from "@/common/components/ui/button";
+import { 
+  Card, 
+  CardContent, 
+  CardDescription, 
+  CardFooter, 
+  CardHeader, 
+  CardTitle, 
+} from "@/common/components/ui/card";
+import { Field, FieldError, FieldGroup, FieldLabel } from "@/common/components/ui/field";
+import { Input } from "@/common/components/ui/input";
+import { loginAction } from "./action";
+import { LoginFormData, LoginFormSchema } from "./schema";
 
 
 /** Предоставляет форму входа в аккаунт по электронной почте и паролю. */
@@ -22,15 +29,20 @@ export function LoginForm() {
   const router = useRouter();
 
   const onSubmit = async (formData: LoginFormData) => {
-    const {success, error} = await loginAction(formData);
-    if ( !success ) {
+    const { success, error } = await loginAction(formData);
+    if (!success) {
       form.setError("root.server", {
         type: "server",
-        message: error.message
-      })
+        message: error.message,
+      });
       return;
     }
+    // Каких-то дополнительный действий не требуется. Севрер пришлет http-only куки. 
+    // С ними может работать только браузер и он их сам установит.
     router.push("/");
+    // Нужно сбросить состояние клиентской части некста. Иначе, некоторые подгруженные компоненты
+    // могут не обновиться и не использовать авторизованный статус.
+    router.refresh();
   };
 
   return (
@@ -42,12 +54,14 @@ export function LoginForm() {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <form id="form-login" onSubmit={form.handleSubmit(onSubmit)} >
+        <form id="form-login" onSubmit={(event) => {
+          void form.handleSubmit(onSubmit)(event);
+        }} >
           <FieldGroup>
             <Controller 
               name="email"
               control={form.control}
-              render={({field, fieldState}) => (
+              render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
                   <FieldLabel htmlFor="email">Email</FieldLabel>
                   <Input 
@@ -67,7 +81,7 @@ export function LoginForm() {
             <Controller 
               name="password"
               control={form.control}
-              render={({field, fieldState}) => (
+              render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
                   <FieldLabel htmlFor="password">Пароль</FieldLabel>
                   <Input 
