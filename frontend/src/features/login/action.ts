@@ -30,5 +30,5 @@ export const loginAction = safeAction(async (formData: LoginFormData) => {
   const cookieStore = await cookies();
   cookieStore.set({ ...Session.cookies.accessToken, value: accessToken });
   cookieStore.set({ ...Session.cookies.refreshToken, value: refreshToken });
-  return null;
+  return true;
 });

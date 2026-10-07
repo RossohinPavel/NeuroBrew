@@ -29,12 +29,10 @@ export function LoginForm() {
   const router = useRouter();
 
   const onSubmit = async (formData: LoginFormData) => {
+    form.clearErrors("root.server");
     const { success, error } = await loginAction(formData);
     if (!success) {
-      form.setError("root.server", {
-        type: "server",
-        message: error.message,
-      });
+      form.setError("root.server", {type: "server", message: error.message});
       return;
     }
     // Каких-то дополнительный действий не требуется. Севрер пришлет http-only куки. 
@@ -54,9 +52,12 @@ export function LoginForm() {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <form id="form-login" onSubmit={(event) => {
-          void form.handleSubmit(onSubmit)(event);
-        }} >
+        <form 
+          id="form-login" 
+          onSubmit={(event) => {
+            void form.handleSubmit(onSubmit)(event);
+          }} 
+        >
           <FieldGroup>
             <Controller 
               name="email"
@@ -104,14 +105,14 @@ export function LoginForm() {
           </FieldGroup>
         </form>
       </CardContent>
-      <CardFooter className="justify-end">
+      <CardFooter>
         <Button 
           type="submit" 
           form="form-login" 
           size='lg'
           className="w-full"
         >
-          Войти
+          { form.formState.isSubmitting ? "Кушаем печеньки..." : "Войти"}
         </Button>
       </CardFooter>
     </Card>

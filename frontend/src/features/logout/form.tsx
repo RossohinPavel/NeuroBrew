@@ -21,7 +21,12 @@ export function LogoutForm() {
       </CardHeader>
       <CardFooter className="justify-end">
         <form action={logoutAction} className="w-full">
-          <Button className="w-full" size="lg" type="submit">
+          <Button 
+            className="w-full" 
+            size="lg" 
+            type="submit" 
+            variant="destructive"
+          >
             Выйти
           </Button>
         </form>
