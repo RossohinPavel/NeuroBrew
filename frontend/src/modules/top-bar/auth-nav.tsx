@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 import { buttonVariants } from "@/common/components/ui/button";
 import {
@@ -36,17 +37,26 @@ export function AuthenticatedNavigation({ username }: { username: string }) {
             {username}
           </NavigationMenuTrigger>
           <NavigationMenuContent className="min-w-40">
-            <NavigationMenuLink href="/" closeOnClick>
+            <NavigationMenuLink
+              href="/"
+              closeOnClick
+              render={<Link href="/" />}
+            >
               Dashboard
             </NavigationMenuLink>
             <NavigationMenuLink
               href={`/${encodeURIComponent(username)}`}
               closeOnClick
+              render={<Link href={`/${encodeURIComponent(username)}`} />}
             >
               Profile
             </NavigationMenuLink>
             <Separator className="my-1" />
-            <NavigationMenuLink href="/logout" closeOnClick>
+            <NavigationMenuLink
+              href="/logout"
+              closeOnClick
+              render={<Link href="/logout" />}
+            >
               Log Out
             </NavigationMenuLink>
           </NavigationMenuContent>
