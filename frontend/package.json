@@ -9,7 +9,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint \"src/**/*.{ts,tsx}\" --fix"
+    "lint": "eslint \"src/**/*.{ts,tsx}\" --fix",
+    "shadcn": "pnpm dlx shadcn@latest"
   },
   "dependencies": {
     "@base-ui/react": "^1.8.0",
