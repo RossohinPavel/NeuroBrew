@@ -3,9 +3,9 @@ import * as v from "valibot";
 
 /** Представляет валидированный payload либо ошибку валидации или выполнения. */
 export type PayloadParseResult<T extends v.GenericSchema> =
-  | { status: "valid"; payload: v.InferOutput<T> }
-  | { status: "valibotError"; error: v.ValiError<T> }
-  | { status: "systemError"; error: Error };
+  | { status: "valid"; payload: v.InferOutput<T>, error?: undefined }
+  | { status: "valibotError"; payload?: undefined, error: v.ValiError<T> }
+  | { status: "systemError"; payload?: undefined, error: Error };
 
 /** Валидирует неизвестное значение по схеме и классифицирует результат проверки. */
 export const parse = async <T extends v.GenericSchema>(

@@ -24,10 +24,10 @@ export const createToken = async (payload: JWTPayload, params: JWTParams) => {
 
 /** Представляет проверенный JWT либо классифицированную ошибку его проверки. */
 export type JWTVerifyResult =
-  | { status: "valid"; payload: JWTPayload }
-  | { status: "expired"; error: errors.JWTExpired }
-  | { status: "jwtError"; error: errors.JOSEError }
-  | { status: "systemError"; error: Error };
+  | { status: "valid"; payload: JWTPayload, error?: undefined }
+  | { status: "expired"; payload?: undefined, error: errors.JWTExpired }
+  | { status: "jwtError"; payload?: undefined, error: errors.JOSEError }
+  | { status: "systemError"; payload?: undefined, error: Error };
 
 /** Проверяет JWT и классифицирует ошибки срока действия, формата и выполнения. */
 export const verifyToken = async (token: string, params: JWTParams): Promise<JWTVerifyResult> => {
