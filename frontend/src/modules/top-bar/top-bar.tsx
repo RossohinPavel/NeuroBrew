@@ -2,8 +2,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { Suspense } from "react";
 import NeuroBrewLogo from "@/common/assets/NeuroBrew.svg";
-import { Router } from "./router";
 import { Separator } from "@/common/components/ui/separator";
+import { Router } from "./router";
 
 
 /** Отображает верхнюю панель приложения. */
