@@ -10,6 +10,7 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/common/components/ui/navigation-menu";
+import { Separator } from "@/common/components/ui/separator";
 
 
 /** Отображает навигацию для авторизованного пользователя. */
@@ -34,7 +35,17 @@ export function AuthenticatedNavigation({ username }: { username: string }) {
           >
             {username}
           </NavigationMenuTrigger>
-          <NavigationMenuContent>
+          <NavigationMenuContent className="min-w-40">
+            <NavigationMenuLink href="/" closeOnClick>
+              Dashboard
+            </NavigationMenuLink>
+            <NavigationMenuLink
+              href={`/${encodeURIComponent(username)}`}
+              closeOnClick
+            >
+              Profile
+            </NavigationMenuLink>
+            <Separator className="my-1" />
             <NavigationMenuLink href="/logout" closeOnClick>
               Log Out
             </NavigationMenuLink>
