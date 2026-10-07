@@ -1,15 +1,17 @@
 import "server-only";
 
-import { get } from "@/entities/session";
+import * as Session from "@/entities/session";
+import { getSessionUser } from "@/entities/user";
 import { AuthenticatedNavigation } from "./auth-nav";
 import { UnauthenticatedNavigation } from "./unauth-nav";
 
 
 /** Отображает навигацию в соответствии с состоянием сессии. */
 export async function Router() {
-  const session = await get();
+  const session = await Session.get();
   if (session) {
-    return <AuthenticatedNavigation />;
+    const user = await getSessionUser();
+    return <AuthenticatedNavigation username={user.username} />;
   }
   return <UnauthenticatedNavigation />;
 }

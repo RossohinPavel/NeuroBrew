@@ -1,9 +1,0 @@
-.username {
-  padding: 4px 10px;
-  color: var(--color-text-primary);
-  font-size: 1.125rem;
-  line-height: 1.5rem;
-  text-align: center;
-  border: 1px solid var(--color-surface-4);
-  border-radius: var(--radius-control);
-}

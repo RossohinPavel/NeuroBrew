@@ -32,7 +32,7 @@ export function LoginForm() {
     form.clearErrors("root.server");
     const { success, error } = await loginAction(formData);
     if (!success) {
-      form.setError("root.server", {type: "server", message: error.message});
+      form.setError("root.server", { type: "server", message: error.message });
       return;
     }
     // Каких-то дополнительный действий не требуется. Севрер пришлет http-only куки. 
