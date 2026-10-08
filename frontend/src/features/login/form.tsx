@@ -1,6 +1,7 @@
 "use client";
 
 import { valibotResolver } from "@hookform/resolvers/valibot";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
 import { Button } from "@/common/components/ui/button";
@@ -12,7 +13,13 @@ import {
   CardHeader, 
   CardTitle, 
 } from "@/common/components/ui/card";
-import { Field, FieldError, FieldGroup, FieldLabel } from "@/common/components/ui/field";
+import { 
+  Field, 
+  FieldDescription, 
+  FieldError, 
+  FieldGroup, 
+  FieldLabel 
+} from "@/common/components/ui/field";
 import { Input } from "@/common/components/ui/input";
 import { loginAction } from "./action";
 import { LoginFormData, LoginFormSchema } from "./schema";
@@ -105,7 +112,7 @@ export function LoginForm() {
           </FieldGroup>
         </form>
       </CardContent>
-      <CardFooter>
+      <CardFooter className="flex-col gap-4">
         <Button 
           type="submit" 
           form="form-login" 
@@ -114,6 +121,9 @@ export function LoginForm() {
         >
           { form.formState.isSubmitting ? "Кушаем печеньки..." : "Войти"}
         </Button>
+        <FieldDescription>
+          Нет аккаунта? <Link href="/register">Зарегистрироваться</Link>
+        </FieldDescription>
       </CardFooter>
     </Card>
   );
