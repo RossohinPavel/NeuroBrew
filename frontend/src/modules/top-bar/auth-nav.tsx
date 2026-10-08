@@ -38,11 +38,11 @@ export function AuthenticatedNavigation({ username }: { username: string }) {
           </NavigationMenuTrigger>
           <NavigationMenuContent className="min-w-40">
             <NavigationMenuLink
-              href="/"
+              href="/lab"
               closeOnClick
-              render={<Link href="/" />}
+              render={<Link href="/lab" />}
             >
-              Dashboard
+              Lab
             </NavigationMenuLink>
             <NavigationMenuLink
               href={`/${encodeURIComponent(username)}`}

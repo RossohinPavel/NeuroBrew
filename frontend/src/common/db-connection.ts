@@ -13,5 +13,4 @@ export const DB = createConnection({
     password: ENV.DB_PASSWORD,
     database: ENV.DB_NAME,
   },
-  logger: ENV.NODE_ENV === "development",
 });

@@ -1,7 +1,7 @@
 import * as v from "valibot";
 
 
-const reservedUsernames = new Set(["login", "logout", "register", "settings"]);
+const reservedUsernames = new Set(["lab", "login", "logout", "register"]);
 
 /** Проверяет данные, необходимые серверу для регистрации пользователя. */
 export const RegisterDataSchema = v.object({
