@@ -1,5 +1,5 @@
-import { Suspense } from "react";
 import { createRegistryRepository } from "@shared/database";
+import { Suspense } from "react";
 import { DB } from "@/common/db-connection";
 import * as Session from "@/entities/session";
 import { getUserByNameOr404 } from "@/entities/user";
