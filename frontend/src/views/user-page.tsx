@@ -20,7 +20,7 @@ export async function UserPage({ params }: Props) {
   const projects = await listProjects({ userId: user.id });
   const isGuest = session === undefined || session.userId !== user.id;
   return (
-    <main className="flex flex-col gap-2">
+    <div className="flex flex-1 flex-col gap-2">
       <p>Имя: {user.username}</p>
       <p>Электронная почта: {user.email}</p>
       <p>Дата создания: {user.createdAt.toISOString()}</p>
@@ -32,6 +32,6 @@ export async function UserPage({ params }: Props) {
           <li key={project.id}>{project.name}</li>
         ))}
       </ul>
-    </main>
+    </div>
   );
 }

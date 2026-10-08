@@ -8,9 +8,9 @@ export async function Project({ params }: Props) {
   const { project, username } = await params;
   const foundProject = await getProjectByUsernameOr404(username, project);
   return (
-    <main className="flex flex-col gap-2">
+    <div className="flex flex-1 flex-col gap-2">
       <p>ID пользователя: {foundProject.userId}</p>
       <p>Название проекта: {foundProject.name}</p>
-    </main>
+    </div>
   );
 }

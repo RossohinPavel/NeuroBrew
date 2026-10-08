@@ -1,4 +1,4 @@
 /** Представляет страницу настроек пользователя. */
 export function Settings() {
-  return <main>Настройки</main>;
+  return <div className="flex-1">Настройки</div>;
 }

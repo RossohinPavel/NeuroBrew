@@ -15,8 +15,12 @@ export default function Layout({ children }: LayoutProps<"/">) {
   return (
     <html lang="ru" className={cn("dark font-sans", "font-sans", inter.variable)}>
       <body>
-        <TopBar />
-        {children}
+        <div className="flex min-h-dvh flex-col">
+          <TopBar />
+          <main className="flex min-h-0 flex-1">
+            {children}
+          </main>
+        </div>
       </body>
     </html>
   );

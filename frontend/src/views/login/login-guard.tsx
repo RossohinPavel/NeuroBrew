@@ -1,8 +1,8 @@
 import "server-only";
 
 import { redirect } from "next/navigation";
-import type { ReactNode } from "react";
 import * as Session from "@/entities/session";
+import type { ReactNode } from "react";
 
 
 /** Показывает содержимое страницы входа только неавторизованным пользователям. */

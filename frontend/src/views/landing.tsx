@@ -1,4 +1,4 @@
 /** Представляет публичную посадочную страницу. */
 export function Landing() {
-  return <main>Лендинг</main>;
+  return <div className="flex-1">Лендинг</div>;
 }

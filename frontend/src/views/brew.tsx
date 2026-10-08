@@ -14,7 +14,7 @@ export async function Brew({ params }: Props) {
   const user = await findUser({ username });
   const projects = await listProjects({ userId: user!.id });
   return (
-    <main className="flex flex-col gap-2">
+    <div className="flex flex-1 flex-col gap-2">
       <p>{username}/brew</p>
       <p>Проекты:</p>
       <ul>
@@ -22,6 +22,6 @@ export async function Brew({ params }: Props) {
           <li key={project.id}>{project.name}</li>
         ))}
       </ul>
-    </main>
+    </div>
   );
 }
