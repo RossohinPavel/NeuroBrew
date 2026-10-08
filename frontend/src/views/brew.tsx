@@ -1,5 +1,6 @@
 import { createAuthRepository, createRegistryRepository } from "@shared/database";
 import { DB } from "@/common/db-connection";
+import { SessionGuard } from "@/entities/session";
 
 
 const { findUser } = createAuthRepository(DB);
@@ -9,7 +10,15 @@ const { listProjects } = createRegistryRepository(DB);
 type Props = PageProps<"/[username]/brew">;
 
 /** Показывает раздел Brew пользователя. */
-export async function Brew({ params }: Props) {
+export function Brew(props: Props) {
+  return (
+    <SessionGuard fallback={null}>
+      <BrewContent {...props} />
+    </SessionGuard>
+  );
+}
+
+async function BrewContent({ params }: Props) {
   const { username } = await params;
   const user = await findUser({ username });
   const projects = await listProjects({ userId: user!.id });

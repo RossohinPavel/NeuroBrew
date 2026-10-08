@@ -1,10 +1,19 @@
+import { Suspense } from "react";
 import { getProjectByUsernameOr404 } from "@/entities/project";
 
 
 type Props = PageProps<"/[username]/[project]">;
 
 /** Показывает основные сведения о проекте пользователя. */
-export async function Project({ params }: Props) {
+export function Project(props: Props) {
+  return (
+    <Suspense fallback={null}>
+      <ProjectContent {...props} />
+    </Suspense>
+  );
+}
+
+async function ProjectContent({ params }: Props) {
   const { project, username } = await params;
   const foundProject = await getProjectByUsernameOr404(username, project);
   return (
