@@ -35,7 +35,7 @@ const createCryptoKey = (secret: string) => {
 
 /** Содержит параметры подписи и срока действия access-токена. */
 const ACCESS_TOKEN_CONFIG = {
-  expirationTime: "1m",
+  expirationTime: "15m",
   key: await createCryptoKey(ENV.JWT_ACCESS_SECRET),
   headers: {
     alg: "HS256",
