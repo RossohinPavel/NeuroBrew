@@ -43,6 +43,13 @@
       "when": 1790850640723,
       "tag": "0005_add-project-owner-name-uniqueness",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1791460201461,
+      "tag": "0006_create-metadata-changelog",
+      "breakpoints": true
     }
   ]
 }
