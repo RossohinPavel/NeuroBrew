@@ -1,7 +1,7 @@
 import { createRegistryRepository } from "@shared/database";
+import { Suspense } from "react";
 import { DB } from "@/common/db-connection";
-import { SessionGuard } from "@/entities/session";
-import { getSessionUser } from "@/entities/user";
+import { requireSessionUser } from "@/entities/user";
 
 
 const { listProjects } = createRegistryRepository(DB);
@@ -10,14 +10,14 @@ const { listProjects } = createRegistryRepository(DB);
 /** Показывает лабораторию текущего пользователя. */
 export function Lab() {
   return (
-    <SessionGuard fallback={null}>
+    <Suspense fallback={null}>
       <LabContent />
-    </SessionGuard>
+    </Suspense>
   );
 }
 
 async function LabContent() {
-  const user = await getSessionUser();
+  const user = await requireSessionUser();
   const projects = await listProjects({ userId: user.id });
   return (
     <div className="flex flex-1 flex-col gap-2">

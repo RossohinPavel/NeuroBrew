@@ -3,7 +3,6 @@ import { Suspense } from "react";
 import { DB } from "@/common/db-connection";
 import * as Session from "@/entities/session";
 import { getUserByNameOr404 } from "@/entities/user";
-import { CreateProjectForm } from "@/features/create-project";
 
 
 const { listProjects } = createRegistryRepository(DB);
@@ -34,7 +33,6 @@ async function UserPageContent({ params }: Props) {
       <p>Электронная почта: {user.email}</p>
       <p>Дата создания: {user.createdAt.toISOString()}</p>
       <p>Статус: {isGuest ? "Гость" : "Пользователь"}</p>
-      {!isGuest && <CreateProjectForm />}
       <p>Проекты:</p>
       <ul>
         {projects.map((project) => (

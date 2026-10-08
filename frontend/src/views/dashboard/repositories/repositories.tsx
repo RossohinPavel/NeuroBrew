@@ -1,7 +1,7 @@
 import { createRegistryRepository } from "@shared/database";
 import { ItemGroup } from "@/common/components/ui/item";
 import { DB } from "@/common/db-connection";
-import { getSessionUser } from "@/entities/user";
+import { requireSessionUser } from "@/entities/user";
 import { RepositoriesCard } from "./repositories-card";
 import { RepositoryItem } from "./repository-item";
 
@@ -11,7 +11,7 @@ const { listProjects } = createRegistryRepository(DB);
 
 /** Представляет список репозиториев пользователя. */
 export async function Repositories() {
-  const user = await getSessionUser();
+  const user = await requireSessionUser();
   const projects = await listProjects({ userId: user.id });
   return (
     <RepositoriesCard>

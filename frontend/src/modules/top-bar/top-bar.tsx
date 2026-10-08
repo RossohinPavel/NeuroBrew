@@ -1,8 +1,13 @@
+import "server-only";
+
 import Link from "next/link";
 import { Suspense } from "react";
 import NeuroBrewLogo from "@/common/assets/NeuroBrew.svg";
 import { Separator } from "@/common/components/ui/separator";
-import { Router } from "./router";
+import * as Session from "@/entities/session";
+import { requireSessionUser } from "@/entities/user";
+import { AuthenticatedNavigation } from "./auth-nav";
+import { UnauthenticatedNavigation } from "./unauth-nav";
 
 
 /** Отображает верхнюю панель приложения. */
@@ -28,4 +33,14 @@ export function TopBar() {
       <Separator />
     </header>
   );
+}
+
+/** Отображает навигацию в соответствии с состоянием сессии. */
+async function Router() {
+  const session = await Session.get();
+  if (session) {
+    const user = await requireSessionUser();
+    return <AuthenticatedNavigation username={user.username} />;
+  }
+  return <UnauthenticatedNavigation />;
 }
