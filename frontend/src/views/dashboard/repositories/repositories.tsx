@@ -5,8 +5,10 @@ import {
   CardHeader,
   CardTitle,
 } from "@/common/components/ui/card";
+import { ItemGroup } from "@/common/components/ui/item";
 import { DB } from "@/common/db-connection";
 import { getSessionUser } from "@/entities/user";
+import { RepositoryItem } from "./repository-item";
 
 
 const { listProjects } = createRegistryRepository(DB);
@@ -18,15 +20,19 @@ export async function Repositories() {
   const projects = await listProjects({ userId: user.id });
   return (
     <Card className="h-full">
-      <CardHeader>
+      <CardHeader className="border-b">
         <CardTitle>Репозитории</CardTitle>
       </CardHeader>
       <CardContent>
-        <ul>
+        <ItemGroup>
           {projects.map((project) => (
-            <li key={project.id}>{project.name}</li>
+            <RepositoryItem
+              key={project.id}
+              projectName={project.name}
+              username={user.username}
+            />
           ))}
-        </ul>
+        </ItemGroup>
       </CardContent>
     </Card>
   );
