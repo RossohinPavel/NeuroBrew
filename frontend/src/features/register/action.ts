@@ -12,7 +12,6 @@ import { RegisterDataSchema, type RegisterData } from "./schema";
 
 const { createUser } = createAuthRepository(DB);
 
-
 /** Создает пользователя и завершает его аутентификацию. */
 export const registerAction = safeAction(async (data: RegisterData) => {
   const { email, password, username } = await v.parseAsync(RegisterDataSchema, data);

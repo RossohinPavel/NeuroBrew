@@ -1,6 +1,8 @@
 import * as v from "valibot";
 
 
+const reservedUsernames = new Set(["login", "logout", "register", "settings"]);
+
 /** Проверяет данные, необходимые серверу для регистрации пользователя. */
 export const RegisterDataSchema = v.object({
   email: v.pipe(
@@ -21,6 +23,10 @@ export const RegisterDataSchema = v.object({
     v.maxLength(64),
     v.regex(/^[A-Za-z0-9-]+$/), // Разрешает только латинские буквы, цифры и дефис.
     v.regex(/^(?!-)(?!.*--)(?!.*-$)/), // Разрешает одиночный дефис только внутри имени.
+    v.check(
+      (username) => !reservedUsernames.has(username.toLowerCase()),
+      "Это имя пользователя зарезервировано.",
+    ),
   ),
 });
 
