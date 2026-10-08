@@ -1,7 +1,8 @@
+import { Suspense } from "react";
 import { createRegistryRepository } from "@shared/database";
 import { DB } from "@/common/db-connection";
-import { get } from "@/entities/session";
-import { getUserOr404 } from "@/entities/user";
+import * as Session from "@/entities/session";
+import { getUserByNameOr404 } from "@/entities/user";
 import { CreateProjectForm } from "@/features/create-project";
 
 
@@ -11,11 +12,19 @@ const { listProjects } = createRegistryRepository(DB);
 type Props = PageProps<"/[username]">;
 
 /** Показывает основные сведения об учетной записи пользователя. */
-export async function UserPage({ params }: Props) {
+export function UserPage(props: Props) {
+  return (
+    <Suspense fallback={null}>
+      <UserPageContent {...props} />
+    </Suspense>
+  );
+}
+
+async function UserPageContent({ params }: Props) {
   const { username } = await params;
   const [user, session] = await Promise.all([
-    getUserOr404(username),
-    get(),
+    getUserByNameOr404(username),
+    Session.get(),
   ]);
   const projects = await listProjects({ userId: user.id });
   const isGuest = session === undefined || session.userId !== user.id;

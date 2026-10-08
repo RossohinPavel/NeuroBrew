@@ -1,9 +1,10 @@
 import "server-only";
 
-import { get } from "@/entities/session";
 import { Suspense } from "react";
+import { get } from "@/entities/session";
 import { Dashboard } from "./dashboard";
 import { Landing } from "./landing";
+
 
 async function Content() {
   const session = await get();

@@ -1,18 +1,9 @@
+import { Card, CardContent, CardHeader, CardTitle } from "@/common/components/ui/card";
 import type { ReactNode } from "react";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/common/components/ui/card";
 
-
-interface Props {
-  children?: ReactNode;
-}
 
 /** Предоставляет общую оболочку секции репозиториев. */
-export function RepositoriesCard({ children }: Props) {
+export function RepositoriesCard({ children }: { children?: ReactNode }) {
   return (
     <Card className="h-full">
       <CardHeader className="border-b">
