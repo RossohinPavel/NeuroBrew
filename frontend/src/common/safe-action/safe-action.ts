@@ -3,7 +3,6 @@ import "server-only";
 import { ENV } from "@/common/env";
 import { ExpectedActionError } from "./errors";
 
-
 /** Представляет результат выполнения безопасного действия. */
 export type SafeActionResponse<T> =
   | { success: true; data: T; error?: undefined }

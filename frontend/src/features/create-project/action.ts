@@ -3,7 +3,7 @@
 import { createRegistryRepository } from "@shared/database";
 import * as v from "valibot";
 import { DB } from "@/common/db-connection";
-import { safeAction } from "@/common/lib/safe-action";
+import { safeAction } from "@/common/safe-action";
 import { requireCurrentUser } from "@/entities/user";
 import { CreateProjectFormSchema, type CreateProjectFormData } from "./schema";
 

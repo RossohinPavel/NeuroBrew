@@ -5,7 +5,7 @@ import { verify } from "argon2";
 import { cookies } from "next/headers";
 import * as v from "valibot";
 import { DB } from "@/common/db-connection";
-import { ExpectedActionError, safeAction } from "@/common/lib/safe-action";
+import { ExpectedActionError, safeAction } from "@/common/safe-action";
 import * as Session from "@/entities/session";
 import { LoginFormData, LoginFormSchema } from "./schema";
 
