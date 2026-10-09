@@ -22,6 +22,20 @@ export function createAuthRepository(connection: DatabaseConnection) {
     return createdUser;
   });
 
+  /** Ищет идентификатор пользователя по идентификатору, электронной почте или имени. */
+  const findUserId = async (lookup: UserLookup) => {
+    const [field, value] = Object.entries(lookup)[0] as [
+      keyof UserSelect,
+      UserSelect[keyof UserSelect],
+    ];
+    const [user] = await connection
+      .select({ id: users.id })
+      .from(users)
+      .where(eq(users[field], value))
+      .limit(1);
+    return user?.id;
+  };
+
   /** Ищет пользователя по идентификатору, электронной почте или имени. */
   const findUser = async (lookup: UserLookup) => {
     const [field, value] = Object.entries(lookup)[0] as [
@@ -38,6 +52,7 @@ export function createAuthRepository(connection: DatabaseConnection) {
 
   return {
     createUser,
+    findUserId,
     findUser,
   };
 }
