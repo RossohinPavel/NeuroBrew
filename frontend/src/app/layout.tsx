@@ -1,6 +1,6 @@
 import { Inter } from "next/font/google";
-import { TooltipProvider } from "@/common/components/ui/tooltip";
-import { cn } from "@/common/lib/utils";
+import { TooltipProvider } from "@/common/shadcn/ui/tooltip";
+import { cn } from "@/common/shadcn/utils";
 import { TopBar } from "@/modules/top-bar";
 import type { Metadata } from "next";
 import "./globals.css";

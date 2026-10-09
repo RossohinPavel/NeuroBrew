@@ -1,4 +1,4 @@
-import { Button } from "@/common/components/ui/button";
+import { Button } from "@/common/shadcn/ui/button";
 import {
   Dialog,
   DialogClose,
@@ -8,7 +8,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/common/components/ui/dialog";
+} from "@/common/shadcn/ui/dialog";
 import { CreateProjectForm } from "./form";
 
 

@@ -1,6 +1,6 @@
 import { createRegistryRepository } from "@shared/database";
-import { ItemGroup } from "@/common/components/ui/item";
 import { DB } from "@/common/db-connection";
+import { ItemGroup } from "@/common/shadcn/ui/item";
 import { requireCurrentUser } from "@/entities/user";
 import { RepositoriesCard } from "./repositories-card";
 import { RepositoryItem } from "./repository-item";

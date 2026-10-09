@@ -3,7 +3,7 @@
 import { valibotResolver } from "@hookform/resolvers/valibot";
 import { useRouter } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
-import { Button } from "@/common/components/ui/button";
+import { Button } from "@/common/shadcn/ui/button";
 import {
   Card,
   CardContent,
@@ -11,15 +11,15 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/common/components/ui/card";
+} from "@/common/shadcn/ui/card";
 import {
   Field,
   FieldError,
   FieldGroup,
   FieldLabel,
   FieldSeparator,
-} from "@/common/components/ui/field";
-import { Input } from "@/common/components/ui/input";
+} from "@/common/shadcn/ui/field";
+import { Input } from "@/common/shadcn/ui/input";
 import { registerAction } from "./action";
 import { RegisterFormSchema, type RegisterFormData } from "./schema";
 

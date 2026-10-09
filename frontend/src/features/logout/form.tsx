@@ -2,7 +2,7 @@
 
 import { RiArrowLeftLine } from "@remixicon/react";
 import { useRouter } from "next/navigation";
-import { Button } from "@/common/components/ui/button";
+import { Button } from "@/common/shadcn/ui/button";
 import {
   Card,
   CardAction,
@@ -10,7 +10,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/common/components/ui/card";
+} from "@/common/shadcn/ui/card";
 import { logoutAction } from "./action";
 
 

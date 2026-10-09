@@ -6,23 +6,23 @@ import { useRender } from "@base-ui/react/use-render"
 import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "cn"
 
-import { useIsMobile } from "@/common/hooks/use-mobile"
-import { Button } from "@/common/components/ui/button"
-import { Input } from "@/common/components/ui/input"
-import { Separator } from "@/common/components/ui/separator"
+import { useIsMobile } from "@/common/shadcn/hooks/use-mobile"
+import { Button } from "@/common/shadcn/ui/button"
+import { Input } from "@/common/shadcn/ui/input"
+import { Separator } from "@/common/shadcn/ui/separator"
 import {
   Sheet,
   SheetContent,
   SheetDescription,
   SheetHeader,
   SheetTitle,
-} from "@/common/components/ui/sheet"
-import { Skeleton } from "@/common/components/ui/skeleton"
+} from "@/common/shadcn/ui/sheet"
+import { Skeleton } from "@/common/shadcn/ui/skeleton"
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
-} from "@/common/components/ui/tooltip"
+} from "@/common/shadcn/ui/tooltip"
 import { RiSideBarLine } from "@remixicon/react"
 
 const SIDEBAR_COOKIE_NAME = "sidebar_state"

@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/common/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/common/shadcn/ui/card";
 import type { ReactNode } from "react";
 
 

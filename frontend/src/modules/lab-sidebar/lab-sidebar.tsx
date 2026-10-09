@@ -5,7 +5,7 @@ import {
   SidebarGroup,
   SidebarHeader,
   SidebarMenu,
-} from "@/common/components/ui/sidebar";
+} from "@/common/shadcn/ui/sidebar";
 import { CreateProjectDialog } from "@/features/create-project";
 
 

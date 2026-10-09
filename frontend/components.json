@@ -13,11 +13,11 @@
   "iconLibrary": "remixicon",
   "rtl": false,
   "aliases": {
-    "components": "@/common/components",
-    "ui": "@/common/components/ui",
-    "hooks": "@/common/hooks",
-    "lib": "@/common/lib",
-    "utils": "@/common/lib/utils"
+    "components": "@/common/shadcn/components",
+    "ui": "@/common/shadcn/ui",
+    "hooks": "@/common/shadcn/hooks",
+    "lib": "@/common/shadcn/lib",
+    "utils": "@/common/shadcn/utils"
   },
   "menuColor": "default",
   "menuAccent": "bold",

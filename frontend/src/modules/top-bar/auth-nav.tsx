@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { buttonVariants } from "@/common/components/ui/button";
+import { buttonVariants } from "@/common/shadcn/ui/button";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -10,8 +10,8 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
-} from "@/common/components/ui/navigation-menu";
-import { Separator } from "@/common/components/ui/separator";
+} from "@/common/shadcn/ui/navigation-menu";
+import { Separator } from "@/common/shadcn/ui/separator";
 
 
 /** Отображает навигацию для авторизованного пользователя. */

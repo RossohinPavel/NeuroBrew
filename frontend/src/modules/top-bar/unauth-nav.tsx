@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { buttonVariants } from "@/common/components/ui/button";
+import { buttonVariants } from "@/common/shadcn/ui/button";
 
 
 /** Отображает навигацию для неавторизованного пользователя. */
