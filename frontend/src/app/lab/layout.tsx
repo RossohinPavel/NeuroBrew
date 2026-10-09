@@ -1,4 +1,4 @@
-import { SidebarProvider } from "@/common/components/ui/sidebar";
+import { SidebarProvider } from "@/common/shadcn/ui/sidebar";
 import { LabSidebar } from "@/modules/lab-sidebar";
 
 
