@@ -1,19 +1,19 @@
 "use server";
 
 import { createRegistryRepository } from "@shared/database";
+import * as v from "valibot";
 import { DB } from "@/common/db-connection";
-import { get } from "@/entities/session";
+import { safeAction } from "@/common/lib/safe-action";
+import { requireSessionUser } from "@/entities/user";
+import { CreateProjectFormSchema, type CreateProjectFormData } from "./schema";
 
 
 const { createProject } = createRegistryRepository(DB);
 
 
 /** Создает проект для текущего пользователя. */
-export const createProjectAction = async (formData: FormData) => {
-  const session = await get();
-  if (session === undefined) {
-    throw new Error("Необходимо войти в аккаунт");
-  }
-  const name = formData.get("name") as string;
-  await createProject({ name, userId: session.userId });
-};
+export const createProjectAction = safeAction(async (formData: CreateProjectFormData) => {
+  const user = await requireSessionUser();
+  const { name } = await v.parseAsync(CreateProjectFormSchema, formData);
+  await createProject({ name, userId: user.id });
+});

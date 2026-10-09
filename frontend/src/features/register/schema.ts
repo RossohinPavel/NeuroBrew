@@ -25,7 +25,7 @@ export const RegisterDataSchema = v.object({
     v.regex(/^(?!-)(?!.*--)(?!.*-$)/), // Разрешает одиночный дефис только внутри имени.
     v.check(
       (username) => !reservedUsernames.has(username.toLowerCase()),
-      "Это имя пользователя зарезервировано.",
+      "This username is reserved.",
     ),
   ),
 });

@@ -15,10 +15,10 @@ import { CreateProjectForm } from "./form";
 export function CreateProjectDialog() {
   return (
     <Dialog>
-      <DialogTrigger render={<Button>Create Project</Button>} />
+      <DialogTrigger render={<Button>Создать проект</Button>} />
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Create Project</DialogTitle>
+          <DialogTitle>Создание проекта</DialogTitle>
           <DialogDescription>
             Введите название нового проекта.
           </DialogDescription>
@@ -29,7 +29,7 @@ export function CreateProjectDialog() {
             render={<Button type="button" variant="outline">Отмена</Button>}
           />
           <Button type="submit" form="form-create-project">
-            Создать проект
+            Создать
           </Button>
         </DialogFooter>
       </DialogContent>
