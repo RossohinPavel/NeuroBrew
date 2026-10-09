@@ -1,7 +1,7 @@
 import "server-only";
 
 import { createAuthRepository } from "@shared/database";
-import { notFound, redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 import { cache } from "react";
 import { DB } from "@/common/db-connection";
 import * as Session from "@/entities/session";
@@ -11,14 +11,12 @@ const { findUser } = createAuthRepository(DB);
 
 
 export const requireSessionUser = cache(async () => {
-  const session = await Session.get();
-  if (session) {
-    const user = await findUser({ id: session.userId });
-    if (user) {
-      return user;
-    }
+  const session = await Session.require();
+  const user = await findUser({ id: session.userId });
+  if (!user) {
+    throw new Error("Internal Server Error");
   }
-  redirect("/login");
+  return user;
 });
 
 export const getUserByNameOr404 = cache(async (username: string) => {
