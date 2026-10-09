@@ -2,7 +2,7 @@ import { createRegistryRepository } from "@shared/database";
 import { Suspense } from "react";
 import { DB } from "@/common/db-connection";
 import * as Session from "@/entities/session";
-import { getUserByNameOr404 } from "@/entities/user";
+import { requireUser } from "@/entities/user";
 
 
 const { listProjects } = createRegistryRepository(DB);
@@ -22,7 +22,7 @@ export function UserPage(props: Props) {
 async function UserPageContent({ params }: Props) {
   const { username } = await params;
   const [user, session] = await Promise.all([
-    getUserByNameOr404(username),
+    requireUser(username),
     Session.get(),
   ]);
   const projects = await listProjects({ userId: user.id });

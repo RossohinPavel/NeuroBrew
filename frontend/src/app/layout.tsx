@@ -1,9 +1,9 @@
 import { Inter } from "next/font/google";
+import { TooltipProvider } from "@/common/components/ui/tooltip";
 import { cn } from "@/common/lib/utils";
 import { TopBar } from "@/modules/top-bar";
 import type { Metadata } from "next";
 import "./globals.css";
-import { TooltipProvider } from "@/common/components/ui/tooltip";
 
 
 const inter = Inter({ subsets:["latin"], variable:"--font-sans" });

@@ -11,6 +11,7 @@ import {
 } from "@/common/components/ui/dialog";
 import { CreateProjectForm } from "./form";
 
+
 /** Открывает форму создания проекта в диалоговом окне. */
 export function CreateProjectDialog() {
   return (

@@ -5,7 +5,7 @@ import { Suspense } from "react";
 import NeuroBrewLogo from "@/common/assets/NeuroBrew.svg";
 import { Separator } from "@/common/components/ui/separator";
 import * as Session from "@/entities/session";
-import { requireSessionUser } from "@/entities/user";
+import { requireCurrentUser } from "@/entities/user";
 import { AuthenticatedNavigation } from "./auth-nav";
 import { UnauthenticatedNavigation } from "./unauth-nav";
 
@@ -39,7 +39,7 @@ export function TopBar() {
 async function Router() {
   const session = await Session.get();
   if (session) {
-    const user = await requireSessionUser();
+    const user = await requireCurrentUser();
     return <AuthenticatedNavigation username={user.username} />;
   }
   return <UnauthenticatedNavigation />;

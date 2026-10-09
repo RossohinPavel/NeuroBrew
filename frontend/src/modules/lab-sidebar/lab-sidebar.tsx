@@ -1,18 +1,13 @@
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/common/components/ui/collapsible";
+import { Suspense } from "react";
 import {
   Sidebar,
   SidebarContent,
   SidebarGroup,
   SidebarHeader,
   SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-  SidebarMenuSub,
-  SidebarMenuSubButton,
-  SidebarMenuSubItem,
 } from "@/common/components/ui/sidebar";
 import { CreateProjectDialog } from "@/features/create-project";
-import { Suspense } from "react";
+
 
 /** Отображает боковую панель лаборатории. */
 export function LabSidebar() {
@@ -34,6 +29,6 @@ export function LabSidebar() {
   );
 }
 
-async function LabSidebarContent() {
+function LabSidebarContent() {
   return null;
 }

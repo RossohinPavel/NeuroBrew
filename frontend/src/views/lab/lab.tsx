@@ -1,7 +1,7 @@
 import { createRegistryRepository } from "@shared/database";
 import { Suspense } from "react";
 import { DB } from "@/common/db-connection";
-import { requireSessionUser } from "@/entities/user";
+import { requireCurrentUser } from "@/entities/user";
 
 
 const { listProjects } = createRegistryRepository(DB);
@@ -17,7 +17,7 @@ export function Lab() {
 }
 
 async function LabContent() {
-  const user = await requireSessionUser();
+  const user = await requireCurrentUser();
   const projects = await listProjects({ userId: user.id });
   return (
     <div className="flex flex-1 flex-col gap-2">

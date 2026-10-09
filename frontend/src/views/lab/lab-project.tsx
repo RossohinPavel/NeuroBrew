@@ -1,6 +1,6 @@
-import { getProjectByUsernameOr404 } from "@/entities/project";
-import { requireSessionUser } from "@/entities/user";
 import { Suspense } from "react";
+import { getProjectByUsernameOr404 } from "@/entities/project";
+import { requireCurrentUser } from "@/entities/user";
 
 
 type Props = PageProps<"/lab/[project]">;
@@ -16,7 +16,7 @@ export function LabProject(props: Props) {
 
 async function LabProjectContent({ params }: Props) {
   const { project } = await params;
-  const user = await requireSessionUser();
+  const user = await requireCurrentUser();
   const foundProject = await getProjectByUsernameOr404(user.username, project);
   return (
     <div className="flex flex-1 flex-col gap-2">
