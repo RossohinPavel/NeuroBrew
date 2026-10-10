@@ -2,6 +2,10 @@ packages:
   - backend
   - frontend
   - shared/database
+
+catalog:
+  valibot: ^1.5.0
+
 allowBuilds:
   argon2: true
   esbuild: true
