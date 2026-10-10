@@ -23,10 +23,10 @@ async function generateOpenApi() {
     await app.init();
     const fastify = app.getHttpAdapter().getInstance();
     await fastify.ready();
-    const document = fastify.swagger();
-    const outputUrl = new URL("../openapi.json", import.meta.url);
-    const contents = JSON.stringify(document, null, 2);
-    await writeFile(outputUrl, contents);
+    await writeFile(
+      new URL("../openapi.json", import.meta.url),
+      JSON.stringify(fastify.swagger(), null, 2)
+    );
   } finally {
     await app.close();
   }
