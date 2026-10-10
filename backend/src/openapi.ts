@@ -1,4 +1,4 @@
-import { writeFile } from "node:fs/promises";
+import { mkdir, writeFile } from "node:fs/promises";
 import swagger from "@fastify/swagger";
 import { NestFactory } from "@nestjs/core";
 import { FastifyAdapter, NestFastifyApplication } from "@nestjs/platform-fastify";
@@ -23,8 +23,10 @@ async function generateOpenApi() {
     await app.init();
     const fastify = app.getHttpAdapter().getInstance();
     await fastify.ready();
+    const tempDirectory = new URL("../temp/", import.meta.url);
+    await mkdir(tempDirectory, { recursive: true });
     await writeFile(
-      new URL("../openapi.json", import.meta.url),
+      new URL("openapi.json", tempDirectory),
       JSON.stringify(fastify.swagger(), null, 2)
     );
   } finally {
