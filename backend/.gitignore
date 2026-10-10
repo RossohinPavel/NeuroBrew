@@ -2,6 +2,7 @@
 /dist
 /node_modules
 /build
+/openapi.json
 
 # TypeScript build cache
 *.tsbuildinfo
