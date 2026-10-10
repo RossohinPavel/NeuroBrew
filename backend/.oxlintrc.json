@@ -1,8 +1,43 @@
 {
   "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["eslint", "typescript", "unicorn", "oxc", "import"],
+  // Enable performance warnings when backend optimization work begins:
+  // "categories": { "perf": "warn" },
   "rules": {
-    "typescript/no-explicit-any": "off",
-    "typescript/no-floating-promises": "error"
+    "typescript/no-explicit-any": "error",
+    "typescript/no-floating-promises": "error",
+    "typescript/no-unsafe-argument": "error",
+    "no-unused-vars": [
+      "error",
+      {
+        "vars": "all",
+        "varsIgnorePattern": "^_",
+        "args": "after-used",
+        "argsIgnorePattern": "^_",
+        "fix": {
+          "imports": "safe-fix",
+          "variables": "off"
+        }
+      }
+    ],
+    "sort-imports": [
+      "error",
+      {
+        "ignoreCase": true,
+        "ignoreDeclarationSort": true,
+        "ignoreMemberSort": false
+      }
+    ],
+    "import/export": "error",
+    "curly": ["error", "all"],
+    "no-console": "error",
+    "no-irregular-whitespace": [
+      "error",
+      {
+        "skipStrings": false,
+        "skipTemplates": false
+      }
+    ]
   },
   "env": {
     "node": true
