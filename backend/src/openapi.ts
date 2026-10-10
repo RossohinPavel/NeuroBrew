@@ -5,9 +5,11 @@ import { FastifyAdapter, NestFastifyApplication } from "@nestjs/platform-fastify
 import { AppModule } from "./app.module.js";
 
 async function generateOpenApi() {
-  const app = await NestFactory.create<NestFastifyApplication>(AppModule, new FastifyAdapter(), {
-    logger: false,
-  });
+  const app = await NestFactory.create<NestFastifyApplication>(
+    AppModule,
+    new FastifyAdapter(),
+    { logger: false }
+  );
   try {
     await app.register(swagger, {
       openapi: {
@@ -22,7 +24,9 @@ async function generateOpenApi() {
     const fastify = app.getHttpAdapter().getInstance();
     await fastify.ready();
     const document = fastify.swagger();
-    await writeFile(new URL("../openapi.json", import.meta.url), JSON.stringify(document, null, 2));
+    const outputUrl = new URL("../openapi.json", import.meta.url);
+    const contents = JSON.stringify(document, null, 2);
+    await writeFile(outputUrl, contents);
   } finally {
     await app.close();
   }

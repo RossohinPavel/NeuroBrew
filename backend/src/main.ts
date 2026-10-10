@@ -4,7 +4,10 @@ import { AppModule } from "./app.module.js";
 import { FastifyAdapter, NestFastifyApplication } from "@nestjs/platform-fastify";
 
 async function bootstrap() {
-  const app = await NestFactory.create<NestFastifyApplication>(AppModule, new FastifyAdapter());
+  const app = await NestFactory.create<NestFastifyApplication>(
+    AppModule,
+    new FastifyAdapter()
+  );
 
   // Logging
   const logger = new Logger("HTTP");
@@ -12,7 +15,9 @@ async function bootstrap() {
     .getHttpAdapter()
     .getInstance()
     .addHook("onResponse", (req, res, done) => {
-      logger.log(`${req.method} ${req.url} ${res.statusCode} in ${Math.round(res.elapsedTime)}ms`);
+      logger.log(
+        `${req.method} ${req.url} ${res.statusCode} in ${Math.round(res.elapsedTime)}ms`
+      );
       done();
     });
 
