@@ -4,6 +4,7 @@ import { AppController } from "./app.controller.js";
 import { AppService } from "./app.service.js";
 import { validateEnv } from "./config/env.js";
 
+
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true, validate: validateEnv }),
