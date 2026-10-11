@@ -3,23 +3,7 @@ import * as v from "valibot";
 
 const EnvSchema = v.object({
   NODE_ENV: v.picklist(["development", "production", "test"]),
-  DB_HOST: v.pipe(
-    v.string(),
-    v.minLength(1),
-  ),
-  DB_PORT: v.pipe(
-    v.string(),
-    v.minLength(1),
-  ),
-  DB_USER: v.pipe(
-    v.string(),
-    v.minLength(1),
-  ),
-  DB_PASSWORD: v.pipe(
-    v.string(),
-    v.minLength(1),
-  ),
-  DB_NAME: v.pipe(
+  DATABASE_URL: v.pipe(
     v.string(),
     v.minLength(1),
   ),
