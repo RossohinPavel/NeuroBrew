@@ -4,11 +4,12 @@ import { NestFactory } from "@nestjs/core";
 import { FastifyAdapter, NestFastifyApplication } from "@nestjs/platform-fastify";
 import { AppModule } from "./app.module.js";
 
+
 async function generateOpenApi() {
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
     new FastifyAdapter(),
-    { logger: false }
+    { logger: false },
   );
   try {
     await app.register(swagger, {
@@ -27,7 +28,7 @@ async function generateOpenApi() {
     await mkdir(tempDirectory, { recursive: true });
     await writeFile(
       new URL("openapi.json", tempDirectory),
-      JSON.stringify(fastify.swagger(), null, 2)
+      JSON.stringify(fastify.swagger(), null, 2),
     );
   } finally {
     await app.close();
