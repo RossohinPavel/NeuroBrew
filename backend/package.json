@@ -10,7 +10,7 @@
     "build": "nest build",
     "deploy": "nest deploy",
     "lint": "eslint \"{src,test}/**/*.ts\" --fix",
-    "openapi:gen": "nest build && node dist/openapi.js",
+    "openapi:gen": "nest build && node dist/scripts/generateOpenapi.js",
     "start": "nest start",
     "start:dev": "nest start --watch --env-file .env.local",
     "start:debug": "nest start --debug --watch",
