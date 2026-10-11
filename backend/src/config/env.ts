@@ -33,5 +33,9 @@ const EnvSchema = v.object({
   ),
 });
 
-/** Содержит проверенные переменные серверного окружения. */
-export const ENV = v.parse(EnvSchema, process.env);
+export type Env = v.InferOutput<typeof EnvSchema>;
+
+/** Проверяет переменные серверного окружения при запуске приложения. */
+export function validateEnv(config: Record<string, unknown>) {
+  return v.parse(EnvSchema, config);
+}
