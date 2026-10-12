@@ -1,20 +1,20 @@
 "use server";
 
 import { createAuthRepository } from "@shared/database";
+import { RegisterRequestSchema, type RegisterRequest } from "@shared/contracts";
 import { hash } from "argon2";
 import { cookies } from "next/headers";
 import * as v from "valibot";
 import { DB } from "@/common/db-connection";
 import { ExpectedActionError, safeAction } from "@/common/safe-action";
 import * as Session from "@/entities/session";
-import { RegisterDataSchema, type RegisterData } from "./schema";
 
 
 const { createUser } = createAuthRepository(DB);
 
 /** Создает пользователя и завершает его аутентификацию. */
-export const registerAction = safeAction(async (data: RegisterData) => {
-  const { email, password, username } = await v.parseAsync(RegisterDataSchema, data);
+export const registerAction = safeAction(async (request: RegisterRequest) => {
+  const { email, password, username } = await v.parseAsync(RegisterRequestSchema, request);
   const passwordHash = await hash(password);
   const user = await createUser({ email, passwordHash, username });
   if (!user) {
