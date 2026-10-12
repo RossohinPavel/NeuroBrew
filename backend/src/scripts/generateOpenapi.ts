@@ -24,7 +24,7 @@ async function generateOpenApi() {
     await app.init();
     const fastify = app.getHttpAdapter().getInstance();
     await fastify.ready();
-    const tempDirectory = new URL("../../temp/", import.meta.url);
+    const tempDirectory = new URL("../../.temp/", import.meta.url);
     await mkdir(tempDirectory, { recursive: true });
     await writeFile(
       new URL("openapi.json", tempDirectory),

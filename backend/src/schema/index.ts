@@ -1,4 +1,3 @@
-
-export * from "./auth";
-export * from "./metadata";
-export * from "./registry";
+export * from "./auth.js";
+export * from "./metadata.js";
+export * from "./registry.js";
