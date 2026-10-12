@@ -1,6 +1,5 @@
 import { mkdir, writeFile } from "node:fs/promises";
 import swagger from "@fastify/swagger";
-import { VersioningType } from "@nestjs/common";
 import { NestFactory } from "@nestjs/core";
 import { FastifyAdapter, NestFastifyApplication } from "@nestjs/platform-fastify";
 import { AppModule } from "../app.module.js";
@@ -12,7 +11,6 @@ async function generateOpenApi() {
     new FastifyAdapter(),
     { logger: false },
   );
-  app.enableVersioning({ type: VersioningType.URI, defaultVersion: "1" });
   try {
     await app.register(swagger, {
       openapi: {

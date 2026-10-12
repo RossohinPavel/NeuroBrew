@@ -8,31 +8,31 @@ export class AuthController {
   constructor(private readonly service: AuthService) {}
 
   @Post("register")
-  @RouteSchema({ operationId: "registerV1" })
+  @RouteSchema({ operationId: "register" })
   register() {
     return this.service.register();
   }
 
   @Post("login")
-  @RouteSchema({ operationId: "loginV1" })
+  @RouteSchema({ operationId: "login" })
   login() {
     return this.service.login();
   }
 
   @Post("refresh")
-  @RouteSchema({ operationId: "refreshV1" })
+  @RouteSchema({ operationId: "refresh" })
   refresh() {
     return this.service.refresh();
   }
 
   @Post("logout")
-  @RouteSchema({ operationId: "logoutV1" })
+  @RouteSchema({ operationId: "logout" })
   logout() {
     return this.service.logout();
   }
 
   @Get("me")
-  @RouteSchema({ operationId: "meV1" })
+  @RouteSchema({ operationId: "me" })
   me() {
     return this.service.me();
   }
