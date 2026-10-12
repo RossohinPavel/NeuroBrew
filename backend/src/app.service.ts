@@ -1,4 +1,5 @@
 import { Injectable } from "@nestjs/common";
+import { toJsonSchema } from "@valibot/to-json-schema";
 import * as v from "valibot";
 
 
@@ -7,8 +8,9 @@ export const HealthSchema = v.object({
   database: v.picklist(["ready", "unavailable"]),
 });
 
-export type Health = v.InferOutput<typeof HealthSchema>;
+export const HealthJsonSchema = toJsonSchema(HealthSchema);
 
+export type Health = v.InferOutput<typeof HealthSchema>;
 
 @Injectable()
 export class AppService {

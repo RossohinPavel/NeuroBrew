@@ -1,7 +1,6 @@
 import { Controller, Get } from "@nestjs/common";
 import { RouteSchema } from "@nestjs/platform-fastify";
-import { toJsonSchema } from "@valibot/to-json-schema";
-import { AppService, HealthSchema } from "./app.service.js";
+import { AppService, HealthJsonSchema } from "./app.service.js";
 
 
 @Controller()
@@ -11,7 +10,7 @@ export class AppController {
   @Get("health")
   @RouteSchema({
     response: {
-      200: toJsonSchema(HealthSchema),
+      200: HealthJsonSchema,
     },
   })
   getHealth() {
