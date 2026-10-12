@@ -1,11 +1,28 @@
-import { Injectable, NotImplementedException } from "@nestjs/common";
+import { Injectable, InternalServerErrorException, NotImplementedException } from "@nestjs/common";
 import { type LoginRequest, type RegisterRequest } from "@shared/contracts";
+import { hash } from "argon2";
+import { DatabaseService } from "../../database/database.service.js";
+import { users } from "../../database/schema/auth.js";
+import { RegisterResponse } from "./auth.schema.js";
 
 
 @Injectable()
 export class AuthService {
-  register(_request: RegisterRequest) {
-    throw new NotImplementedException("Регистрация пока не реализована");
+  constructor(private readonly db: DatabaseService) {}
+
+  async register(request: RegisterRequest): Promise<RegisterResponse> {
+    try {
+      const { password, ...user } = request;
+      const passwordHash = await hash(password);
+      const [_createdUser] = await this.db.connection
+        .insert(users)
+        .values({ ...user, passwordHash })
+        .returning();
+      console.log(_createdUser);
+      return {'accessToken': "1", "refreshToken": "1"}
+    } catch {
+      throw new InternalServerErrorException();
+    }
   }
 
   login(_request: LoginRequest) {
