@@ -8,7 +8,7 @@ if (process.env.DATABASE_URL === undefined) {
 
 export default defineConfig({
   out: "./drizzle/",
-  schema: "./src/schema/index.ts",
+  schema: "./src/database/schema/index.ts",
   dialect: "postgresql",
   dbCredentials: {
     url: process.env.DATABASE_URL!,

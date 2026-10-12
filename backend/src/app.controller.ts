@@ -5,7 +5,7 @@ import { AppService, HealthJsonSchema } from "./app.service.js";
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(private readonly service: AppService) {}
 
   @Get("health")
   @RouteSchema({
@@ -14,6 +14,6 @@ export class AppController {
     },
   })
   getHealth() {
-    return this.appService.health();
+    return this.service.health();
   }
 }
