@@ -13,6 +13,7 @@ export class HealthController {
 
   @Get()
   @RouteSchema({
+    operationId: "health",
     response: {
       200: HealthJsonSchema,
     },
