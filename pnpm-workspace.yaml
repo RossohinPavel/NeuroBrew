@@ -1,7 +1,7 @@
 packages:
   - backend
   - frontend
-  - shared/database
+  - shared/*
 
 catalog:
   valibot: ^1.5.0

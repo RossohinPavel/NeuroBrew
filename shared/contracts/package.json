@@ -1,0 +1,31 @@
+{
+  "name": "@shared/contracts",
+  "version": "0.0.1",
+  "description": "Shared validation schemas and types for NeuroBrew",
+  "author": "df17",
+  "license": "MIT",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "prebuild": "node -e \"fs.rmSync('dist', {recursive:true, force:true})\"",
+    "build": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "valibot": "catalog:"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3"
+  }
+}

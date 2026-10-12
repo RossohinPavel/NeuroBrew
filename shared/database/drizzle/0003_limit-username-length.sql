@@ -1,1 +1,0 @@
-ALTER TABLE "auth"."users" ALTER COLUMN "username" SET DATA TYPE varchar(64);

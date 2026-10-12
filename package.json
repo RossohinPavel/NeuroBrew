@@ -9,6 +9,6 @@
   "scripts": {
     "back": "pnpm --filter backend",
     "front": "pnpm --filter frontend",
-    "shared:database": "pnpm --filter @shared/database"
+    "contracts": "pnpm --filter @shared/contracts"
   }
 }
