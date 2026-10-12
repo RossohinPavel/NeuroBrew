@@ -1,5 +1,7 @@
-import { Controller, Get, Post } from "@nestjs/common";
+import { Body, Controller, Get, Post } from "@nestjs/common";
 import { RouteSchema } from "@nestjs/platform-fastify";
+import { LoginRequestSchema, type LoginRequest } from "@shared/contracts";
+import { toJsonSchema } from "@valibot/to-json-schema";
 import { AuthService } from "./auth.service.js";
 
 
@@ -14,9 +16,12 @@ export class AuthController {
   }
 
   @Post("login")
-  @RouteSchema({ operationId: "login" })
-  login() {
-    return this.service.login();
+  @RouteSchema({
+    operationId: "login",
+    body: toJsonSchema(LoginRequestSchema, { typeMode: "input", errorMode: "throw" }),
+  })
+  login(@Body() request: LoginRequest) {
+    return this.service.login(request);
   }
 
   @Post("refresh")
