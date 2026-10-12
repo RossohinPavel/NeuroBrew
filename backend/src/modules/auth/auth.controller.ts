@@ -1,7 +1,13 @@
 import { Body, Controller, Get, Post } from "@nestjs/common";
 import { RouteSchema } from "@nestjs/platform-fastify";
-import { LoginRequestSchema, type LoginRequest } from "@shared/contracts";
+import {
+  LoginRequestSchema,
+  RegisterRequestSchema,
+  type LoginRequest,
+  type RegisterRequest,
+} from "@shared/contracts";
 import { toJsonSchema } from "@valibot/to-json-schema";
+import { RegisterResponseSchema } from "./auth.schema.js";
 import { AuthService } from "./auth.service.js";
 
 
@@ -10,9 +16,18 @@ export class AuthController {
   constructor(private readonly service: AuthService) {}
 
   @Post("register")
-  @RouteSchema({ operationId: "register" })
-  register() {
-    return this.service.register();
+  @RouteSchema({
+    operationId: "register",
+    summary: "Register a user",
+    description: "Creates a new user account.",
+    tags: ["auth"],
+    body: toJsonSchema(RegisterRequestSchema, { typeMode: "input", errorMode: "throw" }),
+    response: {
+      201: toJsonSchema(RegisterResponseSchema, { typeMode: "output", errorMode: "throw" }),
+    },
+  })
+  register(@Body() request: RegisterRequest) {
+    return this.service.register(request);
   }
 
   @Post("login")

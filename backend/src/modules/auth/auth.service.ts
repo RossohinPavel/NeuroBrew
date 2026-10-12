@@ -1,10 +1,10 @@
 import { Injectable, NotImplementedException } from "@nestjs/common";
-import { type LoginRequest } from "@shared/contracts";
+import { type LoginRequest, type RegisterRequest } from "@shared/contracts";
 
 
 @Injectable()
 export class AuthService {
-  register() {
+  register(_request: RegisterRequest) {
     throw new NotImplementedException("Регистрация пока не реализована");
   }
 

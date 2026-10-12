@@ -14,9 +14,9 @@ export class HealthController {
     // Задает уникальный идентификатор операции в OpenAPI.
     operationId: "health",
     // Показывает краткое название эндпоинта в документации.
-    summary: "Проверить состояние сервиса",
+    summary: "Check service health",
     // Объясняет назначение эндпоинта в документации.
-    description: "Возвращает состояние бэкенда и подключения к базе данных.",
+    description: "Returns the health of the backend and its database connection.",
     // Объединяет эндпоинт с другими операциями проверки состояния.
     tags: ["health"],
     // Валидирует и сериализует ответы отдельно для каждого HTTP-статуса.
