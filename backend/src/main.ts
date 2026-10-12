@@ -1,4 +1,4 @@
-import { Logger } from "@nestjs/common";
+import { Logger, VersioningType } from "@nestjs/common";
 import { NestFactory } from "@nestjs/core";
 import { FastifyAdapter, NestFastifyApplication } from "@nestjs/platform-fastify";
 import { AppModule } from "./app.module.js";
@@ -9,6 +9,8 @@ async function bootstrap() {
     AppModule,
     new FastifyAdapter(),
   );
+
+  app.enableVersioning({ type: VersioningType.URI, defaultVersion: "1" });
 
   // Logging
   const logger = new Logger("HTTP");
