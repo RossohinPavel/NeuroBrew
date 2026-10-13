@@ -1,17 +1,18 @@
-import fastify from 'fastify'
+import fastify from "fastify";
+
 
 const server = fastify({
-  logger: true
-})
+  logger: true,
+});
 
-server.get('/', async (request, reply) => {
-  return { hello: 'world' }
-})
+server.get("/", async (_request, _reply) => {
+  return { hello: "world" };
+});
 
 server.listen({ port: 8080 }, (err, address) => {
   if (err) {
-    server.log.error(err)
-    process.exit(1)
+    server.log.error(err);
+    process.exit(1);
   }
-  server.log.info(`Server listening at ${address}`)
-})
+  server.log.info(`Server listening at ${address}`);
+});
