@@ -1,11 +1,6 @@
 export const LOGGER_CONFIG = {
   transport: {
-    target: "pino-pretty",
-    options: {
-      colorize: true,
-      translateTime: "SYS:HH:MM:ss",
-      ignore: "reqId,pid,hostname,req.remoteAddress,req.remotePort",
-      singleLine: true,
-    },
+    target: "@fastify/one-line-logger",
+    options: { customTimeFormat: "yyyy-mm-dd HH:MM:ss" }
   },
-};
+}
