@@ -1,5 +1,6 @@
 import fastify, { type FastifyInstance } from "fastify";
 import { ENV } from "./config/index.js";
+import fastifyJwt from "@fastify/jwt";
 import { healthRoutes } from "./modules/health/health.routes.js";
 
 
@@ -9,6 +10,22 @@ export const app = fastify({
       target: "@fastify/one-line-logger",
       options: { customTimeFormat: "yyyy-mm-dd HH:MM:ss" },
     },
+  },
+});
+
+app.register(fastifyJwt, {
+  secret: ENV.JWT_ACCESS_SECRET,
+  namespace: "access",
+  sign: {
+    expiresIn: "15m",
+  },
+});
+
+app.register(fastifyJwt, {
+  secret: ENV.JWT_REFRESH_SECRET,
+  namespace: "refresh",
+  sign: {
+    expiresIn: "30d",
   },
 });
 

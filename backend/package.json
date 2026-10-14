@@ -16,13 +16,14 @@
     "lint": "oxlint src --fix"
   },
   "dependencies": {
+    "@fastify/jwt": "^10.2.4",
+    "@valibot/to-json-schema": "^1.8.0",
     "fastify": "^5.12.5",
-    "valibot": "catalog:",
-    "@valibot/to-json-schema": "^1.8.0"
+    "valibot": "catalog:"
   },
   "devDependencies": {
-    "@fastify/swagger": "^9.9.1",
     "@fastify/one-line-logger": "^2.2.1",
+    "@fastify/swagger": "^9.9.1",
     "@stylistic/eslint-plugin": "^5.10.0",
     "@types/node": "^26.6.5",
     "oxlint": "^1.87.0",
