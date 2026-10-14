@@ -25,14 +25,6 @@ const EnvSchema = v.object({
     v.string(),
     v.minLength(1),
   ),
-  JWT_ACCESS_SECRET: v.pipe(
-    v.string(),
-    v.minLength(32),
-  ),
-  JWT_REFRESH_SECRET: v.pipe(
-    v.string(),
-    v.minLength(32),
-  ),
 });
 
 /** Содержит проверенные переменные серверного окружения. */
