@@ -1,10 +1,14 @@
-import { ENV, LOGGER_CONFIG } from "./config/index.js";
+import { ENV } from "./config/index.js";
 import fastify, { type FastifyInstance } from "fastify";
 import { healthRoutes } from "./modules/health/health.routes.js";
 
-
 export const app = fastify({
-  logger: ENV.NODE_ENV === "development" ? LOGGER_CONFIG : true,
+  logger: ENV.NODE_ENV !== "development" ? true : {
+    transport: {
+      target: "@fastify/one-line-logger",
+      options: { customTimeFormat: "yyyy-mm-dd HH:MM:ss" },
+    },
+  },
 });
 
 export const registerAppRoutes = (server: FastifyInstance) => {
