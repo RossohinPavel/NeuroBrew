@@ -10,6 +10,7 @@
     "dev": "tsx watch --env-file=.env src/main.ts",
     "build": "tsc -p tsconfig.json",
     "start": "node ./dist/main.js",
+    "openapi": "pnpm build && node --env-file=.env ./dist/scripts/generateOpenapi.js",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "prelint": "pnpm typecheck",
     "lint": "oxlint src --fix"
@@ -20,6 +21,7 @@
     "@valibot/to-json-schema": "^1.8.0"
   },
   "devDependencies": {
+    "@fastify/swagger": "^9.9.1",
     "@fastify/one-line-logger": "^2.2.1",
     "@stylistic/eslint-plugin": "^5.10.0",
     "@types/node": "^26.6.5",

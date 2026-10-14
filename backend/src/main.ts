@@ -1,7 +1,7 @@
-import { buildApp } from "./app.js";
+import { app, registerAppRoutes } from "./app.js";
 
 
-const app = buildApp();
+registerAppRoutes(app);
 
 try {
   await app.listen({
