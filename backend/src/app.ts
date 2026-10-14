@@ -1,4 +1,5 @@
 import fastify, { type FastifyInstance } from "fastify";
+import { drizzlePlugin } from "./database/drizzle.plugin.js";
 import { ENV } from "./config/index.js";
 import fastifyJwt from "@fastify/jwt";
 import { healthRoutes } from "./modules/health/health.routes.js";
@@ -11,6 +12,10 @@ export const app = fastify({
       options: { customTimeFormat: "yyyy-mm-dd HH:MM:ss" },
     },
   },
+});
+
+app.register(drizzlePlugin, {
+  url: ENV.DATABASE_URL,
 });
 
 app.register(fastifyJwt, {

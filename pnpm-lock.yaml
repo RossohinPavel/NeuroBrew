@@ -186,6 +186,9 @@ importers:
       fastify:
         specifier: ^5.12.5
         version: 5.12.5
+      fastify-plugin:
+        specifier: ^6.0.1
+        version: 6.0.1
       postgres:
         specifier: ^3.4.9
         version: 3.4.9

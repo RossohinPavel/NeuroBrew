@@ -1,6 +1,6 @@
 import * as handlers from "./health.handlers.js";
+import { healthErrorResponseSchema, healthOkResponseSchema } from "./health.schema.js";
 import type { FastifyPluginAsync } from "fastify";
-import { healthResponseSchema } from "./health.schema.js";
 import { toJsonSchema } from "@valibot/to-json-schema";
 
 
@@ -21,7 +21,8 @@ export const healthRoutes: FastifyPluginAsync = async (server) => {
 
       // Defines serialization schemas for returned responses.
       response: {
-        200: toJsonSchema(healthResponseSchema, { typeMode: "output", errorMode: "throw" }),
+        200: toJsonSchema(healthOkResponseSchema, { typeMode: "output", errorMode: "throw" }),
+        503: toJsonSchema(healthErrorResponseSchema, { typeMode: "output", errorMode: "throw" }),
       },
 
       // Configures additional OpenAPI behavior for the operation.
@@ -33,18 +34,4 @@ export const healthRoutes: FastifyPluginAsync = async (server) => {
       // security: The health check does not require authorization.
     },
   }, handlers.getHealthStatus);
-
-  server.get("/ping", {
-    schema: {
-      operationId: "ping",
-      summary: "Ping service",
-      description: "Returns pong to confirm that the backend service is reachable.",
-      tags: ["health"],
-      response: {
-        200: {
-          type: "string",
-        },
-      },
-    },
-  }, handlers.ping);
 };
