@@ -9,14 +9,6 @@
     "moduleDetection": "force",
     "types": ["node"],
 
-    // File Layout
-    "rootDir": "./src",
-    "outDir": "./dist",
-
-    // Emit
-    "sourceMap": true,
-    "noEmitOnError": true,
-
     // Type Checking
     "strict": true,
     "noUncheckedIndexedAccess": true,
@@ -35,6 +27,6 @@
     // Completeness
     "skipLibCheck": true
   },
-  "include": ["src/**/*.ts"],
+  "include": ["**/*.ts"],
   "exclude": ["dist", "node_modules"]
 }

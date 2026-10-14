@@ -1,9 +1,12 @@
 import { mkdir, writeFile } from "node:fs/promises";
 import fastify from "fastify";
-import { registerAppRoutes } from "../app.js";
+import { loadEnvFile } from "node:process";
 import swagger from "@fastify/swagger";
 
 
+loadEnvFile(".env");
+
+const { registerAppRoutes } = await import("../app.js");
 const app = fastify();
 
 try {

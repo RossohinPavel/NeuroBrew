@@ -7,18 +7,21 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "tsx watch --env-file=.env src/main.ts",
-    "build": "tsc -p tsconfig.json",
+    "dev": "tsx watch src/main.ts",
+    "build": "tsc -p tsconfig.build.json",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
     "start": "node ./dist/main.js",
-    "openapi": "pnpm build && node --env-file=.env ./dist/scripts/generateOpenapi.js",
+    "openapi": "pnpm build && node ./dist/scripts/generateOpenapi.js",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "prelint": "pnpm typecheck",
-    "lint": "oxlint src --fix"
+    "lint": "pnpm typecheck && oxlint src --fix"
   },
   "dependencies": {
     "@fastify/jwt": "^10.2.4",
     "@valibot/to-json-schema": "^1.8.0",
+    "drizzle-orm": "1.0.0-rc.4",
     "fastify": "^5.12.5",
+    "postgres": "^3.4.9",
     "valibot": "catalog:"
   },
   "devDependencies": {
@@ -26,6 +29,7 @@
     "@fastify/swagger": "^9.9.1",
     "@stylistic/eslint-plugin": "^5.10.0",
     "@types/node": "^26.6.5",
+    "drizzle-kit": "1.0.0-rc.4",
     "oxlint": "^1.87.0",
     "oxlint-tsgolint": "^7.0.2004",
     "tsx": "^4.23.15",
