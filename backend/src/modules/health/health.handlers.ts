@@ -1,5 +1,5 @@
-import type { RouteHandler } from "fastify";
 import type { HealthResponse } from "./health.schema.js";
+import type { RouteHandler } from "fastify";
 import { sql } from "drizzle-orm";
 
 
