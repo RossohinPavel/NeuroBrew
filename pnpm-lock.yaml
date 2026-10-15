@@ -177,6 +177,9 @@ importers:
       '@fastify/jwt':
         specifier: ^10.2.4
         version: 10.2.4
+      '@shared/contracts':
+        specifier: workspace:*
+        version: link:../shared/contracts
       '@valibot/to-json-schema':
         specifier: ^1.8.0
         version: 1.8.0(valibot@1.5.0(typescript@7.0.2))
