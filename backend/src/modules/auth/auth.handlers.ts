@@ -1,7 +1,8 @@
 import * as schema from "../../database/schema/index.js";
+import { hash, verify } from "argon2";
+import type { LoginRequest, RegisterRequest } from "@shared/contracts";
 import type { AuthTokensResponse } from "./auth.schema.js";
-import { hash } from "argon2";
-import type { RegisterRequest } from "@shared/contracts";
+import { eq } from "drizzle-orm";
 import type { RouteHandler } from "fastify";
 
 
@@ -17,7 +18,7 @@ export const register: RouteHandler<{
       .values({ email,passwordHash,username })
       .returning({ id: schema.users.id });
     if (!user) {
-      throw new Error("Failed to create user");
+      throw req.server.httpErrors.internalServerError("Failed to create user");
     }
     const accessToken = req.server.jwt.access.sign({ userId: user.id });
     const refreshToken = req.server.jwt.refresh.sign({ userId: user.id });
@@ -33,8 +34,35 @@ export const register: RouteHandler<{
   }
 };
 
-export const login: RouteHandler = async (_req, res) => {
-  return res.code(501).send();
+export const login: RouteHandler<{
+  Body: LoginRequest;
+  Reply: AuthTokensResponse;
+}> = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    const [user] = await req.server.drizzle
+      .select({
+        id: schema.users.id,
+        passwordHash: schema.users.passwordHash,
+      })
+      .from(schema.users)
+      .where(eq(schema.users.email, email))
+      .limit(1);
+    if (!user || !await verify(user.passwordHash, password)) {
+      throw req.server.httpErrors.unauthorized("Invalid email or password");
+    }
+    const accessToken = req.server.jwt.access.sign({ userId: user.id });
+    const refreshToken = req.server.jwt.refresh.sign({ userId: user.id });
+    return res.code(200).send({
+      accessToken,
+      refreshToken,
+      tokenType: "Bearer",
+      expiresIn: 900,
+    });
+  } catch (error) {
+    req.log.error(error);
+    throw error;
+  }
 };
 
 export const refresh: RouteHandler = async (_req, res) => {

@@ -14,7 +14,8 @@ export const authRoutes: FastifyPluginAsync = async (server) => {
       tags: ["auth"],
       body: toJsonSchema(RegisterRequestSchema, { typeMode: "input", errorMode: "throw" }),
       response: { 
-        201: toJsonSchema(authTokensResponseSchema, { typeMode: "output", errorMode: "throw" }), 
+        201: toJsonSchema(authTokensResponseSchema, { typeMode: "output", errorMode: "throw" }),
+        500: { $ref: "HttpError" },
       },
     },
   }, handlers.register);
@@ -28,6 +29,7 @@ export const authRoutes: FastifyPluginAsync = async (server) => {
       body: toJsonSchema(LoginRequestSchema, { typeMode: "input", errorMode: "throw" }),
       response: {
         200: toJsonSchema(authTokensResponseSchema, { typeMode: "output", errorMode: "throw" }),
+        401: { $ref: "HttpError" },
       },
     },
   }, handlers.login);

@@ -177,6 +177,9 @@ importers:
       '@fastify/jwt':
         specifier: ^10.2.4
         version: 10.2.4
+      '@fastify/sensible':
+        specifier: ^6.0.7
+        version: 6.0.7
       '@shared/contracts':
         specifier: workspace:*
         version: link:../shared/contracts
@@ -1328,6 +1331,9 @@ packages:
 
   '@fastify/proxy-addr@5.1.2':
     resolution: {integrity: sha512-uqB4QsgVoro0XDC+DIftIMGXHdBPn+lK6Ek3xXAIxPMCJfqxnbtyEoMCm2KPUVOuIosd7Cyw9HawEqMFM/UA+g==}
+
+  '@fastify/sensible@6.0.7':
+    resolution: {integrity: sha512-e4+bJEcAPGdKsIljulWtEKeECuYGLkVTB1dgWh19m2u4ttETS/5EWZhw6KPXlgi6ZiSet5IqYrcMRMrRub0Hrg==}
 
   '@fastify/swagger@9.9.2':
     resolution: {integrity: sha512-ayxItVgf/1axBvw33lqsA5ns02YMpT1r59G/HCJraRNWWBzvLgN+oiCBPhuzTiN67TvctlCYkG0+40WLKYuusQ==}
@@ -6141,6 +6147,16 @@ snapshots:
     dependencies:
       '@fastify/forwarded': 3.1.1
       ipaddr.js: 2.5.0
+
+  '@fastify/sensible@6.0.7':
+    dependencies:
+      '@lukeed/ms': 2.0.2
+      dequal: 2.0.3
+      fastify-plugin: 6.0.1
+      forwarded: 0.2.0
+      http-errors: 2.0.1
+      type-is: 2.1.0
+      vary: 1.1.2
 
   '@fastify/swagger@9.9.2(supports-color@7.2.0)':
     dependencies:

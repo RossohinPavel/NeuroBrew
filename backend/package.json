@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "@fastify/jwt": "^10.2.4",
+    "@fastify/sensible": "^6.0.7",
     "@shared/contracts": "workspace:*",
     "@valibot/to-json-schema": "^1.8.0",
     "argon2": "^0.45.1",

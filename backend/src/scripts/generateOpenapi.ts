@@ -1,6 +1,7 @@
 import { mkdir, writeFile } from "node:fs/promises";
 import fastify from "fastify";
 import { loadEnvFile } from "node:process";
+import sensible from "@fastify/sensible";
 import swagger from "@fastify/swagger";
 
 
@@ -19,6 +20,7 @@ try {
       },
     },
   });
+  await app.register(sensible, { sharedSchemaId: "HttpError" });
   registerAppRoutes(app);
   await app.ready();
 
