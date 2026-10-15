@@ -6,6 +6,13 @@ import fastifyJwt from "@fastify/jwt";
 import { healthRoutes } from "./modules/health/health.routes.js";
 
 
+declare module "@fastify/jwt" {
+  interface FastifyJWT {
+    namespaces: "access" | "refresh";
+    payload: { userId: number };
+  }
+}
+
 export const app = fastify({
   logger: ENV.NODE_ENV !== "development" ? true : {
     transport: {

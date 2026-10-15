@@ -1,8 +1,8 @@
 import * as handlers from "./auth.handlers.js";
-import { authTokensResponseSchema } from "./auth.schema.js";
 import { LoginRequestSchema, RegisterRequestSchema } from "@shared/contracts";
-import { toJsonSchema } from "@valibot/to-json-schema";
+import { authTokensResponseSchema } from "./auth.schema.js";
 import type { FastifyPluginAsync } from "fastify";
+import { toJsonSchema } from "@valibot/to-json-schema";
 
 
 export const authRoutes: FastifyPluginAsync = async (server) => {
@@ -14,7 +14,7 @@ export const authRoutes: FastifyPluginAsync = async (server) => {
       tags: ["auth"],
       body: toJsonSchema(RegisterRequestSchema, { typeMode: "input", errorMode: "throw" }),
       response: { 
-        201: toJsonSchema(authTokensResponseSchema, { typeMode: "output", errorMode: "throw" }) 
+        201: toJsonSchema(authTokensResponseSchema, { typeMode: "output", errorMode: "throw" }), 
       },
     },
   }, handlers.register);
@@ -27,7 +27,7 @@ export const authRoutes: FastifyPluginAsync = async (server) => {
       tags: ["auth"],
       body: toJsonSchema(LoginRequestSchema, { typeMode: "input", errorMode: "throw" }),
       response: {
-        200: toJsonSchema(authTokensResponseSchema, { typeMode: "output", errorMode: "throw" })
+        200: toJsonSchema(authTokensResponseSchema, { typeMode: "output", errorMode: "throw" }),
       },
     },
   }, handlers.login);
