@@ -5,12 +5,10 @@ import type { RegisterRequest } from "@shared/contracts";
 import type { RouteHandler } from "fastify";
 
 
-type RegisterRouteHandler = RouteHandler<{
+export const register: RouteHandler<{
   Body: RegisterRequest;
   Reply: AuthTokensResponse;
-}>;
-
-export const register: RegisterRouteHandler = async (req, res) => {
+}> = async (req, res) => {
   try {
     const { email, password, username } = req.body;
     const passwordHash = await hash(password);

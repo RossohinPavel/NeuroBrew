@@ -3,14 +3,12 @@ import type { RouteHandler } from "fastify";
 import { sql } from "drizzle-orm";
 
 
-type HealthRouteHandler = RouteHandler<{
+export const getHealthStatus: RouteHandler<{
   Reply: {
     200: HealthOkResponse;
     503: HealthErrorResponse;
   };
-}>;
-
-export const getHealthStatus: HealthRouteHandler = async (req, res) => {
+}> = async (req, res) => {
   const services = { backend: "ok", postgres: "ok" } as const;
   try {
     await req.server.drizzle.execute(sql`select 1`);
