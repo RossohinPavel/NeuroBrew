@@ -38,7 +38,3 @@ export const login: RouteHandler = async (_req, res) => {
 export const refresh: RouteHandler = async (_req, res) => {
   return res.code(501).send();
 };
-
-export const logout: RouteHandler = async (_req, res) => {
-  return res.code(501).send();
-};

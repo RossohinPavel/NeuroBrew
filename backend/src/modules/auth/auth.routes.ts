@@ -41,12 +41,4 @@ export const authRoutes: FastifyPluginAsync = async (server) => {
     },
   }, handlers.refresh);
 
-  server.post("/logout", {
-    schema: {
-      operationId: "logout",
-      summary: "Log out a user",
-      description: "Ends the current user session.",
-      tags: ["auth"],
-    },
-  }, handlers.logout);
 };
