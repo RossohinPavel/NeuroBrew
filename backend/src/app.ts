@@ -2,6 +2,7 @@ import fastify, { type FastifyInstance } from "fastify";
 import { drizzlePlugin } from "./database/drizzle.plugin.js";
 import { ENV } from "./config/index.js";
 import fastifyJwt from "@fastify/jwt";
+import { authRoutes } from "./modules/auth/auth.routes.js";
 import { healthRoutes } from "./modules/health/health.routes.js";
 
 
@@ -35,5 +36,8 @@ app.register(fastifyJwt, {
 });
 
 export const registerAppRoutes = (server: FastifyInstance) => {
+  server.register(authRoutes, {
+    prefix: "/auth",
+  });
   server.register(healthRoutes);
 };
