@@ -1,12 +1,13 @@
-import type { FastifyReply, FastifyRequest } from "fastify";
+import type { RouteHandler } from "fastify";
 import type { HealthResponse } from "./health.schema.js";
 import { sql } from "drizzle-orm";
 
 
-export const getHealthStatus = async (
-  req: FastifyRequest,
-  res: FastifyReply,
-): Promise<HealthResponse> => {
+type HealthRouteHandler = RouteHandler<{
+  Reply: HealthResponse;
+}>;
+
+export const getHealthStatus: HealthRouteHandler = async (req, res) => {
   try {
     await req.server.drizzle.execute(sql`select 1`);
     return {
