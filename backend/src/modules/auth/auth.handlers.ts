@@ -23,8 +23,12 @@ export const register: RegisterRouteHandler = async (req, res) => {
     }
     const accessToken = req.server.jwt.access.sign({ userId: user.id });
     const refreshToken = req.server.jwt.refresh.sign({ userId: user.id });
-    res.code(201);
-    return { accessToken, refreshToken, tokenType: "Bearer", expiresIn: 900 };
+    return res.code(201).send({
+      accessToken,
+      refreshToken,
+      tokenType: "Bearer",
+      expiresIn: 900,
+    });
   } catch (error) {
     req.log.error(error);
     throw error;

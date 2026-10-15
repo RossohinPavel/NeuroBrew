@@ -17,6 +17,5 @@ export const healthErrorResponseSchema = v.object({
   }),
 });
 
-export type HealthResponse =
-  | v.InferOutput<typeof healthOkResponseSchema>
-  | v.InferOutput<typeof healthErrorResponseSchema>;
+export type HealthOkResponse = v.InferOutput<typeof healthOkResponseSchema>;
+export type HealthErrorResponse = v.InferOutput<typeof healthErrorResponseSchema>;
