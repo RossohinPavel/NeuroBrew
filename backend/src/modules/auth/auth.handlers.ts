@@ -76,6 +76,34 @@ export const login: RouteHandler<{
   }
 };
 
-export const refresh: RouteHandler = async (_req, res) => {
-  return res.code(501).send();
+export const refresh: RouteHandler<{
+  Reply: AuthTokensResponse;
+}> = async (req, res) => {
+  try {
+    const { userId } = req.user;
+
+    const [user] = await req.server.drizzle
+      .select({ id: schema.users.id })
+      .from(schema.users)
+      .where(eq(schema.users.id, userId))
+      .limit(1);
+
+    if (!user) {
+      throw req.server.httpErrors.unauthorized("Invalid refresh token");
+    }
+
+    const accessToken = req.server.jwt.access.sign({ userId: user.id });
+    const refreshToken = req.server.jwt.refresh.lookupToken(req);
+
+    return res.code(200).send({
+      accessToken,
+      refreshToken,
+      tokenType: "Bearer",
+      expiresIn: 900,
+    });
+  } catch (error) {
+    req.log.error(error);
+
+    throw error;
+  }
 };

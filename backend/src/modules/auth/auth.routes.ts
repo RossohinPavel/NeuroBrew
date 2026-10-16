@@ -43,6 +43,10 @@ export const authRoutes: FastifyPluginAsync = async (server) => {
       description: "Renews authentication for the current session.",
       tags: ["auth"],
       security: [{ bearerAuth: [] }],
+      response: {
+        200: toJsonSchema(authTokensResponseSchema, { typeMode: "output", errorMode: "throw" }),
+        401: { $ref: "HttpError" },
+      },
     },
   }, handlers.refresh);
 
