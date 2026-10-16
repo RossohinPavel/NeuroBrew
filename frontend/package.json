@@ -9,6 +9,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "api:generate": "orval",
     "lint": "eslint \"src/**/*.{ts,tsx}\" --fix",
     "shadcn": "pnpm dlx shadcn@latest"
   },
@@ -39,6 +40,7 @@
     "eslint-config-next": "16.3.5",
     "eslint-plugin-import-x": "4.17.1",
     "eslint-plugin-unused-imports": "4.4.1",
+    "orval": "^8.43.0",
     "tailwindcss": "^4.3.3",
     "typescript": "^5.9.3",
     "typescript-eslint": "8.70.0"

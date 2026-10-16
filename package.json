@@ -9,6 +9,7 @@
   "scripts": {
     "back": "pnpm --filter backend",
     "front": "pnpm --filter frontend",
-    "contracts": "pnpm --filter @shared/contracts"
+    "contracts": "pnpm --filter @shared/contracts",
+    "api:generate": "pnpm back openapi && pnpm front api:generate && pnpm back clean:temp"
   }
 }
