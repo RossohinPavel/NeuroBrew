@@ -1,5 +1,5 @@
-import { mkdir, writeFile } from "node:fs/promises";
 import { join, resolve } from "node:path";
+import { mkdir, writeFile } from "node:fs/promises";
 import fastify from "fastify";
 import { loadEnvFile } from "node:process";
 import sensible from "@fastify/sensible";
@@ -18,6 +18,15 @@ try {
       info: {
         title: "NeuroBrew API",
         version: "1.0.0",
+      },
+      components: {
+        securitySchemes: {
+          bearerAuth: {
+            type: "http",
+            scheme: "bearer",
+            bearerFormat: "JWT",
+          },
+        },
       },
     },
   });

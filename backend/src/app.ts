@@ -1,10 +1,11 @@
 import { accessTokenConfig, refreshTokenConfig } from "./modules/session/session.config.js";
-import fastify, { type FastifyInstance } from "fastify";
+import fastify, { type FastifyInstance, type FastifyPluginAsync } from "fastify";
 import { authRoutes } from "./modules/auth/auth.routes.js";
 import { drizzlePlugin } from "./database/drizzle.plugin.js";
 import { ENV } from "./config/index.js";
 import fastifyJwt from "@fastify/jwt";
 import { healthRoutes } from "./modules/health/health.routes.js";
+import { requireAccessToken } from "./modules/session/session.guard.js";
 import sensible from "@fastify/sensible";
 
 
@@ -22,7 +23,12 @@ app.register(fastifyJwt, accessTokenConfig);
 app.register(fastifyJwt, refreshTokenConfig);
 app.register(sensible, { sharedSchemaId: "HttpError" });
 
+const protectedRoutes: FastifyPluginAsync = async (server) => {
+  server.addHook("onRequest", requireAccessToken);
+};
+
 export const registerAppRoutes = (server: FastifyInstance) => {
-  server.register(authRoutes, { prefix: "/auth" });
   server.register(healthRoutes);
+  server.register(authRoutes, { prefix: "/auth" });
+  server.register(protectedRoutes);
 };

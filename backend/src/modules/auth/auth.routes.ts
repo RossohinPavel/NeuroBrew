@@ -2,6 +2,7 @@ import * as handlers from "./auth.handlers.js";
 import { LoginRequestSchema, RegisterRequestSchema } from "@shared/contracts";
 import { authTokensResponseSchema } from "./auth.schema.js";
 import type { FastifyPluginAsync } from "fastify";
+import { requireRefreshToken } from "../session/session.guard.js";
 import { toJsonSchema } from "@valibot/to-json-schema";
 
 
@@ -35,11 +36,13 @@ export const authRoutes: FastifyPluginAsync = async (server) => {
   }, handlers.login);
 
   server.post("/refresh", {
+    onRequest: requireRefreshToken,
     schema: {
       operationId: "refresh",
       summary: "Refresh authentication",
       description: "Renews authentication for the current session.",
       tags: ["auth"],
+      security: [{ bearerAuth: [] }],
     },
   }, handlers.refresh);
 
