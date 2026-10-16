@@ -1,4 +1,5 @@
 import { mkdir, writeFile } from "node:fs/promises";
+import { join, resolve } from "node:path";
 import fastify from "fastify";
 import { loadEnvFile } from "node:process";
 import sensible from "@fastify/sensible";
@@ -21,13 +22,14 @@ try {
     },
   });
   await app.register(sensible, { sharedSchemaId: "HttpError" });
+
   registerAppRoutes(app);
   await app.ready();
 
-  const tempDirectory = new URL("../../.temp/", import.meta.url);
+  const tempDirectory = resolve(import.meta.dirname, "../../.temp");
   await mkdir(tempDirectory, { recursive: true });
   await writeFile(
-    new URL("openapi.json", tempDirectory),
+    join(tempDirectory, "openapi.json"),
     JSON.stringify(app.swagger(), null, 2),
   );
 } finally {

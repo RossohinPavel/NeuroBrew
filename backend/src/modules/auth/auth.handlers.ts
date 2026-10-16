@@ -12,16 +12,21 @@ export const register: RouteHandler<{
 }> = async (req, res) => {
   try {
     const { email, password, username } = req.body;
+
     const passwordHash = await hash(password);
+
     const [user] = await req.server.drizzle
       .insert(schema.users)
       .values({ email,passwordHash,username })
       .returning({ id: schema.users.id });
+
     if (!user) {
       throw req.server.httpErrors.internalServerError("Failed to create user");
     }
+
     const accessToken = req.server.jwt.access.sign({ userId: user.id });
     const refreshToken = req.server.jwt.refresh.sign({ userId: user.id });
+
     return res.code(201).send({
       accessToken,
       refreshToken,
@@ -30,6 +35,7 @@ export const register: RouteHandler<{
     });
   } catch (error) {
     req.log.error(error);
+
     throw error;
   }
 };
@@ -40,6 +46,7 @@ export const login: RouteHandler<{
 }> = async (req, res) => {
   try {
     const { email, password } = req.body;
+
     const [user] = await req.server.drizzle
       .select({
         id: schema.users.id,
@@ -48,11 +55,14 @@ export const login: RouteHandler<{
       .from(schema.users)
       .where(eq(schema.users.email, email))
       .limit(1);
+
     if (!user || !await verify(user.passwordHash, password)) {
       throw req.server.httpErrors.unauthorized("Invalid email or password");
     }
+
     const accessToken = req.server.jwt.access.sign({ userId: user.id });
     const refreshToken = req.server.jwt.refresh.sign({ userId: user.id });
+
     return res.code(200).send({
       accessToken,
       refreshToken,
@@ -61,6 +71,7 @@ export const login: RouteHandler<{
     });
   } catch (error) {
     req.log.error(error);
+
     throw error;
   }
 };
