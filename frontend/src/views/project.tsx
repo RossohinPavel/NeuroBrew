@@ -1,5 +1,4 @@
 import { Suspense } from "react";
-import { getProjectByUsernameOr404 } from "@/entities/project";
 
 
 type Props = PageProps<"/[username]/[project]">;
@@ -15,11 +14,12 @@ export function Project(props: Props) {
 
 async function ProjectContent({ params }: Props) {
   const { project, username } = await params;
-  const foundProject = await getProjectByUsernameOr404(username, project);
-  return (
-    <div className="flex flex-1 flex-col gap-2">
-      <p>ID пользователя: {foundProject.userId}</p>
-      <p>Название проекта: {foundProject.name}</p>
-    </div>
-  );
+  return `${username}: ${project}`
+  // const foundProject = await getProjectByUsernameOr404(username, project);
+  // return (
+  //   <div className="flex flex-1 flex-col gap-2">
+  //     <p>ID пользователя: {foundProject.userId}</p>
+  //     <p>Название проекта: {foundProject.name}</p>
+  //   </div>
+  // );
 }
