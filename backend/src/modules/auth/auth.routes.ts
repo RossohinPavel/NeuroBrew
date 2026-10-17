@@ -1,8 +1,8 @@
 import * as handlers from "./auth.handlers.js";
+import { authTokensResponseSchema, meResponseSchema } from "./auth.schema.js";
 import { LoginRequestSchema, RegisterRequestSchema } from "@shared/contracts";
-import { authTokensResponseSchema } from "./auth.schema.js";
+import { requireAccessToken, requireRefreshToken } from "../session/session.guard.js";
 import type { FastifyPluginAsync } from "fastify";
-import { requireRefreshToken } from "../session/session.guard.js";
 import { toJsonSchema } from "@valibot/to-json-schema";
 
 
@@ -31,6 +31,7 @@ export const authRoutes: FastifyPluginAsync = async (server) => {
       response: {
         200: toJsonSchema(authTokensResponseSchema, { typeMode: "output", errorMode: "throw" }),
         401: { $ref: "HttpError" },
+        500: { $ref: "HttpError" },
       },
     },
   }, handlers.login);
@@ -45,9 +46,28 @@ export const authRoutes: FastifyPluginAsync = async (server) => {
       security: [{ bearerAuth: [] }],
       response: {
         200: toJsonSchema(authTokensResponseSchema, { typeMode: "output", errorMode: "throw" }),
+        400: { $ref: "HttpError" },
         401: { $ref: "HttpError" },
+        500: { $ref: "HttpError" },
       },
     },
   }, handlers.refresh);
+
+  server.get("/me", {
+    onRequest: requireAccessToken,
+    schema: {
+      operationId: "me",
+      summary: "Get current user",
+      description: "Returns the currently authenticated user.",
+      tags: ["auth"],
+      security: [{ bearerAuth: [] }],
+      response: {
+        200: toJsonSchema(meResponseSchema, { typeMode: "output", errorMode: "throw" }),
+        400: { $ref: "HttpError" },
+        401: { $ref: "HttpError" },
+        500: { $ref: "HttpError" },
+      },
+    },
+  }, handlers.me);
 
 };
