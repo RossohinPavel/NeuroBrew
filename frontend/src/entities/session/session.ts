@@ -1,6 +1,7 @@
 import "server-only";
 
 import { cookies } from "next/headers";
+import { cache } from "react";
 import { refresh } from "@/common/api/generated/endpoints";
 import { Cookies as SessionCookies } from "./cookies";
 
@@ -20,6 +21,13 @@ const isAuthorizationTokenExpired = (response: SessionResponse) => {
     && response.data?.message === "Authorization token expired"
   );
 };
+
+/** Определяет, аутентифицирован ли пользователь в текущем запросе. */
+export const isUserAuthenticated = cache(async () => {
+  const cookieStore = await cookies();
+
+  return cookieStore.has(SessionCookies.accessToken.name);
+});
 
 /** Выполняет API-метод с access-токеном и инициирует обновление истёкшей сессии. */
 export const withSession = <A extends unknown[], R extends Promise<{ status: number }>>(
