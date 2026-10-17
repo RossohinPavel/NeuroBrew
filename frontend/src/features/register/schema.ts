@@ -1,6 +1,7 @@
 import { RegisterRequestSchema } from "@shared/contracts";
 import * as v from "valibot";
 
+
 /** Проверяет клиентскую форму регистрации, включая подтверждение пароля. */
 export const RegisterFormSchema = v.pipe(
   v.object({

@@ -37,13 +37,10 @@ export function LoginForm() {
 
   const onSubmit = async (formData: LoginRequest) => {
     form.clearErrors("root.server");
-    const { data, status } = await loginAction(formData);
+    const { success, error } = await loginAction(formData);
 
-    if (status !== 200) {
-      form.setError("root.server", {
-        message: data.message ?? "Не удалось войти.",
-        type: "server",
-      });
+    if (!success) {
+      form.setError("root.server", { message: error.message, type: "server" });
       return;
     }
     // Каких-то дополнительный действий не требуется. Севрер пришлет http-only куки. 

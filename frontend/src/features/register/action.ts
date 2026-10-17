@@ -1,31 +1,32 @@
 "use server";
 
-import { createAuthRepository } from "@shared/database";
-import { RegisterRequestSchema, type RegisterRequest } from "@shared/contracts";
-import { hash } from "argon2";
+import type { RegisterRequest } from "@shared/contracts";
 import { cookies } from "next/headers";
-import * as v from "valibot";
-import { DB } from "@/common/db-connection";
-import { ExpectedActionError, safeAction } from "@/common/safe-action";
-import * as Session from "@/entities/session";
+import { register } from "@/common/api/generated/endpoints";
+import type { ActionResponse } from "@/common/server-action";
+import { Cookies } from "@/entities/session";
 
-
-const { createUser } = createAuthRepository(DB);
 
 /** Создает пользователя и завершает его аутентификацию. */
-export const registerAction = safeAction(async (request: RegisterRequest) => {
-  const { email, password, username } = await v.parseAsync(RegisterRequestSchema, request);
-  const passwordHash = await hash(password);
-  const user = await createUser({ email, passwordHash, username });
-  if (!user) {
-    throw new ExpectedActionError("Не удалось создать пользователя.");
+export const registerAction = async (formData: RegisterRequest): ActionResponse => {
+  const result = await register(formData);
+
+  if (result.status !== 201) {
+    const message = result.data.message ?? "Не удалось создать аккаунт.";
+
+    return { success: false, error: { message } };
   }
-  const [accessToken, refreshToken] = await Promise.all([
-    Session.createAccessToken({ userId: user.id }),
-    Session.createRefreshToken({ userId: user.id }),
-  ]);
+
   const cookieStore = await cookies();
-  cookieStore.set({ ...Session.cookies.accessToken, value: accessToken });
-  cookieStore.set({ ...Session.cookies.refreshToken, value: refreshToken });
-  return true;
-});
+  cookieStore.set({
+    ...Cookies.accessToken,
+    maxAge: Math.max(result.data.expiresIn - 30, 1),
+    value: result.data.accessToken,
+  });
+  cookieStore.set({
+    ...Cookies.refreshToken,
+    value: result.data.refreshToken,
+  });
+
+  return { success: true, data: true };
+};

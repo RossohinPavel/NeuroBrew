@@ -46,13 +46,12 @@ export function RegisterForm() {
       password: formData.password,
       username: formData.username,
     });
+
     if (!success) {
-      form.setError("root.server", {
-        message: error.message,
-        type: "server",
-      });
+      form.setError("root.server", { message: error.message, type: "server"});
       return;
     }
+
     router.push("/");
     router.refresh();
   };
