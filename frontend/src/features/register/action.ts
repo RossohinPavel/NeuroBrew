@@ -1,10 +1,10 @@
 "use server";
 
-import type { RegisterRequest } from "@shared/contracts";
 import { cookies } from "next/headers";
 import { register } from "@/common/api/generated/endpoints";
 import type { ActionResponse } from "@/common/server-action";
-import { Cookies } from "@/entities/session";
+import * as Session from "@/entities/session";
+import type { RegisterRequest } from "@shared/contracts";
 
 
 /** Создает пользователя и завершает его аутентификацию. */
@@ -17,16 +17,13 @@ export const registerAction = async (formData: RegisterRequest): ActionResponse 
     return { success: false, error: { message } };
   }
 
+  const { accessToken, refreshToken, expiresIn } = result.data;
+  const accessTokenCookie = Session.createAccessTokenCookie(accessToken, expiresIn);
+  const refreshTokenCookie = Session.createRefreshTokenCookie(refreshToken);
+
   const cookieStore = await cookies();
-  cookieStore.set({
-    ...Cookies.accessToken,
-    maxAge: Math.max(result.data.expiresIn - 30, 1),
-    value: result.data.accessToken,
-  });
-  cookieStore.set({
-    ...Cookies.refreshToken,
-    value: result.data.refreshToken,
-  });
+  cookieStore.set(accessTokenCookie);
+  cookieStore.set(refreshTokenCookie);
 
   return { success: true, data: true };
 };

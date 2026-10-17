@@ -48,7 +48,7 @@ export function RegisterForm() {
     });
 
     if (!success) {
-      form.setError("root.server", { message: error.message, type: "server"});
+      form.setError("root.server", { message: error.message, type: "server" });
       return;
     }
 

@@ -1,38 +1,37 @@
-import { NextResponse } from "next/server";
-import { NextRequest } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 import * as Session from "@/entities/session";
-import { refreshSession } from "./features/refresh-session";
 
 
-/** Направляет запрос к соответствующей проверке сессии. */
-export const proxy = async (request: NextRequest): Promise<NextResponse> => {
-  const headers = new Headers(request.headers);
-  Session.sanitize(headers);
-  const accessTokenString = request.cookies.get(Session.cookies.accessToken.name)?.value;
-  if (accessTokenString) {
-    const accessToken = await Session.verifyAccessToken(accessTokenString);
-    if (accessToken.status === "valid") {
-      Session.set(headers, accessToken.payload);
-      return NextResponse.next({ request: { headers } });
-    }
-    if (accessToken.status === "expired") {
-      const refreshTokenString = request.cookies.get(Session.cookies.refreshToken.name)?.value;
-      if (refreshTokenString) {
-        const result = await refreshSession(refreshTokenString);
-        if (result) {
-          Session.set(headers, result.session);
-          const response = NextResponse.next({ request: { headers } });
-          response.cookies.set({ ...Session.cookies.accessToken, value: result.accessToken });
-          response.cookies.set({ ...Session.cookies.refreshToken, value: result.refreshToken });
-          return response;
-        }
-      }
-    }
-    // Тут ошибки обработки токенов. Чтобы не спамило - удаляем из браузера клиента.
-    const response = NextResponse.next({ request: { headers } });
-    response.cookies.delete(Session.cookies.accessToken);
-    response.cookies.delete(Session.cookies.refreshToken);
+/** Согласует состояние session cookie перед продолжением запроса. */
+export const proxy = async (request: NextRequest) => {
+  const accessToken = request.cookies.get(Session.Cookies.accessToken.name)?.value;
+  const refreshToken = request.cookies.get(Session.Cookies.refreshToken.name)?.value;
+  const response = NextResponse.next();
+
+  // Без refresh-токена сессию нельзя продлить, поэтому сбрасываем её неполное состояние.
+  if (accessToken !== undefined && refreshToken === undefined) {
+    response.cookies.delete(Session.Cookies.accessToken);
+    response.cookies.delete(Session.Cookies.refreshToken);
+
     return response;
   }
-  return NextResponse.next({ request: { headers } });
+
+  // Refresh-токен позволяет восстановить сессию при отсутствии access-токена.
+  if (accessToken === undefined && refreshToken !== undefined) {
+    const result = await Session.refreshSession(refreshToken);
+
+    if (result.status === 200) {
+      const { accessToken: newAccessToken, refreshToken: newRefreshToken, expiresIn } = result.data;
+      const accessTokenCookie = Session.createAccessTokenCookie(newAccessToken, expiresIn);
+      const refreshTokenCookie = Session.createRefreshTokenCookie(newRefreshToken);
+
+      response.cookies.set(accessTokenCookie);
+      response.cookies.set(refreshTokenCookie);
+    } else {
+      response.cookies.delete(Session.Cookies.accessToken);
+      response.cookies.delete(Session.Cookies.refreshToken);
+    }
+  }
+
+  return response;
 };

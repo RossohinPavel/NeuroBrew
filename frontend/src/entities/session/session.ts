@@ -1,8 +1,9 @@
 import "server-only";
 
-import { refresh } from "@/common/api/generated/endpoints";
 import { cookies } from "next/headers";
+import { refresh } from "@/common/api/generated/endpoints";
 import { Cookies as SessionCookies } from "./cookies";
+
 
 /** Описывает данные ответа, необходимые для управления сессией. */
 type SessionResponse = {
@@ -21,7 +22,7 @@ const isAuthorizationTokenExpired = (response: SessionResponse) => {
 };
 
 /** Выполняет API-метод с access-токеном и инициирует обновление истёкшей сессии. */
-export const withSession = <A extends unknown[], R extends Promise<{status: number}>>(
+export const withSession = <A extends unknown[], R extends Promise<{ status: number }>>(
   request: (...args: [...A, options?: RequestInit]) => R,
   options?: RequestInit,
 ) => {
@@ -36,9 +37,10 @@ export const withSession = <A extends unknown[], R extends Promise<{status: numb
     const headers = new Headers(options?.headers);
     headers.set("Authorization", `Bearer ${accessToken}`);
 
-    const requestOptions = { ...options, headers};
+    const requestOptions = { ...options, headers };
     const response = await request(...args, requestOptions);
 
+    // Подстраховка на случай того, что токен успел протухнуть в полете к бекенду))
     if (isAuthorizationTokenExpired(response)) {
       const refreshToken = cookieStore.get(SessionCookies.refreshToken.name)?.value;
       if (refreshToken !== undefined) {
@@ -54,7 +56,7 @@ export const withSession = <A extends unknown[], R extends Promise<{status: numb
 };
 
 /** Запрашивает обновление сессии с помощью refresh-токена. */
-const refreshSession = async (refreshToken: string) => {
+export const refreshSession = async (refreshToken: string) => {
   const headers = new Headers();
   headers.set("Authorization", `Bearer ${refreshToken}`);
   return refresh({ headers });
