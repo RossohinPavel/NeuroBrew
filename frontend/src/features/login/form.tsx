@@ -1,6 +1,7 @@
 "use client";
 
 import { valibotResolver } from "@hookform/resolvers/valibot";
+import { LoginRequestSchema, type LoginRequest } from "@shared/contracts";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
@@ -22,24 +23,27 @@ import {
 } from "@/common/shadcn/ui/field";
 import { Input } from "@/common/shadcn/ui/input";
 import { loginAction } from "./action";
-import { LoginFormData, LoginFormSchema } from "./schema";
 
 
 /** Предоставляет форму входа в аккаунт по электронной почте и паролю. */
 export function LoginForm() {
 
-  const form = useForm<LoginFormData>({
-    resolver: valibotResolver(LoginFormSchema),
+  const form = useForm<LoginRequest>({
+    resolver: valibotResolver(LoginRequestSchema),
     defaultValues: { email: "", password: "" },
   });
 
   const router = useRouter();
 
-  const onSubmit = async (formData: LoginFormData) => {
+  const onSubmit = async (formData: LoginRequest) => {
     form.clearErrors("root.server");
-    const { success, error } = await loginAction(formData);
-    if (!success) {
-      form.setError("root.server", { type: "server", message: error.message });
+    const { data, status } = await loginAction(formData);
+
+    if (status !== 200) {
+      form.setError("root.server", {
+        message: data.message ?? "Не удалось войти.",
+        type: "server",
+      });
       return;
     }
     // Каких-то дополнительный действий не требуется. Севрер пришлет http-only куки. 

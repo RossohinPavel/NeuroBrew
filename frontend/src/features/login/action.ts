@@ -1,34 +1,31 @@
 "use server";
 
-import { createAuthRepository } from "@shared/database";
-import { verify } from "argon2";
+import type { LoginRequest } from "@shared/contracts";
 import { cookies } from "next/headers";
-import * as v from "valibot";
-import { DB } from "@/common/db-connection";
-import { ExpectedActionError, safeAction } from "@/common/safe-action";
-import * as Session from "@/entities/session";
-import { LoginFormData, LoginFormSchema } from "./schema";
+import { login, type loginResponse } from "@/common/api/generated/endpoints";
+import type { DistributiveOmit } from "@/common/api/types";
+import { Cookies } from "@/entities/session";
 
 
-const { findUser } = createAuthRepository(DB);
+type LoginActionResponse = DistributiveOmit<loginResponse, "headers">;
 
 /** Проверяет учетные данные и завершает аутентификацию пользователя. */
-export const loginAction = safeAction(async (formData: LoginFormData) => {
-  const { email, password } = await v.parseAsync(LoginFormSchema, formData);
-  const user = await findUser({ email });
-  if (!user) {
-    throw new ExpectedActionError("Неверный емейл или пароль.");
+export const loginAction = async (formData: LoginRequest) => {
+  const result = await login(formData);
+
+  if (result.status === 200) {
+    const cookieStore = await cookies();
+
+    cookieStore.set({
+      ...Cookies.accessToken,
+      maxAge: Math.max(result.data.expiresIn - 30, 1),
+      value: result.data.accessToken,
+    });
+    cookieStore.set({
+      ...Cookies.refreshToken,
+      value: result.data.refreshToken,
+    });
   }
-  const isPasswordValid = await verify(user.passwordHash, password);
-  if (!isPasswordValid) {
-    throw new ExpectedActionError("Неверный емейл или пароль.");
-  }
-  const [accessToken, refreshToken] = await Promise.all([
-    Session.createAccessToken({ userId: user.id }),
-    Session.createRefreshToken({ userId: user.id }),
-  ]);
-  const cookieStore = await cookies();
-  cookieStore.set({ ...Session.cookies.accessToken, value: accessToken });
-  cookieStore.set({ ...Session.cookies.refreshToken, value: refreshToken });
-  return true;
-});
+
+  return { data: result.data, status: result.status } as LoginActionResponse;
+};
