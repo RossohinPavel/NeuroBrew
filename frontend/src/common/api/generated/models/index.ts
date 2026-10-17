@@ -19,6 +19,7 @@ export * from './health503Status';
 export * from './login200';
 export * from './login200TokenType';
 export * from './loginBody';
+export * from './me200';
 export * from './refresh200';
 export * from './refresh200TokenType';
 export * from './register201';
