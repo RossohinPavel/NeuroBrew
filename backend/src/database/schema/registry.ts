@@ -1,5 +1,5 @@
 import { type InferInsertModel, type InferSelectModel } from "drizzle-orm";
-import { integer, snakeCase, uniqueIndex, varchar } from "drizzle-orm/pg-core";
+import { integer, snakeCase, timestamp, uniqueIndex, varchar } from "drizzle-orm/pg-core";
 import { users } from "./auth.js";
 
 
@@ -13,6 +13,9 @@ export const project = registrySchema.table("project", {
     .notNull()
     .references(() => users.id, { onDelete: "cascade" }),
   name: varchar({ length: 128 })
+    .notNull(),
+  createdAt: timestamp({ withTimezone: true })
+    .defaultNow()
     .notNull(),
 }, (table) => [
   uniqueIndex("project_user_id_name_unique").on(table.userId, table.name),
