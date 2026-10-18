@@ -1,5 +1,5 @@
 import * as schema from "../../database/schema/index.js";
-import type { ChangelogResponse } from "./meta.schema.js";
+import type { ChangelogResponse } from "./metadata.schema.js";
 import { desc } from "drizzle-orm";
 import type { RouteHandler } from "fastify";
 

@@ -5,7 +5,7 @@ import { drizzlePlugin } from "./database/drizzle.plugin.js";
 import { ENV } from "./config/index.js";
 import fastifyJwt from "@fastify/jwt";
 import { healthRoutes } from "./modules/health/health.routes.js";
-import { metaRoutes } from "./modules/meta/meta.routes.js";
+import { metadataRoutes } from "./modules/metadata/metadata.routes.js";
 import sensible from "@fastify/sensible";
 
 
@@ -25,6 +25,6 @@ app.register(sensible, { sharedSchemaId: "HttpError" });
 
 export const registerAppRoutes = (server: FastifyInstance) => {
   server.register(healthRoutes);
-  server.register(metaRoutes, { prefix: "/meta" });
+  server.register(metadataRoutes, { prefix: "/metadata" });
   server.register(authRoutes, { prefix: "/auth" });
 };

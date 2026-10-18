@@ -35,7 +35,7 @@ export const getGetChangelogUrl = () => {
 
 
 
-  return `/meta/changelog`
+  return `/metadata/changelog`
 }
 
 /**
@@ -52,5 +52,4 @@ export const getChangelog = async ( options?: Parameters<typeof apiFetch>[1]): P
 
   }
 );}
-
 
