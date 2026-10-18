@@ -1,5 +1,6 @@
 import * as schema from "../../database/schema/index.js";
 import type { ChangelogResponse } from "./meta.schema.js";
+import { desc } from "drizzle-orm";
 import type { RouteHandler } from "fastify";
 
 
@@ -9,7 +10,8 @@ export const getChangelog: RouteHandler<{
   try {
     const entries = await req.server.drizzle
       .select()
-      .from(schema.changelog);
+      .from(schema.changelog)
+      .orderBy(desc(schema.changelog.createdAt));
 
     return res.code(200).send(entries.map((item) => ({
       ...item,
