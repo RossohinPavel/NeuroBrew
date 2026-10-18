@@ -6,6 +6,7 @@ import { ENV } from "./config/index.js";
 import fastifyJwt from "@fastify/jwt";
 import { healthRoutes } from "./modules/health/health.routes.js";
 import { metadataRoutes } from "./modules/metadata/metadata.routes.js";
+import { registryRoutes } from "./modules/registry/registry.routes.js";
 import sensible from "@fastify/sensible";
 
 
@@ -27,4 +28,5 @@ export const registerAppRoutes = (server: FastifyInstance) => {
   server.register(healthRoutes);
   server.register(metadataRoutes, { prefix: "/metadata" });
   server.register(authRoutes, { prefix: "/auth" });
+  server.register(registryRoutes, { prefix: "/registry" });
 };
