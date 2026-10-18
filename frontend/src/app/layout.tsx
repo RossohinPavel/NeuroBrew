@@ -1,7 +1,6 @@
 import { Inter } from "next/font/google";
 import { TooltipProvider } from "@/common/shadcn/ui/tooltip";
 import { cn } from "@/common/shadcn/utils";
-import { TopBar } from "@/modules/top-bar";
 import type { Metadata } from "next";
 import "./globals.css";
 
@@ -17,10 +16,7 @@ export default function Layout({ children }: LayoutProps<"/">) {
     <html lang="ru" className={cn("dark font-sans", "font-sans", inter.variable)}>
       <body>
         <TooltipProvider>
-          <div className="flex min-h-dvh flex-col">
-            <TopBar />
-            {children}
-          </div>
+          {children}
         </TooltipProvider>
       </body>
     </html>
