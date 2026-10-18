@@ -1,7 +1,7 @@
 import "server-only";
 
 import { redirect } from "next/navigation";
-import {isUserAuthenticated} from "@/entities/session";
+import { isUserAuthenticated } from "@/entities/session";
 import type { ReactNode } from "react";
 
 

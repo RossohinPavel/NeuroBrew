@@ -7,6 +7,7 @@
 
 export * from './def0';
 export * from './getChangelog200Item';
+export * from './getMyProjects200Item';
 export * from './health200';
 export * from './health200Services';
 export * from './health200ServicesBackend';

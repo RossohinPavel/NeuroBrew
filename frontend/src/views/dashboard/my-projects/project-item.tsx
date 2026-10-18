@@ -13,9 +13,10 @@ interface Props {
   username: string;
 }
 
-/** Предоставляет ссылку на репозиторий пользователя. */
-export function RepositoryItem({ projectName, username }: Props) {
+/** Предоставляет ссылку на проект пользователя. */
+export function ProjectItem({ projectName, username }: Props) {
   const href = `/${encodeURIComponent(username)}/${encodeURIComponent(projectName)}`;
+
   return (
     <Item
       render={(

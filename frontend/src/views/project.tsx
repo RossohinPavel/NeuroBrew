@@ -14,7 +14,7 @@ export function Project(props: Props) {
 
 async function ProjectContent({ params }: Props) {
   const { project, username } = await params;
-  return `${username}: ${project}`
+  return `${username}: ${project}`;
   // const foundProject = await getProjectByUsernameOr404(username, project);
   // return (
   //   <div className="flex flex-1 flex-col gap-2">
