@@ -6,12 +6,12 @@ import { RegisterGuard } from "./register-guard";
 /** Представляет страницу регистрации аккаунта. */
 export function Register() {
   return (
-    <div className="grid flex-1 place-items-center">
+    <main className="grid min-h-0 flex-1 place-items-center">
       <Suspense fallback={null}>
         <RegisterGuard>
           <RegisterForm />
         </RegisterGuard>
       </Suspense>
-    </div>
+    </main>
   );
 }

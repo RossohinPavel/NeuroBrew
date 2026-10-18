@@ -6,9 +6,11 @@ type Props = PageProps<"/[username]/[project]">;
 /** Показывает основные сведения о проекте пользователя. */
 export function Project(props: Props) {
   return (
-    <Suspense fallback={null}>
-      <ProjectContent {...props} />
-    </Suspense>
+    <main className="flex min-h-0 flex-1">
+      <Suspense fallback={null}>
+        <ProjectContent {...props} />
+      </Suspense>
+    </main>
   );
 }
 

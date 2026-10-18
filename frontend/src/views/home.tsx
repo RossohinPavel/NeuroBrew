@@ -14,8 +14,10 @@ async function Content() {
 
 export function Home() {
   return (
-    <Suspense fallback={null}>
-      <Content />
-    </Suspense>
+    <main className="flex min-h-0 flex-1">
+      <Suspense fallback={null}>
+        <Content />
+      </Suspense>
+    </main>
   );
 }

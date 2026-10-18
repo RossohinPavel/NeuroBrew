@@ -19,9 +19,7 @@ export default function Layout({ children }: LayoutProps<"/">) {
         <TooltipProvider>
           <div className="flex min-h-dvh flex-col">
             <TopBar />
-            <main className="flex min-h-0 flex-1">
-              {children}
-            </main>
+            {children}
           </div>
         </TooltipProvider>
       </body>

@@ -1,15 +1,16 @@
 import { Suspense } from "react";
 
 
-
 type Props = PageProps<"/[username]">;
 
 /** Показывает основные сведения об учетной записи пользователя. */
 export function UserPage(props: Props) {
   return (
-    <Suspense fallback={null}>
-      <UserPageContent {...props} />
-    </Suspense>
+    <main className="flex min-h-0 flex-1">
+      <Suspense fallback={null}>
+        <UserPageContent {...props} />
+      </Suspense>
+    </main>
   );
 }
 

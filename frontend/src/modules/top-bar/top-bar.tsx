@@ -3,7 +3,6 @@ import "server-only";
 import Link from "next/link";
 import { Suspense } from "react";
 import NeuroBrewLogo from "@/common/assets/NeuroBrew.svg";
-import { Separator } from "@/common/shadcn/ui/separator";
 import { Navigation } from "./navigation";
 
 
@@ -27,7 +26,6 @@ export function TopBar() {
           </Suspense>
         </div>
       </div>
-      <Separator />
     </header>
   );
 }
