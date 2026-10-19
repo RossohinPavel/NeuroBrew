@@ -6,7 +6,7 @@ import { LogoutGuard } from "./logout-guard";
 /** Представляет страницу выхода из аккаунта. */
 export function Logout() {
   return (
-    <main className="grid min-h-0 flex-1 place-items-center">
+    <main className="grid flex-1 place-items-center">
       <Suspense fallback={null}>
         <LogoutGuard>
           <LogoutForm />

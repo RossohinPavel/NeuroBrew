@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 export default function Layout(props: LayoutProps<"/">) {
   return (
     <html lang="ru" className={cn("dark font-sans", "font-sans", inter.variable)}>
-      <body>
+      <body className="flex min-h-dvh flex-col">
         <TooltipProvider>
           {props.children}
         </TooltipProvider>
