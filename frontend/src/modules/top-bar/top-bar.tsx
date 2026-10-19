@@ -1,14 +1,13 @@
 import "server-only";
 
 import Link from "next/link";
-import { Suspense, type ReactNode } from "react";
+import { Suspense } from "react";
 import NeuroBrewLogo from "@/common/assets/NeuroBrew.svg";
-import { Separator } from "@/common/shadcn/ui/separator";
 import { Navigation } from "./navigation";
 
 
 /** Отображает верхнюю панель приложения. */
-export function TopBar({ children }: { children?: ReactNode }) {
+export function TopBar() {
   return (
     <header className="min-h-[56px]">
       <div className="flex items-center justify-between px-[15px] py-[10px]">
@@ -27,8 +26,6 @@ export function TopBar({ children }: { children?: ReactNode }) {
           </Suspense>
         </div>
       </div>
-      {children}
-      <Separator />
     </header>
   );
 }
