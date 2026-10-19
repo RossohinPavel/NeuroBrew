@@ -1,7 +1,7 @@
 import { TopBar } from "@/modules/top-bar";
 
 
-export default function Layout({ children }: LayoutProps<"/[username]/[project]">) {
+export default function Layout(props: LayoutProps<"/[username]/[project]">) {
   return (
     <>
       <TopBar>
@@ -9,7 +9,7 @@ export default function Layout({ children }: LayoutProps<"/[username]/[project]"
           Навигация проекта
         </nav>
       </TopBar>
-      {children}
+      {props.children}
     </>
   );
 }

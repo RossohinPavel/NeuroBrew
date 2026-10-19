@@ -11,12 +11,12 @@ export const metadata: Metadata = {
   title: "NeuroBrew",
 };
 
-export default function Layout({ children }: LayoutProps<"/">) {
+export default function Layout(props: LayoutProps<"/">) {
   return (
     <html lang="ru" className={cn("dark font-sans", "font-sans", inter.variable)}>
       <body>
         <TooltipProvider>
-          {children}
+          {props.children}
         </TooltipProvider>
       </body>
     </html>

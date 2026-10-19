@@ -1,11 +1,11 @@
 import { TopBar } from "@/modules/top-bar";
 
 
-export default function Layout({ children }: LayoutProps<"/">) {
+export default function Layout(props: LayoutProps<"/">) {
   return (
     <>
       <TopBar />
-      {children}
+      {props.children}
     </>
   );
 }
