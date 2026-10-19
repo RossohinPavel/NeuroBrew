@@ -8,6 +8,7 @@ import { healthRoutes } from "./modules/health/health.routes.js";
 import { metadataRoutes } from "./modules/metadata/metadata.routes.js";
 import { registryRoutes } from "./modules/registry/registry.routes.js";
 import sensible from "@fastify/sensible";
+import { userRoutes } from "./modules/user/user.routes.js";
 
 
 export const app = fastify({
@@ -29,4 +30,5 @@ export const registerAppRoutes = (server: FastifyInstance) => {
   server.register(metadataRoutes, { prefix: "/metadata" });
   server.register(authRoutes, { prefix: "/auth" });
   server.register(registryRoutes, { prefix: "/registry" });
+  server.register(userRoutes, { prefix: "/user" });
 };
