@@ -19,12 +19,14 @@ export function UserPage(props: Props) {
 }
 
 /** Выбирает виджет профиля по параметру вкладки. */
-async function UserPageContent({ searchParams }: Props) {
+async function UserPageContent({ params, searchParams }: Props) {
   const { tab } = await searchParams;
 
   if (tab === "projects") {
     return <Projects />;
   }
 
-  return <Overview />;
+  const { username } = await params;
+
+  return <Overview username={username} />;
 }
