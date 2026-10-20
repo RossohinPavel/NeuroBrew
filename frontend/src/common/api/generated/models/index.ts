@@ -5,9 +5,14 @@
  * OpenAPI spec version: 1.0.0
  */
 
+export * from './createProject201';
+export * from './createProjectBody';
 export * from './def0';
 export * from './getChangelog200Item';
 export * from './getMyProjects200Item';
+export * from './getProject200';
+export * from './getProjects200Item';
+export * from './getProjectsParams';
 export * from './getUserById200';
 export * from './getUsers200Item';
 export * from './getUsersParams';
