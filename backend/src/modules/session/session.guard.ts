@@ -1,5 +1,5 @@
+import type { FastifyRequest } from "fastify";
 import type { JwtVerifyFunction } from "@fastify/jwt";
-import type { onRequestHookHandler } from "fastify";
 
 
 declare module "fastify" {
@@ -9,10 +9,14 @@ declare module "fastify" {
   }
 }
 
-export const requireAccessToken: onRequestHookHandler = async (request) => {
+type SessionGuard = (
+  request: Pick<FastifyRequest, "accessJwtVerify" | "refreshJwtVerify">,
+) => Promise<void>;
+
+export const requireAccessToken: SessionGuard = async (request) => {
   await request.accessJwtVerify();
 };
 
-export const requireRefreshToken: onRequestHookHandler = async (request) => {
+export const requireRefreshToken: SessionGuard = async (request) => {
   await request.refreshJwtVerify();
 };
