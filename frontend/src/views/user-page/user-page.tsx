@@ -8,7 +8,7 @@ type Props = PageProps<"/[username]">;
 /** Показывает основные сведения об учетной записи пользователя. */
 export function UserPage(props: Props) {
   return (
-    <main className="flex min-h-0 flex-1">
+    <main className="mt-2 flex min-h-0 flex-1">
       <div className="mx-auto w-full max-w-[1280px]">
         <Suspense fallback={null}>
           <UserPageContent {...props} />
