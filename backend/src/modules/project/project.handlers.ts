@@ -1,7 +1,6 @@
 import * as tables from "../../database/schema/index.js";
 import { and, eq } from "drizzle-orm";
 import type {
-  CreateProjectRequest,
   MyProjectResponse,
   MyProjectsResponse,
   ProjectParams,
@@ -9,6 +8,7 @@ import type {
   ProjectsQuery,
   ProjectsResponse,
 } from "./project.schema.js";
+import type { CreateProjectRequest } from "@shared/contracts";
 import type { RouteHandler } from "fastify";
 import type { SQL } from "drizzle-orm";
 

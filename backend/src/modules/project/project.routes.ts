@@ -1,5 +1,6 @@
 import * as handlers from "./project.handlers.js";
 import * as schemas from "./project.schema.js";
+import { CreateProjectRequestSchema } from "@shared/contracts";
 import type { FastifyPluginAsync } from "fastify";
 import { requireAccessToken } from "../session/session.guard.js";
 import { toJsonSchema } from "@valibot/to-json-schema";
@@ -58,7 +59,7 @@ export const projectRoutes: FastifyPluginAsync = async (server) => {
       tags: ["project"],
       security: [{ bearerAuth: [] }],
       body: toJsonSchema(
-        schemas.createProjectRequestSchema,
+        CreateProjectRequestSchema,
         { typeMode: "input", errorMode: "throw" },
       ),
       response: {

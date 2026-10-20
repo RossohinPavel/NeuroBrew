@@ -44,18 +44,6 @@ export const projectParamsSchema = v.object({
 });
 export type ProjectParams = v.InferOutput<typeof projectParamsSchema>;
 
-// Имя допускает только латинские буквы, цифры и одиночные дефисы внутри имени.
-// Проверка через regex сохраняется при преобразовании схемы в JSON Schema.
-export const createProjectRequestSchema = v.object({
-  name: v.pipe(
-    v.string(),
-    v.minLength(1),
-    v.maxLength(128),
-    v.regex(/^(?!-)(?!.*--)(?!.*-$)[A-Za-z0-9-]+$/),
-  ),
-});
-export type CreateProjectRequest = v.InferOutput<typeof createProjectRequestSchema>;
-
 // В будущем для моих проектов будет возвращаться больше информации, в том числе приватной.
 export const myProjectResponseSchema = v.object({
   id: v.number(),
