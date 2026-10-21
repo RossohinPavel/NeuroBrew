@@ -1,12 +1,11 @@
 import { Separator } from "@/common/shadcn/ui/separator";
+import { ProjectNavigation } from "@/modules/project-navigation";
 
 
 export default function Layout(props: LayoutProps<"/[username]/[project]">) {
   return (
     <>
-      <nav className="px-[15px]" aria-label="Навигация проекта">
-        Навигация проекта
-      </nav>
+      <ProjectNavigation />
       <Separator />
       {props.children}
     </>
