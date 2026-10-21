@@ -1,43 +1,33 @@
-"use client";
-
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { Fragment } from "react";
+import { Suspense } from "react";
+import NeuroBrewLogo from "@/common/assets/NeuroBrew.svg";
 import {
+  Breadcrumb,
   BreadcrumbItem,
   BreadcrumbLink,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
+  BreadcrumbList,
 } from "@/common/shadcn/ui/breadcrumb";
-import { TopBarBreadcrumbSkeleton } from "./breadcrumb-skeleton";
+import { BreadcrumbItems } from "./breadcrumb-items";
 
 
-/** Показывает ссылку на главную и первые два уровня текущего пути. */
+/** Показывает логотип и загружает элементы навигации по текущему пути. */
 export function TopBarBreadcrumb() {
-  const pathname = usePathname();
-  const segments = pathname.split("/").filter(Boolean).slice(0, 2);
-
   return (
-    <TopBarBreadcrumbSkeleton>
-      {segments.map((segment, index) => {
-        const href = `/${segments.slice(0, index + 1).join("/")}`;
-        const label = decodeURIComponent(segment);
-
-        return (
-          <Fragment key={href}>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              {href === pathname ? (
-                <BreadcrumbPage>{label}</BreadcrumbPage>
-              ) : (
-                <BreadcrumbLink render={<Link href={href} />}>
-                  {label}
-                </BreadcrumbLink>
-              )}
-            </BreadcrumbItem>
-          </Fragment>
-        );
-      })}
-    </TopBarBreadcrumbSkeleton>
+    <Breadcrumb>
+      <BreadcrumbList>
+        <BreadcrumbItem>
+          <BreadcrumbLink render={<Link href="/" />}>
+            <NeuroBrewLogo
+              width={188}
+              height={28}
+              aria-label="NeuroBrew"
+            />
+          </BreadcrumbLink>
+        </BreadcrumbItem>
+        <Suspense fallback={null}>
+          <BreadcrumbItems />
+        </Suspense>
+      </BreadcrumbList>
+    </Breadcrumb>
   );
 }

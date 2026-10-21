@@ -1,7 +1,7 @@
 import "server-only";
 
 import { Suspense } from "react";
-import { TopBarBreadcrumb, TopBarBreadcrumbSkeleton } from "./breadcrumb";
+import { TopBarBreadcrumb } from "./breadcrumb";
 import { Navigation } from "./navigation";
 
 
@@ -10,9 +10,7 @@ export function TopBar() {
   return (
     <header className="min-h-[56px]">
       <div className="flex items-center justify-between px-[15px] py-[10px]">
-        <Suspense fallback={<TopBarBreadcrumbSkeleton />}>
-          <TopBarBreadcrumb />
-        </Suspense>
+        <TopBarBreadcrumb />
         <div className="flex justify-end">
           <Suspense fallback={<div className="h-9" aria-hidden="true" />}>
             <Navigation />
