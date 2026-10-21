@@ -1,8 +1,7 @@
 import "server-only";
 
-import Link from "next/link";
 import { Suspense } from "react";
-import NeuroBrewLogo from "@/common/assets/NeuroBrew.svg";
+import { TopBarBreadcrumb, TopBarBreadcrumbSkeleton } from "./breadcrumb";
 import { Navigation } from "./navigation";
 
 
@@ -11,15 +10,9 @@ export function TopBar() {
   return (
     <header className="min-h-[56px]">
       <div className="flex items-center justify-between px-[15px] py-[10px]">
-        <div>
-          <Link href="/" className="block">
-            <NeuroBrewLogo
-              width={188}
-              height={28}
-              aria-label="NeuroBrew"
-            />
-          </Link>
-        </div>
+        <Suspense fallback={<TopBarBreadcrumbSkeleton />}>
+          <TopBarBreadcrumb />
+        </Suspense>
         <div className="flex justify-end">
           <Suspense fallback={<div className="h-9" aria-hidden="true" />}>
             <Navigation />
