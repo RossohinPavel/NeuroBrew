@@ -24,6 +24,19 @@ export const project = registrySchema.table("project", {
 export type ProjectInsert = InferInsertModel<typeof project>;
 export type ProjectSelect = InferSelectModel<typeof project>;
 
-// registrySchema.table("guidance");
+export const agentsmd = registrySchema.table("agentsmd", {
+  id: integer()
+    .primaryKey()
+    .generatedAlwaysAsIdentity(),
+  projectId: integer()
+    .notNull()
+    .references(() => project.id, { onDelete: "cascade" }),
+  content: varchar({ length: 32768 }) // Примерно 4–5 тысяч слов.
+    .notNull(),
+});
+
+export type AgentsmdInsert = InferInsertModel<typeof agentsmd>;
+export type AgentsmdSelect = InferSelectModel<typeof agentsmd>;
+
 // registrySchema.table("rule");
 // registrySchema.table("skill");
