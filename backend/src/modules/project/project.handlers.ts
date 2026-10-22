@@ -96,14 +96,22 @@ export const createProject: RouteHandler<{
     const { userId } = req.user;
     const { name } = req.body;
 
-    const [project] = await req.server.drizzle
-      .insert(tables.project)
-      .values({ userId, name })
-      .returning();
+    const project = await req.server.drizzle.transaction(async (tx) => {
+      const [project] = await tx
+        .insert(tables.project)
+        .values({ userId, name })
+        .returning();
 
-    if (!project) {
-      throw req.server.httpErrors.internalServerError("Failed to create project");
-    }
+      if (!project) {
+        throw req.server.httpErrors.internalServerError("Failed to create project");
+      }
+
+      await tx
+        .insert(tables.agentsmd)
+        .values({ projectId: project.id, content: `# ${name}` });
+
+      return project;
+    });
 
     return res.code(201).send({
       ...project,
