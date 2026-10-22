@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Button } from "@/common/shadcn/ui/button";
 import { ItemGroup } from "@/common/shadcn/ui/item";
-import { getProjectsOrThrow } from "@/entities/project";
+import { getProjectsOr404 } from "@/entities/project";
 import { isUserAuthenticated } from "@/entities/session";
 import { ProjectItem } from "./project-item";
 
@@ -13,7 +13,7 @@ type Props = {
 /** Загружает и показывает проекты пользователя по логину. */
 export async function Projects({ username }: Props) {
   const [projects, isAuthenticated] = await Promise.all([
-    getProjectsOrThrow(username),
+    getProjectsOr404(username),
     isUserAuthenticated(),
   ]);
 
