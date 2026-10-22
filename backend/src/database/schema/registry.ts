@@ -30,6 +30,7 @@ export const agentsmd = registrySchema.table("agentsmd", {
     .generatedAlwaysAsIdentity(),
   projectId: integer()
     .notNull()
+    .unique()
     .references(() => project.id, { onDelete: "cascade" }),
   content: varchar({ length: 32768 }) // Примерно 4–5 тысяч слов.
     .notNull(),
