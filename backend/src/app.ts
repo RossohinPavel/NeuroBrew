@@ -1,5 +1,6 @@
 import { accessTokenConfig, refreshTokenConfig } from "./modules/session/session.config.js";
 import fastify, { type FastifyInstance } from "fastify";
+import { agentsmdRoutes } from "./modules/agentsmd/agentsmd.routes.js";
 import { authRoutes } from "./modules/auth/auth.routes.js";
 import { drizzlePlugin } from "./database/drizzle.plugin.js";
 import { ENV } from "./config/index.js";
@@ -25,10 +26,12 @@ app.register(fastifyJwt, accessTokenConfig);
 app.register(fastifyJwt, refreshTokenConfig);
 app.register(sensible, { sharedSchemaId: "HttpError" });
 
+// Все модули роутов регистрируем здесь плоско, без вложенных регистраций друг в друга.
 export const registerAppRoutes = (server: FastifyInstance) => {
   server.register(healthRoutes);
   server.register(metadataRoutes, { prefix: "/metadata" });
   server.register(authRoutes, { prefix: "/auth" });
   server.register(projectRoutes, { prefix: "/project" });
+  server.register(agentsmdRoutes, { prefix: "/project/:projectId/agents" });
   server.register(userRoutes, { prefix: "/user" });
 };

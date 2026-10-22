@@ -1,30 +1,27 @@
 import * as tables from "../../database/schema/index.js";
-import type { AgentsmdListQuery, AgentsmdListResponse } from "./agentsmd.schema.js";
-import { and, eq } from "drizzle-orm";
+import type { AgentsmdParams, AgentsmdResponse } from "./agentsmd.schema.js";
+import { eq } from "drizzle-orm";
 import type { RouteHandler } from "fastify";
-import type { SQL } from "drizzle-orm";
 
 
-export const getAgentsmdList: RouteHandler<{
-  Querystring: AgentsmdListQuery;
-  Reply: AgentsmdListResponse;
+export const getAgentsmd: RouteHandler<{
+  Params: AgentsmdParams;
+  Reply: AgentsmdResponse;
 }> = async (req, res) => {
   try {
-    const { projectId } = req.query;
+    const { projectId } = req.params;
 
-    const query = req.server.drizzle
+    const [agentsmd] = await req.server.drizzle
       .select()
-      .from(tables.agentsmd);
+      .from(tables.agentsmd)
+      .where(eq(tables.agentsmd.projectId, projectId))
+      .limit(1);
 
-    const filters: SQL[] = [];
-
-    if (projectId !== undefined) {
-      filters.push(eq(tables.agentsmd.projectId, projectId));
+    if (!agentsmd) {
+      return res.notFound("AGENTS.md not found");
     }
 
-    const agentsmdList = await query.where(and(...filters));
-
-    return res.code(200).send(agentsmdList);
+    return res.code(200).send(agentsmd);
   } catch (error) {
     req.log.error(error);
 

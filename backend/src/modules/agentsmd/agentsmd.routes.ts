@@ -7,22 +7,23 @@ import { toJsonSchema } from "@valibot/to-json-schema";
 export const agentsmdRoutes: FastifyPluginAsync = async (server) => {
   server.get("/", {
     schema: {
-      operationId: "getAgentsmdList",
-      summary: "Get AGENTS.md list",
-      description: "Returns a list of AGENTS.md records, optionally filtered by project ID.",
+      operationId: "getAgentsmd",
+      summary: "Get AGENTS.md",
+      description: "Returns the AGENTS.md for the specified project.",
       tags: ["agentsmd"],
-      querystring: toJsonSchema(
-        schemas.agentsmdListQuerySchema,
+      params: toJsonSchema(
+        schemas.agentsmdParamsSchema,
         { typeMode: "input", errorMode: "throw" },
       ),
       response: {
         200: toJsonSchema(
-          schemas.agentsmdListResponseSchema,
+          schemas.agentsmdResponseSchema,
           { typeMode: "output", errorMode: "throw" },
         ),
         400: { $ref: "HttpError" },
+        404: { $ref: "HttpError" },
         500: { $ref: "HttpError" },
       },
     },
-  }, handlers.getAgentsmdList);
+  }, handlers.getAgentsmd);
 };

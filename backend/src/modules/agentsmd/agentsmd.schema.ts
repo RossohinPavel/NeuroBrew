@@ -1,17 +1,17 @@
 import * as v from "valibot";
 
 
-export const agentsmdListQuerySchema = v.object({
-  projectId: v.optional(v.pipe(
+export const agentsmdParamsSchema = v.object({
+  projectId: v.pipe(
     v.number(),
     v.integer(),
     v.minValue(1),
     v.maxValue(2147483647),
-  )),
+  ),
 });
-export type AgentsmdListQuery = v.InferOutput<typeof agentsmdListQuerySchema>;
+export type AgentsmdParams = v.InferOutput<typeof agentsmdParamsSchema>;
 
-const agentsmdSchema = v.object({
+export const agentsmdResponseSchema = v.object({
   id: v.pipe(
     v.number(),
     v.integer(),
@@ -22,5 +22,4 @@ const agentsmdSchema = v.object({
   ),
   content: v.string(),
 });
-export const agentsmdListResponseSchema = v.array(agentsmdSchema);
-export type AgentsmdListResponse = v.InferOutput<typeof agentsmdListResponseSchema>;
+export type AgentsmdResponse = v.InferOutput<typeof agentsmdResponseSchema>;
