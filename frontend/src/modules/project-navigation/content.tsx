@@ -29,11 +29,11 @@ export function Content() {
           About
         </TabsTrigger>
         <TabsTrigger
-          value="guidance"
+          value="agents"
           nativeButton={false}
-          render={<Link href={`${projectHref}/guidance`} />}
+          render={<Link href={`${projectHref}/agents`} />}
         >
-          Guidance
+          AGENTS
         </TabsTrigger>
         <TabsTrigger
           value="rules"

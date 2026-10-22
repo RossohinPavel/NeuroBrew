@@ -20,7 +20,7 @@ export const getMyProjectsOrThrow = cache(async () => {
   return response.data;
 });
 
-/** Возвращает первый проект с указанным названием или показывает страницу 404, если проект не найден. */
+/** Возвращает проект с указанным названием или показывает страницу 404, если проект не найден. */
 export const getProjectByNameOr404 = cache(async (name: string) => {
   const response = await getProjects({ name });
 

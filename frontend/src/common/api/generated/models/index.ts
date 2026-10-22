@@ -8,6 +8,7 @@
 export * from './createProject201';
 export * from './createProjectBody';
 export * from './def0';
+export * from './getAgentsmd200';
 export * from './getChangelog200Item';
 export * from './getMyProjects200Item';
 export * from './getProject200';

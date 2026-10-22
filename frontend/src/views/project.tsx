@@ -21,7 +21,8 @@ export function Project(props: Props) {
 async function ProjectContent({ params }: Props) {
   const { project } = await params;
   const foundProject = await getProjectByNameOr404(project);
-  const createdAt = new Date(foundProject.createdAt).toLocaleDateString("ru-RU", { timeZone: "Europe/Moscow" });
+  const createdAt = new Date(foundProject.createdAt)
+    .toLocaleDateString("ru-RU", { timeZone: "Europe/Moscow" });
 
   return (
     <div className="flex flex-col gap-2 p-4">
