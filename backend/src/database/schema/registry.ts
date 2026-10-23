@@ -1,6 +1,5 @@
 import { type InferInsertModel, type InferSelectModel } from "drizzle-orm";
 import { integer, snakeCase, timestamp, uniqueIndex, varchar } from "drizzle-orm/pg-core";
-import { users } from "./auth.js";
 import { account } from "./user.js";
 
 
@@ -10,10 +9,8 @@ export const project = registrySchema.table("project", {
   id: integer()
     .primaryKey()
     .generatedAlwaysAsIdentity(),
-  userId: integer()
-    .notNull()
-    .references(() => users.id, { onDelete: "cascade" }),
   accountId: integer()
+    .notNull()
     .references(() => account.id, { onDelete: "cascade" }),
   name: varchar({ length: 128 })
     .notNull(),
@@ -21,7 +18,7 @@ export const project = registrySchema.table("project", {
     .defaultNow()
     .notNull(),
 }, (table) => [
-  uniqueIndex("project_user_id_name_unique").on(table.userId, table.name),
+  uniqueIndex("project_account_id_name_unique").on(table.accountId, table.name),
 ]);
 
 export type ProjectInsert = InferInsertModel<typeof project>;
