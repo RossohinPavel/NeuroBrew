@@ -1,6 +1,6 @@
-import * as handlers from "./auth.handlers.js";
-import { authTokensResponseSchema, meResponseSchema } from "./auth.schema.js";
-import { LoginRequestSchema, RegisterRequestSchema } from "@shared/contracts";
+import * as handlers from "./handlers.js";
+import * as schemas from "./schemas.js";
+import * as contracts from "@shared/contracts";
 import { requireAccessToken, requireRefreshToken } from "../session/session.guard.js";
 import type { FastifyPluginAsync } from "fastify";
 import { toJsonSchema } from "@valibot/to-json-schema";
@@ -13,9 +13,16 @@ export const authRoutes: FastifyPluginAsync = async (server) => {
       summary: "Register a user",
       description: "Creates a new user account.",
       tags: ["auth"],
-      body: toJsonSchema(RegisterRequestSchema, { typeMode: "input", errorMode: "throw" }),
+      body: toJsonSchema(contracts.RegisterRequestSchema, {
+        typeMode: "input",
+        errorMode: "throw",
+      }),
       response: { 
-        201: toJsonSchema(authTokensResponseSchema, { typeMode: "output", errorMode: "throw" }),
+        201: toJsonSchema(schemas.authTokensResponseSchema, {
+          typeMode: "output",
+          errorMode: "throw",
+        }),
+        409: { $ref: "HttpError" },
         500: { $ref: "HttpError" },
       },
     },
@@ -27,9 +34,15 @@ export const authRoutes: FastifyPluginAsync = async (server) => {
       summary: "Log in a user",
       description: "Authenticates a user and starts a new session.",
       tags: ["auth"],
-      body: toJsonSchema(LoginRequestSchema, { typeMode: "input", errorMode: "throw" }),
+      body: toJsonSchema(contracts.LoginRequestSchema, {
+        typeMode: "input",
+        errorMode: "throw",
+      }),
       response: {
-        200: toJsonSchema(authTokensResponseSchema, { typeMode: "output", errorMode: "throw" }),
+        200: toJsonSchema(schemas.authTokensResponseSchema, {
+          typeMode: "output",
+          errorMode: "throw",
+        }),
         401: { $ref: "HttpError" },
         500: { $ref: "HttpError" },
       },
@@ -45,7 +58,10 @@ export const authRoutes: FastifyPluginAsync = async (server) => {
       tags: ["auth"],
       security: [{ bearerAuth: [] }],
       response: {
-        200: toJsonSchema(authTokensResponseSchema, { typeMode: "output", errorMode: "throw" }),
+        200: toJsonSchema(schemas.authTokensResponseSchema, {
+          typeMode: "output",
+          errorMode: "throw",
+        }),
         400: { $ref: "HttpError" },
         401: { $ref: "HttpError" },
         500: { $ref: "HttpError" },
@@ -62,7 +78,10 @@ export const authRoutes: FastifyPluginAsync = async (server) => {
       tags: ["auth"],
       security: [{ bearerAuth: [] }],
       response: {
-        200: toJsonSchema(meResponseSchema, { typeMode: "output", errorMode: "throw" }),
+        200: toJsonSchema(schemas.meResponseSchema, {
+          typeMode: "output",
+          errorMode: "throw",
+        }),
         400: { $ref: "HttpError" },
         401: { $ref: "HttpError" },
         500: { $ref: "HttpError" },

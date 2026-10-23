@@ -1,7 +1,7 @@
 import { accessTokenConfig, refreshTokenConfig } from "./modules/session/session.config.js";
 import fastify, { type FastifyInstance } from "fastify";
 import { agentsmdRoutes } from "./modules/agentsmd/agentsmd.routes.js";
-import { authRoutes } from "./modules/auth/auth.routes.js";
+import { authRoutes } from "./modules/auth/routes.js";
 import { drizzlePlugin } from "./database/drizzle.plugin.js";
 import { ENV } from "./config/index.js";
 import fastifyJwt from "@fastify/jwt";

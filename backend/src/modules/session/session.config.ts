@@ -4,7 +4,7 @@ import { ENV } from "../../config/index.js";
 declare module "@fastify/jwt" {
   interface FastifyJWT {
     namespaces: "access" | "refresh";
-    payload: { userId: number };
+    payload: { accountId: number };
   }
 }
 

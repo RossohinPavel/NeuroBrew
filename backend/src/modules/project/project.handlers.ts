@@ -93,7 +93,7 @@ export const createProject: RouteHandler<{
   Reply: MyProjectResponse;
 }> = async (req, res) => {
   try {
-    const { userId } = req.user;
+    const { accountId: userId } = req.user;
     const { name } = req.body;
 
     const project = await req.server.drizzle.transaction(async (tx) => {
@@ -128,7 +128,7 @@ export const getMyProjects: RouteHandler<{
   Reply: MyProjectsResponse;
 }> = async (req, res) => {
   try {
-    const { userId } = req.user;
+    const { accountId: userId } = req.user;
 
     const projects = await req.server.drizzle
       .select()
