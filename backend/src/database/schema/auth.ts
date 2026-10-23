@@ -5,9 +5,6 @@ import { integer, snakeCase, timestamp, varchar } from "drizzle-orm/pg-core";
 export const authSchema = snakeCase.schema("auth");
 
 /*
- * Таблицы в PostgreSQL принято именовать в единственном числе, кроме зарезервированных слов,
- * поэтому для таблицы пользователей допустимо имя `users`.
- *
  * Длина email ограничена стандартными 255 символами.
  *
  * Для хеша пароля оставлен запас под алгоритмы с нефиксированной длиной, включая Argon2.

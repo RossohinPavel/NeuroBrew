@@ -2,6 +2,7 @@
 .env
 node_modules/
 reference
+/DOMAIN.md
 
 # Не скрываю, что использую нейросети. Скрываю, как я их использую.
 .agents
