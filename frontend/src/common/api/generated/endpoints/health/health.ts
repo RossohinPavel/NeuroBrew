@@ -35,7 +35,7 @@ export const getHealthUrl = () => {
 
 
 
-  return `/health`
+  return `/health/`
 }
 
 /**

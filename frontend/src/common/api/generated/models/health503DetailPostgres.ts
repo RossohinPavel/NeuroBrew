@@ -5,9 +5,9 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export type CreateProject201 = {
-  id: number;
-  userId: number;
-  name: string;
-  createdAt: string;
+export type Health503DetailPostgres = {
+  status: 'pass';
+} | {
+  status: 'fail';
+  output: string;
 };

@@ -5,9 +5,9 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export type GetMyProjects200Item = {
-  id: number;
-  userId: number;
-  name: string;
-  createdAt: string;
+export type Health200DetailBackend = {
+  status: 'pass';
+} | {
+  status: 'fail';
+  output: string;
 };

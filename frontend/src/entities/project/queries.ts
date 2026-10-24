@@ -1,49 +1,31 @@
 import "server-only";
 
-import { notFound } from "next/navigation";
 import { cache } from "react";
-import { getMyProjects, getProjects } from "@/common/api/generated/endpoints";
-import { withSession } from "@/entities/session";
+import type { GetProjects200Item } from "@/common/api/generated/models";
 
 
-const getMyProjectsWithSession = withSession(getMyProjects);
+/** Возвращает пустой список до восстановления API проектов текущего пользователя. */
+export const getMyProjectsOrThrow = cache(async (): Promise<GetProjects200Item[]> => {
+  console.warn("getMyProjectsOrThrow: нужно заменить заглушку вызовом API-метода.");
 
-
-/** Возвращает проекты текущего пользователя или выбрасывает ошибку при неудачном запросе. */
-export const getMyProjectsOrThrow = cache(async () => {
-  const response = await getMyProjectsWithSession();
-
-  if (response.status !== 200) {
-    throw new Error("Failed to load the authenticated user's projects.");
-  }
-
-  return response.data;
+  return [];
 });
 
-/** Возвращает проект с указанным названием или показывает страницу 404, если проект не найден. */
+/** Возвращает заглушку проекта с указанным названием до восстановления поиска через API. */
 export const getProjectByNameOr404 = cache(async (name: string) => {
-  const response = await getProjects({ name });
+  console.warn("getProjectByNameOr404: нужно заменить заглушку вызовом API-метода.");
 
-  if (response.status !== 200) {
-    throw new Error("Failed to load the project.");
-  }
-
-  const [project] = response.data;
-
-  if (!project) {
-    notFound();
-  }
-
-  return project;
+  return {
+    id: 0,
+    accountId: 0,
+    name,
+    createdAt: "1970-01-01T00:00:00.000Z",
+  };
 });
 
-/** Возвращает проекты пользователя по логину или показывает страницу 404 при неудачном запросе. */
-export const getProjectsOr404 = cache(async (username: string) => {
-  const response = await getProjects({ username });
+/** Возвращает пустой список до восстановления API поиска проектов по логину. */
+export const getProjectsOr404 = cache(async (_username: string): Promise<GetProjects200Item[]> => {
+  console.warn("getProjectsOr404: нужно заменить заглушку вызовом API-метода.");
 
-  if (response.status !== 200) {
-    notFound();
-  }
-
-  return response.data;
+  return [];
 });

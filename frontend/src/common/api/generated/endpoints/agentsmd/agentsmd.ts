@@ -40,21 +40,23 @@ export type getAgentsmdResponseError = (getAgentsmdResponse400 | getAgentsmdResp
 
 export type getAgentsmdResponse = (getAgentsmdResponseSuccess | getAgentsmdResponseError)
 
-export const getGetAgentsmdUrl = (projectId: number,) => {
+export const getGetAgentsmdUrl = (profileId: number,
+    projectId: number,) => {
 
 
 
 
-  return `/project/${projectId}/agents/`
+  return `/profile/${profileId}/project/${projectId}/agents/`
 }
 
 /**
  * Returns the AGENTS.md for the specified project.
  * @summary Get AGENTS.md
  */
-export const getAgentsmd = async (projectId: number, options?: Parameters<typeof apiFetch>[1]): Promise<getAgentsmdResponse> => {
+export const getAgentsmd = async (profileId: number,
+    projectId: number, options?: Parameters<typeof apiFetch>[1]): Promise<getAgentsmdResponse> => {
 
-  return apiFetch<getAgentsmdResponse>(getGetAgentsmdUrl(projectId),
+  return apiFetch<getAgentsmdResponse>(getGetAgentsmdUrl(profileId,projectId),
   {
     ...options,
     method: 'GET'

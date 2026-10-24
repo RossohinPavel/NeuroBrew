@@ -8,7 +8,6 @@ import type {
   Def0,
   Login200,
   LoginBody,
-  Me200,
   Refresh200,
   Register201,
   RegisterBody
@@ -21,6 +20,11 @@ export type registerResponse201 = {
   status: 201
 }
 
+export type registerResponse409 = {
+  data: Def0
+  status: 409
+}
+
 export type registerResponse500 = {
   data: Def0
   status: 500
@@ -29,7 +33,7 @@ export type registerResponse500 = {
 export type registerResponseSuccess = (registerResponse201) & {
   headers: Headers;
 };
-export type registerResponseError = (registerResponse500) & {
+export type registerResponseError = (registerResponse409 | registerResponse500) & {
   headers: Headers;
 };
 
@@ -182,59 +186,6 @@ export const refresh = async ( options?: Parameters<typeof apiFetch>[1]): Promis
   {
     ...options,
     method: 'POST'
-
-
-  }
-);}
-
-
-export type meResponse200 = {
-  data: Me200
-  status: 200
-}
-
-export type meResponse400 = {
-  data: Def0
-  status: 400
-}
-
-export type meResponse401 = {
-  data: Def0
-  status: 401
-}
-
-export type meResponse500 = {
-  data: Def0
-  status: 500
-}
-
-export type meResponseSuccess = (meResponse200) & {
-  headers: Headers;
-};
-export type meResponseError = (meResponse400 | meResponse401 | meResponse500) & {
-  headers: Headers;
-};
-
-export type meResponse = (meResponseSuccess | meResponseError)
-
-export const getMeUrl = () => {
-
-
-
-
-  return `/auth/me`
-}
-
-/**
- * Returns the currently authenticated user.
- * @summary Get current user
- */
-export const me = async ( options?: Parameters<typeof apiFetch>[1]): Promise<meResponse> => {
-
-  return apiFetch<meResponse>(getMeUrl(),
-  {
-    ...options,
-    method: 'GET'
 
 
   }

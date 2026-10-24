@@ -4,10 +4,11 @@
  * NeuroBrew API
  * OpenAPI spec version: 1.0.0
  */
-import type { Health200Services } from './health200Services';
+import type { Health200Detail } from './health200Detail';
 import type { Health200Status } from './health200Status';
 
 export type Health200 = {
   status: Health200Status;
-  services: Health200Services;
+  timestamp: string;
+  detail: Health200Detail;
 };

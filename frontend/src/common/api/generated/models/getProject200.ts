@@ -7,7 +7,7 @@
 
 export type GetProject200 = {
   id: number;
-  userId: number;
+  accountId: number;
   name: string;
   createdAt: string;
 };

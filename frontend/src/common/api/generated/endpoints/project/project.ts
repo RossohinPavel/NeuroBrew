@@ -5,10 +5,7 @@
  * OpenAPI spec version: 1.0.0
  */
 import type {
-  CreateProject201,
-  CreateProjectBody,
   Def0,
-  GetMyProjects200Item,
   GetProject200,
   GetProjects200Item,
   GetProjectsParams
@@ -40,7 +37,8 @@ export type getProjectsResponseError = (getProjectsResponse400 | getProjectsResp
 
 export type getProjectsResponse = (getProjectsResponseSuccess | getProjectsResponseError)
 
-export const getGetProjectsUrl = (params?: GetProjectsParams,) => {
+export const getGetProjectsUrl = (profileId: number,
+    params?: GetProjectsParams,) => {
   const normalizedParams = new URLSearchParams();
 
   Object.entries(params || {}).forEach(([key, value]) => {
@@ -52,88 +50,22 @@ export const getGetProjectsUrl = (params?: GetProjectsParams,) => {
 
   const stringifiedParams = normalizedParams.toString();
 
-  return stringifiedParams.length > 0 ? `/project/?${stringifiedParams}` : `/project/`
+  return stringifiedParams.length > 0 ? `/profile/${profileId}/project/?${stringifiedParams}` : `/profile/${profileId}/project/`
 }
 
 /**
- * Returns projects by username.
+ * Returns projects for the specified profile.
  * @summary Get projects
  */
-export const getProjects = async (params?: GetProjectsParams, options?: Parameters<typeof apiFetch>[1]): Promise<getProjectsResponse> => {
+export const getProjects = async (profileId: number,
+    params?: GetProjectsParams, options?: Parameters<typeof apiFetch>[1]): Promise<getProjectsResponse> => {
 
-  return apiFetch<getProjectsResponse>(getGetProjectsUrl(params),
+  return apiFetch<getProjectsResponse>(getGetProjectsUrl(profileId,params),
   {
     ...options,
     method: 'GET'
 
 
-  }
-);}
-
-
-export type createProjectResponse201 = {
-  data: CreateProject201
-  status: 201
-}
-
-export type createProjectResponse400 = {
-  data: Def0
-  status: 400
-}
-
-export type createProjectResponse401 = {
-  data: Def0
-  status: 401
-}
-
-export type createProjectResponse500 = {
-  data: Def0
-  status: 500
-}
-
-export type createProjectResponseSuccess = (createProjectResponse201) & {
-  headers: Headers;
-};
-export type createProjectResponseError = (createProjectResponse400 | createProjectResponse401 | createProjectResponse500) & {
-  headers: Headers;
-};
-
-export type createProjectResponse = (createProjectResponseSuccess | createProjectResponseError)
-
-export const getCreateProjectUrl = () => {
-
-
-
-
-  return `/project/`
-}
-
-/**
- * Creates a project for the current user.
- * @summary Create a project
- */
-export const createProject = async (createProjectBody: CreateProjectBody, options?: Parameters<typeof apiFetch>[1]): Promise<createProjectResponse> => {
-
-    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
-    if (!h) return {};
-    if (h instanceof Headers) return Object.fromEntries(h.entries());
-    if (Symbol.iterator in h) {
-      return Object.fromEntries(
-        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
-      );
-    }
-    const headers: Record<string, string | readonly string[]> = {};
-    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
-      if (value !== undefined) headers[name] = value;
-    }
-    return headers;
-  };
-return apiFetch<createProjectResponse>(getCreateProjectUrl(),
-  {
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
-    body: JSON.stringify(createProjectBody)
   }
 );}
 
@@ -167,69 +99,23 @@ export type getProjectResponseError = (getProjectResponse400 | getProjectRespons
 
 export type getProjectResponse = (getProjectResponseSuccess | getProjectResponseError)
 
-export const getGetProjectUrl = (id: number,) => {
+export const getGetProjectUrl = (profileId: number,
+    id: number,) => {
 
 
 
 
-  return `/project/${id}`
+  return `/profile/${profileId}/project/${id}`
 }
 
 /**
  * Returns a project by ID.
  * @summary Get a project
  */
-export const getProject = async (id: number, options?: Parameters<typeof apiFetch>[1]): Promise<getProjectResponse> => {
+export const getProject = async (profileId: number,
+    id: number, options?: Parameters<typeof apiFetch>[1]): Promise<getProjectResponse> => {
 
-  return apiFetch<getProjectResponse>(getGetProjectUrl(id),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
-
-export type getMyProjectsResponse200 = {
-  data: GetMyProjects200Item[]
-  status: 200
-}
-
-export type getMyProjectsResponse401 = {
-  data: Def0
-  status: 401
-}
-
-export type getMyProjectsResponse500 = {
-  data: Def0
-  status: 500
-}
-
-export type getMyProjectsResponseSuccess = (getMyProjectsResponse200) & {
-  headers: Headers;
-};
-export type getMyProjectsResponseError = (getMyProjectsResponse401 | getMyProjectsResponse500) & {
-  headers: Headers;
-};
-
-export type getMyProjectsResponse = (getMyProjectsResponseSuccess | getMyProjectsResponseError)
-
-export const getGetMyProjectsUrl = () => {
-
-
-
-
-  return `/project/my`
-}
-
-/**
- * Returns the current user's projects.
- * @summary Get my projects
- */
-export const getMyProjects = async ( options?: Parameters<typeof apiFetch>[1]): Promise<getMyProjectsResponse> => {
-
-  return apiFetch<getMyProjectsResponse>(getGetMyProjectsUrl(),
+  return apiFetch<getProjectResponse>(getGetProjectUrl(profileId,id),
   {
     ...options,
     method: 'GET'

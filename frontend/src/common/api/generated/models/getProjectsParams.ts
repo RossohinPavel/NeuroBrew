@@ -8,16 +8,7 @@
 export type GetProjectsParams = {
 /**
  * @minLength 1
- */
-username?: string;
-/**
- * @minLength 1
  * @maxLength 128
  */
 name?: string;
-/**
- * @minimum 1
- * @maximum 2147483647
- */
-userId?: number;
 };

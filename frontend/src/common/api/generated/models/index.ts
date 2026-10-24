@@ -5,27 +5,24 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export * from './createProject201';
-export * from './createProjectBody';
 export * from './def0';
 export * from './getAgentsmd200';
 export * from './getChangelog200Item';
-export * from './getMyProjects200Item';
-export * from './getProject200';
-export * from './getProjects200Item';
-export * from './getProjectsParams';
 export * from './getProfileById200';
 export * from './getProfiles200Item';
 export * from './getProfilesParams';
+export * from './getProject200';
+export * from './getProjects200Item';
+export * from './getProjectsParams';
 export * from './health200';
-export * from './health200Services';
-export * from './health200ServicesBackend';
-export * from './health200ServicesPostgres';
+export * from './health200Detail';
+export * from './health200DetailBackend';
+export * from './health200DetailPostgres';
 export * from './health200Status';
 export * from './health503';
-export * from './health503Services';
-export * from './health503ServicesBackend';
-export * from './health503ServicesPostgres';
+export * from './health503Detail';
+export * from './health503DetailBackend';
+export * from './health503DetailPostgres';
 export * from './health503Status';
 export * from './login200';
 export * from './login200TokenType';

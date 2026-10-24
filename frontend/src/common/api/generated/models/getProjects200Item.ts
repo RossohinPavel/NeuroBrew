@@ -7,7 +7,7 @@
 
 export type GetProjects200Item = {
   id: number;
-  userId: number;
+  accountId: number;
   name: string;
   createdAt: string;
 };

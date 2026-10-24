@@ -9,5 +9,7 @@ export type Health200Status = typeof Health200Status[keyof typeof Health200Statu
 
 
 export const Health200Status = {
-  ok: 'ok',
+  pass: 'pass',
+  warn: 'warn',
+  fail: 'fail',
 } as const;
