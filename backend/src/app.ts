@@ -26,7 +26,7 @@ export const registerAppRoutes = (server: FastifyInstance) => {
   server.register(routes.healthRoutes, { prefix: "/health" });
   server.register(routes.metadataRoutes, { prefix: "/metadata" });
   server.register(routes.authRoutes, { prefix: "/auth" });
+  server.register(routes.profileRoutes, { prefix: "/profile" });
   server.register(routes.projectRoutes, { prefix: "/project" });
   server.register(routes.agentsmdRoutes, { prefix: "/project/:projectId/agents" });
-  server.register(routes.userRoutes, { prefix: "/user" });
 };

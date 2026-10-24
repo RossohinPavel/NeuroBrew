@@ -1,40 +1,40 @@
-import * as handlers from "./user.handlers.js";
-import * as schemas from "./user.schemas.js";
+import * as handlers from "./handlers.js";
+import * as schemas from "./schemas.js";
 import type { FastifyPluginAsync } from "fastify";
 import { toJsonSchema } from "@valibot/to-json-schema";
 
 
-export const userRoutes: FastifyPluginAsync = async (server) => {
+export const profileRoutes: FastifyPluginAsync = async (server) => {
   server.get("/", {
     schema: {
-      operationId: "getUsers",
-      tags: ["user"],
+      operationId: "getProfiles",
+      tags: ["profile"],
       querystring: toJsonSchema(
-        schemas.UsersQuerySchema,
+        schemas.ProfilesQuerySchema,
         { typeMode: "input", errorMode: "throw" },
       ),
       response: {
         200: toJsonSchema(
-          schemas.UsersResponseSchema,
+          schemas.ProfilesResponseSchema,
           { typeMode: "output", errorMode: "throw" },
         ),
         400: { $ref: "HttpError" },
         500: { $ref: "HttpError" },
       },
     },
-  }, handlers.getUsers);
+  }, handlers.getProfiles);
 
   server.get("/:id", {
     schema: {
-      operationId: "getUserById",
-      tags: ["user"],
+      operationId: "getProfileById",
+      tags: ["profile"],
       params: toJsonSchema(
-        schemas.UserParamsSchema,
+        schemas.ProfileParamsSchema,
         { typeMode: "input", errorMode: "throw" },
       ),
       response: {
         200: toJsonSchema(
-          schemas.UserResponseSchema,
+          schemas.ProfileResponseSchema,
           { typeMode: "output", errorMode: "throw" },
         ),
         400: { $ref: "HttpError" },
@@ -42,5 +42,5 @@ export const userRoutes: FastifyPluginAsync = async (server) => {
         500: { $ref: "HttpError" },
       },
     },
-  }, handlers.getUserById);
+  }, handlers.getProfileById);
 };

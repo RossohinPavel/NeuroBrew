@@ -5,9 +5,10 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export type GetUserById200 = {
-  id: number;
-  email: string;
-  username: string;
-  createdAt: string;
+export type GetProfilesParams = {
+email?: string;
+/**
+ * @minLength 1
+ */
+username?: string;
 };
