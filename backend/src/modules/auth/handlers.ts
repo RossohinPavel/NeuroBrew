@@ -141,32 +141,3 @@ export const refresh: RouteHandler<{
     expiresIn: 900,
   });
 };
-
-export const me: RouteHandler<{
-  Reply: schemas.MeResponse;
-}> = async (req, res) => {
-  const { accountId } = req.user;
-
-  const [userAccount] = await req.server.drizzle
-    .select({
-      id: tables.account.id,
-      email: tables.account.email,
-      username: tables.profile.username,
-      createdAt: tables.account.createdAt,
-    })
-    .from(tables.account)
-    .innerJoin(tables.profile, eq(tables.profile.accountId, tables.account.id))
-    .where(eq(tables.account.id, accountId))
-    .limit(1);
-
-  if (!userAccount) {
-    throw req.server.httpErrors.unauthorized("Invalid access token");
-  }
-
-  return res.code(200).send({
-    id: userAccount.id,
-    email: userAccount.email,
-    username: userAccount.username,
-    createdAt: userAccount.createdAt.toISOString(),
-  });
-};

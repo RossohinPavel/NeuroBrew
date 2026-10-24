@@ -23,6 +23,7 @@ app.register(sensible, { sharedSchemaId: "HttpError" });
 
 // Все модули роутов регистрируем здесь плоско, без вложенных регистраций друг в друга.
 export const registerAppRoutes = (server: FastifyInstance) => {
+  // Сервисные маршруты
   server.register(routes.healthRoutes, {
     prefix: "/health",
   });
@@ -41,5 +42,9 @@ export const registerAppRoutes = (server: FastifyInstance) => {
   });
   server.register(routes.agentsmdRoutes, {
     prefix: "/profile/:profileId/project/:projectId/agents",
+  });
+  // Приватные маршруты
+  server.register(routes.meRoutes, {
+    prefix: "/me",
   });
 };

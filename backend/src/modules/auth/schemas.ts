@@ -12,18 +12,4 @@ export const authTokensResponseSchema = v.object({
   ),
 });
 
-export const meResponseSchema = v.object({
-  id: v.number(),
-  email: v.pipe(
-    v.string(),
-    v.email(),
-  ),
-  username: v.string(),
-  createdAt: v.pipe(
-    v.string(),
-    v.isoTimestamp(),
-  ),
-});
-
 export type AuthTokensResponse = v.InferOutput<typeof authTokensResponseSchema>;
-export type MeResponse = v.InferOutput<typeof meResponseSchema>;
