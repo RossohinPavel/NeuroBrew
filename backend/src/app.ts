@@ -47,4 +47,7 @@ export const registerAppRoutes = (server: FastifyInstance) => {
   server.register(routes.meRoutes, {
     prefix: "/me",
   });
+  server.register(routes.myProjectRoutes, {
+    prefix: "/me/project",
+  });
 };

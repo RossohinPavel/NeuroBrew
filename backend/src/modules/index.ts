@@ -3,5 +3,6 @@ export { authRoutes } from "./auth/routes.js";
 export { healthRoutes } from "./health/routes.js";
 export { meRoutes } from "./me/routes.js";
 export { metadataRoutes } from "./metadata/routes.js";
+export { myProjectRoutes } from "./my-project/routes.js";
 export { profileRoutes } from "./profile/routes.js";
 export { projectRoutes } from "./project/routes.js";
