@@ -1,1 +1,1 @@
-export { postgresIdSchema, type PostgresId } from "./postgres-id-schema.js";
+export { postgresIdSchema, type PostgresId, createIdParamsSchema } from "./params.js";
