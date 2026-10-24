@@ -1,5 +1,5 @@
-import * as handlers from "./agentsmd.handlers.js";
-import * as schemas from "./agentsmd.schema.js";
+import * as handlers from "./handlers.js";
+import * as schemas from "./schemas.js";
 import type { FastifyPluginAsync } from "fastify";
 import { toJsonSchema } from "@valibot/to-json-schema";
 

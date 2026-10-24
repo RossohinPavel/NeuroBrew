@@ -1,5 +1,5 @@
-import * as tables from "../../database/schema/index.js";
 import type * as schemas from "./schemas.js";
+import * as tables from "../../database/schema/index.js";
 import { and, eq } from "drizzle-orm";
 import type { RouteHandler } from "fastify";
 

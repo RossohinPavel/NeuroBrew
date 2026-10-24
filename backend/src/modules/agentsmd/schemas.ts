@@ -2,6 +2,12 @@ import * as v from "valibot";
 
 
 export const agentsmdParamsSchema = v.object({
+  profileId: v.pipe(
+    v.number(),
+    v.integer(),
+    v.minValue(1),
+    v.maxValue(2147483647), // Максимальное значение PostgreSQL integer для account.id.
+  ),
   projectId: v.pipe(
     v.number(),
     v.integer(),
