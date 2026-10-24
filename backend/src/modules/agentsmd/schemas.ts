@@ -1,19 +1,10 @@
 import * as v from "valibot";
+import { postgresIdSchema } from "../../schemas/index.js";
 
 
 export const agentsmdParamsSchema = v.object({
-  profileId: v.pipe(
-    v.number(),
-    v.integer(),
-    v.minValue(1),
-    v.maxValue(2147483647), // Максимальное значение PostgreSQL integer для account.id.
-  ),
-  projectId: v.pipe(
-    v.number(),
-    v.integer(),
-    v.minValue(1),
-    v.maxValue(2147483647),
-  ),
+  profileId: postgresIdSchema,
+  projectId: postgresIdSchema,
 });
 export type AgentsmdParams = v.InferOutput<typeof agentsmdParamsSchema>;
 

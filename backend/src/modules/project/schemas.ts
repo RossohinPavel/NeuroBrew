@@ -1,14 +1,8 @@
 import * as v from "valibot";
+import { postgresIdSchema } from "../../schemas/index.js";
 
 
-export const projectsParamsSchema = v.object({
-  profileId: v.pipe(
-    v.number(),
-    v.integer(),
-    v.minValue(1),
-    v.maxValue(2147483647), // Максимальное значение PostgreSQL integer для account.id.
-  ),
-});
+export const projectsParamsSchema = v.object({ profileId: postgresIdSchema });
 export type ProjectsParams = v.InferOutput<typeof projectsParamsSchema>;
 
 export const projectsQuerySchema = v.object({
@@ -35,17 +29,7 @@ export const projectsResponseSchema = v.array(projectResponseSchema);
 export type ProjectsResponse = v.InferOutput<typeof projectsResponseSchema>;
 
 export const projectParamsSchema = v.object({
-  profileId: v.pipe(
-    v.number(),
-    v.integer(),
-    v.minValue(1),
-    v.maxValue(2147483647), // Максимальное значение PostgreSQL integer для account.id.
-  ),
-  id: v.pipe(
-    v.number(),
-    v.integer(),
-    v.minValue(1),
-    v.maxValue(2147483647), // Максимальное значение PostgreSQL integer для project.id.
-  ),
+  profileId: postgresIdSchema,
+  id: postgresIdSchema,
 });
 export type ProjectParams = v.InferOutput<typeof projectParamsSchema>;
