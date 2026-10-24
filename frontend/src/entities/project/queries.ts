@@ -1,14 +1,23 @@
 import "server-only";
 
 import { cache } from "react";
+import { getMyProjects } from "@/common/api/generated/endpoints";
 import type { GetProjects200Item } from "@/common/api/generated/models";
+import { withSession } from "@/entities/session";
 
 
-/** Возвращает пустой список до восстановления API проектов текущего пользователя. */
-export const getMyProjectsOrThrow = cache(async (): Promise<GetProjects200Item[]> => {
-  console.warn("getMyProjectsOrThrow: нужно заменить заглушку вызовом API-метода.");
+const getMyProjectsWithSession = withSession(getMyProjects);
 
-  return [];
+
+/** Возвращает проекты текущего пользователя или выбрасывает ошибку при неудачном запросе. */
+export const getMyProjectsOrThrow = cache(async () => {
+  const response = await getMyProjectsWithSession();
+
+  if (response.status !== 200) {
+    throw new Error("Failed to load the authenticated user's projects.");
+  }
+
+  return response.data;
 });
 
 /** Возвращает заглушку проекта с указанным названием до восстановления поиска через API. */
