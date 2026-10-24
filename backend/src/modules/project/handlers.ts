@@ -13,12 +13,7 @@ export const getProjects: RouteHandler<{
   const { name } = req.query;
 
   const projects = await req.server.drizzle
-    .select({
-      id: tables.project.id,
-      accountId: tables.project.accountId,
-      name: tables.project.name,
-      createdAt: tables.project.createdAt,
-    })
+    .select()
     .from(tables.project)
     .where(and(
       eq(tables.project.accountId, accountId),
