@@ -4,7 +4,7 @@ import { ENV } from "@/common/env";
 
 
 /** Дополняет опции запроса обработчиками заголовков и ответа API-клиента. */
-type ApiRequestInit = RequestInit & {
+export type ApiRequestInit = RequestInit & {
   /** Подготавливает заголовки перед выполнением запроса. */
   prepareHeaders?: (headers: Headers) => Headers | Promise<Headers>;
 

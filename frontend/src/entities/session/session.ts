@@ -2,24 +2,20 @@ import "server-only";
 
 import { cookies } from "next/headers";
 import { cache } from "react";
+import type { ApiRequestInit } from "@/common/api/fetcher";
 import { refresh } from "@/common/api/generated/endpoints";
 import { Cookies as SessionCookies } from "./cookies";
 
 
-/** Описывает данные ответа, необходимые для управления сессией. */
-type SessionResponse = {
-  data?: {
-    message?: string;
-  };
-  status?: number;
-};
-
 /** Определяет ответ об истечении access-токена. */
-const isAuthorizationTokenExpired = (response: SessionResponse) => {
-  return (
-    response.status === 401
-    && response.data?.message === "Authorization token expired"
-  );
+const isAuthorizationTokenExpired = async (response: Response) => {
+  if (response.status !== 401) {
+    return false;
+  }
+
+  const data = await response.clone().json() as { message?: string };
+
+  return data?.message === "Authorization token expired";
 };
 
 /** Определяет, аутентифицирован ли пользователь в текущем запросе. */
@@ -29,12 +25,9 @@ export const isUserAuthenticated = cache(async () => {
   return cookieStore.has(SessionCookies.accessToken.name);
 });
 
-/** Выполняет API-метод с access-токеном и инициирует обновление истёкшей сессии. */
-export const withSession = <A extends unknown[], R extends Promise<{ status: number }>>(
-  request: (...args: [...A, options?: RequestInit]) => R,
-  options?: RequestInit,
-) => {
-  return async (...args: A) => {
+/** Добавляет access-токен к запросу и повторяет его после обновления истёкшей сессии. */
+export const WITH_SESSION: ApiRequestInit = {
+  prepareHeaders: async (headers) => {
     const cookieStore = await cookies();
     const accessToken = cookieStore.get(SessionCookies.accessToken.name)?.value;
 
@@ -42,25 +35,29 @@ export const withSession = <A extends unknown[], R extends Promise<{ status: num
       throw new Error("Authentication is required to perform this action.");
     }
 
-    const headers = new Headers(options?.headers);
     headers.set("Authorization", `Bearer ${accessToken}`);
 
-    const requestOptions = { ...options, headers };
-    const response = await request(...args, requestOptions);
-
-    // Подстраховка на случай того, что токен успел протухнуть в полете к бекенду))
-    if (isAuthorizationTokenExpired(response)) {
+    return headers;
+  },
+  // Подстраховка на случай того, что токен успел протухнуть в полете к бекенду))
+  processResponse: async (response, url, options) => {
+    if (await isAuthorizationTokenExpired(response)) {
+      const cookieStore = await cookies();
       const refreshToken = cookieStore.get(SessionCookies.refreshToken.name)?.value;
+
       if (refreshToken !== undefined) {
         const refreshResponse = await refreshSession(refreshToken);
+
         if (refreshResponse?.status === 200) {
+          const headers = new Headers(options.headers);
           headers.set("Authorization", `Bearer ${refreshResponse.data.accessToken}`);
-          return request(...args, requestOptions);
+
+          return fetch(url, {...options, headers});
         }
       }
     }
     return response;
-  };
+  },
 };
 
 /** Запрашивает обновление сессии с помощью refresh-токена. */
