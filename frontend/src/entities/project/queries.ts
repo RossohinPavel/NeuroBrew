@@ -3,20 +3,15 @@ import "server-only";
 import { cache } from "react";
 import { getMyProjects } from "@/common/api/generated/endpoints";
 import type { GetProjects200Item } from "@/common/api/generated/models";
-import { withSession } from "@/entities/session";
-
-
-const getMyProjectsWithSession = withSession(getMyProjects);
+import { WITH_SESSION } from "@/entities/session";
 
 
 /** Возвращает проекты текущего пользователя или выбрасывает ошибку при неудачном запросе. */
 export const getMyProjectsOrThrow = cache(async () => {
-  const response = await getMyProjectsWithSession();
-
+  const response = await getMyProjects(undefined, WITH_SESSION);
   if (response.status !== 200) {
     throw new Error("Failed to load the authenticated user's projects.");
   }
-
   return response.data;
 });
 
