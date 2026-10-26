@@ -1,7 +1,7 @@
 import * as v from "valibot";
 
 
-export const ProfilesQuerySchema = v.object({
+export const UsersQuerySchema = v.object({
   email: v.optional(v.pipe(
     v.string(),
     v.email(),
@@ -12,9 +12,9 @@ export const ProfilesQuerySchema = v.object({
   )),
 });
 
-export type ProfilesQuery = v.InferOutput<typeof ProfilesQuerySchema>;
+export type UsersQuery = v.InferOutput<typeof UsersQuerySchema>;
 
-export const ProfileResponseSchema = v.object({
+export const UserResponseSchema = v.object({
   id: v.number(),
   email: v.pipe(
     v.string(),
@@ -27,6 +27,6 @@ export const ProfileResponseSchema = v.object({
   ),
 });
 
-export const ProfilesResponseSchema = v.array(ProfileResponseSchema);
+export const UsersResponseSchema = v.array(UserResponseSchema);
 
-export type ProfilesResponse = v.InferOutput<typeof ProfilesResponseSchema>;
+export type UsersResponse = v.InferOutput<typeof UsersResponseSchema>;

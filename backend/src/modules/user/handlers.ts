@@ -4,9 +4,9 @@ import { and, eq } from "drizzle-orm";
 import type { RouteHandler } from "fastify";
 
 
-export const getProfiles: RouteHandler<{
-  Querystring: schemas.ProfilesQuery;
-  Reply: schemas.ProfilesResponse;
+export const getUsers: RouteHandler<{
+  Querystring: schemas.UsersQuery;
+  Reply: schemas.UsersResponse;
 }> = async (req, res) => {
   const { email, username } = req.query;
 

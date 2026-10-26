@@ -4,23 +4,23 @@ import type { FastifyPluginAsync } from "fastify";
 import { toJsonSchema } from "@valibot/to-json-schema";
 
 
-export const profileRoutes: FastifyPluginAsync = async (server) => {
+export const userRoutes: FastifyPluginAsync = async (server) => {
   server.get("/", {
     schema: {
-      operationId: "getProfiles",
-      tags: ["profile"],
+      operationId: "getUsers",
+      tags: ["user"],
       querystring: toJsonSchema(
-        schemas.ProfilesQuerySchema,
+        schemas.UsersQuerySchema,
         { typeMode: "input", errorMode: "throw" },
       ),
       response: {
         200: toJsonSchema(
-          schemas.ProfilesResponseSchema,
+          schemas.UsersResponseSchema,
           { typeMode: "output", errorMode: "throw" },
         ),
         400: { $ref: "HttpError" },
         500: { $ref: "HttpError" },
       },
     },
-  }, handlers.getProfiles);
+  }, handlers.getUsers);
 };

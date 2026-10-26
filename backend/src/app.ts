@@ -33,9 +33,8 @@ export const registerAppRoutes = (server: FastifyInstance) => {
   server.register(routes.authRoutes, {
     prefix: "/auth",
   });
-  // "Публичные" маршруты. 
-  server.register(routes.profileRoutes, {
-    prefix: "/profile",
+  server.register(routes.userRoutes, {
+    prefix: "/user",
   });
   server.register(routes.projectRoutes, {
     prefix: "/profile/:profileId/project",
@@ -43,7 +42,6 @@ export const registerAppRoutes = (server: FastifyInstance) => {
   server.register(routes.agentsmdRoutes, {
     prefix: "/profile/:profileId/project/:projectId/agents",
   });
-  // Приватные маршруты
   server.register(routes.meRoutes, {
     prefix: "/me",
   });
