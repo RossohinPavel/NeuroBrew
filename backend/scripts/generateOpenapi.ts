@@ -4,11 +4,11 @@ import fastify from "fastify";
 import { loadEnvFile } from "node:process";
 import sensible from "@fastify/sensible";
 import swagger from "@fastify/swagger";
+import { apiRoutes } from "../src/routes/api.routes.js";
 
 
 loadEnvFile(".env");
 
-const { registerAppRoutes } = await import("../src/app.js");
 const app = fastify();
 
 try {
@@ -32,7 +32,7 @@ try {
   });
   await app.register(sensible, { sharedSchemaId: "HttpError" });
 
-  registerAppRoutes(app);
+  await app.register(apiRoutes);
   await app.ready();
 
   const tempDirectory = resolve(import.meta.dirname, "../.temp");

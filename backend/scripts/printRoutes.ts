@@ -1,14 +1,14 @@
 import fastify from "fastify";
 import sensible from "@fastify/sensible";
+import { apiRoutes } from "../src/routes/api.routes.js";
 
 
-const { registerAppRoutes } = await import("../src/app.js");
 const app = fastify();
 
 try {
   await app.register(sensible, { sharedSchemaId: "HttpError" });
 
-  registerAppRoutes(app);
+  await app.register(apiRoutes);
   await app.ready();
 
   // oxlint-disable-next-line no-console -- Prints the route tree requested by this CLI script.

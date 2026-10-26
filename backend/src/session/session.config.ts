@@ -1,4 +1,4 @@
-import { ENV } from "../../config/index.js";
+import { ENV } from "../config/index.js";
 
 
 declare module "@fastify/jwt" {

@@ -2,7 +2,7 @@ import * as contracts from "@shared/contracts";
 import * as handlers from "./handlers.js";
 import * as schemas from "./schemas.js";
 import type { FastifyPluginAsync } from "fastify";
-import { requireRefreshToken } from "../session/session.guard.js";
+import { requireRefreshToken } from "../../session/session.guard.js";
 import { toJsonSchema } from "@valibot/to-json-schema";
 
 

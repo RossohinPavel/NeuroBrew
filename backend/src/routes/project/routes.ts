@@ -10,9 +10,8 @@ export const projectRoutes: FastifyPluginAsync = async (server) => {
     schema: {
       operationId: "getProjects",
       summary: "Get projects",
-      description: "Returns projects for the specified profile.",
+      description: "Returns projects.",
       tags: ["project"],
-      params: createIdParamsSchema("profileId"),
       querystring: toJsonSchema(
         schemas.projectsQuerySchema,
         { typeMode: "input", errorMode: "throw" },
@@ -34,7 +33,7 @@ export const projectRoutes: FastifyPluginAsync = async (server) => {
       summary: "Get a project",
       description: "Returns a project by ID.",
       tags: ["project"],
-      params: createIdParamsSchema("profileId", "id"),
+      params: createIdParamsSchema("id"),
       response: {
         200: toJsonSchema(
           schemas.projectResponseSchema,
