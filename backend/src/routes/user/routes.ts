@@ -5,18 +5,6 @@ import { requireAccessToken } from "../../session/session.guard.js";
 import { toJsonSchema } from "@valibot/to-json-schema";
 
 
-/*
-server.get("/", ...);
-server.get("/search", ...);
-server.get("/me", ...);
-server.get("/:id", ...);
-server.put("/:id", ...);
-server.patch("/:id", ...);
-server.delete("/:id", ...);
-server.get("/:id/posts", ...);
-server.post("/:id/posts", ...);
-*/
-
 export const userRoutes: FastifyPluginAsync = async (server) => {
   server.get("/", {
     schema: {
