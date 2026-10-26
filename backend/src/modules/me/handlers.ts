@@ -7,26 +7,26 @@ import type { RouteHandler } from "fastify";
 export const getMe: RouteHandler<{
   Reply: schemas.MeResponse;
 }> = async (req, res) => {
-  const { accountId } = req.user;
+  const { userId } = req.user;
 
-  const [userAccount] = await req.server.drizzle
+  const [user] = await req.server.drizzle
     .select({
-      id: tables.account.id,
-      email: tables.account.email,
+      id: tables.user.id,
+      email: tables.user.email,
       username: tables.profile.username,
-      createdAt: tables.account.createdAt,
+      createdAt: tables.user.createdAt,
     })
-    .from(tables.account)
-    .innerJoin(tables.profile, eq(tables.profile.accountId, tables.account.id))
-    .where(eq(tables.account.id, accountId))
+    .from(tables.user)
+    .innerJoin(tables.profile, eq(tables.profile.userId, tables.user.id))
+    .where(eq(tables.user.id, userId))
     .limit(1);
 
-  if (!userAccount) {
+  if (!user) {
     throw req.server.httpErrors.unauthorized("Invalid access token");
   }
 
   return res.code(200).send({
-    ...userAccount,
-    createdAt: userAccount.createdAt.toISOString(),
+    ...user,
+    createdAt: user.createdAt.toISOString(),
   });
 };

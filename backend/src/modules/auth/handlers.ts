@@ -50,32 +50,32 @@ export const register: RouteHandler<{
   // onConflictDoNothing пропускает вставку при конфликте уникальности по указанному target.
   // В этом случае returning возвращает пустой массив, и мы выбрасываем ошибку 409,
   // чтобы откатить всю транзакцию. Остальные ошибки БД не подавляются.
-  const userAccount = await req.server.drizzle.transaction(async (tx) => {
-    const [userAccount] = await tx
-      .insert(tables.account)
+  const user = await req.server.drizzle.transaction(async (tx) => {
+    const [user] = await tx
+      .insert(tables.user)
       .values({ email, passwordHash })
-      .onConflictDoNothing({ target: tables.account.email })
-      .returning({ id: tables.account.id });
+      .onConflictDoNothing({ target: tables.user.email })
+      .returning({ id: tables.user.id });
 
-    if (!userAccount) {
+    if (!user) {
       throw req.server.httpErrors.conflict("Email is already registered");
     }
 
     const [userProfile] = await tx
       .insert(tables.profile)
-      .values({ accountId: userAccount.id, username })
+      .values({ userId: user.id, username })
       .onConflictDoNothing({ target: tables.profile.username })
-      .returning({ accountId: tables.profile.accountId });
+      .returning({ userId: tables.profile.userId });
 
     if (!userProfile) {
       throw req.server.httpErrors.conflict("Username is already registered");
     }
 
-    return userAccount;
+    return user;
   });
 
-  const accessToken = req.server.jwt.access.sign({ accountId: userAccount.id });
-  const refreshToken = req.server.jwt.refresh.sign({ accountId: userAccount.id });
+  const accessToken = req.server.jwt.access.sign({ userId: user.id });
+  const refreshToken = req.server.jwt.refresh.sign({ userId: user.id });
 
   return res.code(201).send({
     accessToken,
@@ -91,21 +91,21 @@ export const login: RouteHandler<{
 }> = async (req, res) => {
   const { email, password } = req.body;
 
-  const [userAccount] = await req.server.drizzle
+  const [user] = await req.server.drizzle
     .select({
-      id: tables.account.id,
-      passwordHash: tables.account.passwordHash,
+      id: tables.user.id,
+      passwordHash: tables.user.passwordHash,
     })
-    .from(tables.account)
-    .where(eq(tables.account.email, email))
+    .from(tables.user)
+    .where(eq(tables.user.email, email))
     .limit(1);
 
-  if (!userAccount || !await verify(userAccount.passwordHash, password)) {
+  if (!user || !await verify(user.passwordHash, password)) {
     throw req.server.httpErrors.unauthorized("Invalid email or password");
   }
 
-  const accessToken = req.server.jwt.access.sign({ accountId: userAccount.id });
-  const refreshToken = req.server.jwt.refresh.sign({ accountId: userAccount.id });
+  const accessToken = req.server.jwt.access.sign({ userId: user.id });
+  const refreshToken = req.server.jwt.refresh.sign({ userId: user.id });
 
   return res.code(200).send({
     accessToken,
@@ -119,19 +119,19 @@ export const refresh: RouteHandler<{
   Reply: schemas.AuthTokensResponse;
 }> = async (req, res) => {
   // Это стандартное поле jwt плагина, поэтому используем его.
-  const { accountId } = req.user;
+  const { userId } = req.user;
 
-  const [userAccount] = await req.server.drizzle
-    .select({ id: tables.account.id })
-    .from(tables.account)
-    .where(eq(tables.account.id, accountId))
+  const [user] = await req.server.drizzle
+    .select({ id: tables.user.id })
+    .from(tables.user)
+    .where(eq(tables.user.id, userId))
     .limit(1);
 
-  if (!userAccount) {
+  if (!user) {
     throw req.server.httpErrors.unauthorized("Invalid refresh token");
   }
 
-  const accessToken = req.server.jwt.access.sign({ accountId: userAccount.id });
+  const accessToken = req.server.jwt.access.sign({ userId: user.id });
   const refreshToken = req.server.jwt.refresh.lookupToken(req);
 
   return res.code(200).send({

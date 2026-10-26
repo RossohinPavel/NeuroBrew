@@ -8,14 +8,14 @@ export const getProjects: RouteHandler<{
   Querystring: schemas.ProjectsQuery;
   Reply: schemas.ProjectsResponse;
 }> = async (req, res) => {
-  const { accountId } = req.user;
+  const { userId } = req.user;
   const { name } = req.query;
 
   const projects = await req.server.drizzle
     .select()
     .from(tables.project)
     .where(and(
-      eq(tables.project.accountId, accountId),
+      eq(tables.project.accountId, userId),
       name === undefined ? undefined : eq(tables.project.name, name),
     ));
 

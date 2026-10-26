@@ -4,7 +4,7 @@ import { integer, snakeCase, timestamp, varchar } from "drizzle-orm/pg-core";
 
 /*
  * В общей практике схемы принято именовать в единственном числе.
- * Для схемы пользователей используется имя `users`,
+ * Для схемы и таблицы пользователей используется имя `users`,
  * поскольку `user` — зарезервированное слово в PostgreSQL.
  */
 export const userSchema = snakeCase.schema("users");
@@ -14,7 +14,7 @@ export const userSchema = snakeCase.schema("users");
  *
  * Для хеша пароля оставлен запас под алгоритмы с нефиксированной длиной, включая Argon2.
  */
-export const account = userSchema.table("account", {
+export const user = userSchema.table("users", {
   id: integer()
     .primaryKey()
     .generatedAlwaysAsIdentity(),
@@ -28,18 +28,18 @@ export const account = userSchema.table("account", {
     .notNull(),
 });
 
-export type AccountInsert = InferInsertModel<typeof account>;
-export type AccountSelect = InferSelectModel<typeof account>;
+export type UserInsert = InferInsertModel<typeof user>;
+export type UserSelect = InferSelectModel<typeof user>;
 
 /*
- * Первичный ключ accountId ограничивает аккаунт одним профилем.
+ * Первичный ключ userId ограничивает аккаунт одним профилем.
  * Имя пользователя ограничено 64 символами, чтобы не раздувать индекс;
  * точное ограничение определяется бизнес-логикой.
  */
 export const profile = userSchema.table("profile", {
-  accountId: integer()
+  userId: integer()
     .primaryKey()
-    .references(() => account.id, { onDelete: "cascade" }),
+    .references(() => user.id, { onDelete: "cascade" }),
   username: varchar({ length: 64 })
     .notNull()
     .unique(),
