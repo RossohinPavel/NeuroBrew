@@ -8,7 +8,7 @@ import swagger from "@fastify/swagger";
 
 loadEnvFile(".env");
 
-const { registerAppRoutes } = await import("../app.js");
+const { registerAppRoutes } = await import("../src/app.js");
 const app = fastify();
 
 try {
@@ -35,7 +35,7 @@ try {
   registerAppRoutes(app);
   await app.ready();
 
-  const tempDirectory = resolve(import.meta.dirname, "../../.temp");
+  const tempDirectory = resolve(import.meta.dirname, "../.temp");
   await mkdir(tempDirectory, { recursive: true });
   await writeFile(
     join(tempDirectory, "openapi.json"),

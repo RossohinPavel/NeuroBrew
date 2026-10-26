@@ -2,7 +2,7 @@ import fastify from "fastify";
 import sensible from "@fastify/sensible";
 
 
-const { registerAppRoutes } = await import("../app.js");
+const { registerAppRoutes } = await import("../src/app.js");
 const app = fastify();
 
 try {

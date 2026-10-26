@@ -14,8 +14,8 @@
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "start": "node ./dist/main.js",
-    "openapi": "tsx src/scripts/generateOpenapi.ts",
-    "route-tree": "tsx src/scripts/printRoutes.ts",
+    "openapi": "tsx scripts/generateOpenapi.ts",
+    "route-tree": "tsx scripts/printRoutes.ts",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "lint": "pnpm typecheck && oxlint src --fix"
   },
