@@ -1,10 +1,5 @@
 import * as v from "valibot";
-import { postgresIdSchema } from "../../schemas/index.js";
 
-
-export const ProfileParamsSchema = v.object({ id: postgresIdSchema });
-
-export type ProfileParams = v.InferOutput<typeof ProfileParamsSchema>;
 
 export const ProfilesQuerySchema = v.object({
   email: v.optional(v.pipe(
@@ -31,8 +26,6 @@ export const ProfileResponseSchema = v.object({
     v.isoTimestamp(),
   ),
 });
-
-export type ProfileResponse = v.InferOutput<typeof ProfileResponseSchema>;
 
 export const ProfilesResponseSchema = v.array(ProfileResponseSchema);
 

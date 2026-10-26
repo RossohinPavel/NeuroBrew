@@ -31,33 +31,3 @@ export const getProfiles: RouteHandler<{
     createdAt: userAccount.createdAt.toISOString(),
   })));
 };
-
-export const getProfileById: RouteHandler<{
-  Params: schemas.ProfileParams;
-  Reply: schemas.ProfileResponse;
-}> = async (req, res) => {
-  const { id } = req.params;
-
-  const [userAccount] = await req.server.drizzle
-    .select({
-      id: tables.account.id,
-      email: tables.account.email,
-      username: tables.profile.username,
-      createdAt: tables.account.createdAt,
-    })
-    .from(tables.account)
-    .innerJoin(tables.profile, eq(tables.profile.accountId, tables.account.id))
-    .where(eq(tables.account.id, id))
-    .limit(1);
-
-  if (!userAccount) {
-    throw req.server.httpErrors.notFound("Profile not found");
-  }
-
-  return res.code(200).send({
-    id: userAccount.id,
-    email: userAccount.email,
-    username: userAccount.username,
-    createdAt: userAccount.createdAt.toISOString(),
-  });
-};

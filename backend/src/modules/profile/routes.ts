@@ -1,6 +1,5 @@
 import * as handlers from "./handlers.js";
 import * as schemas from "./schemas.js";
-import { createIdParamsSchema } from "../../schemas/index.js";
 import type { FastifyPluginAsync } from "fastify";
 import { toJsonSchema } from "@valibot/to-json-schema";
 
@@ -24,21 +23,4 @@ export const profileRoutes: FastifyPluginAsync = async (server) => {
       },
     },
   }, handlers.getProfiles);
-
-  server.get("/:id", {
-    schema: {
-      operationId: "getProfileById",
-      tags: ["profile"],
-      params: createIdParamsSchema("id"),
-      response: {
-        200: toJsonSchema(
-          schemas.ProfileResponseSchema,
-          { typeMode: "output", errorMode: "throw" },
-        ),
-        400: { $ref: "HttpError" },
-        404: { $ref: "HttpError" },
-        500: { $ref: "HttpError" },
-      },
-    },
-  }, handlers.getProfileById);
 };

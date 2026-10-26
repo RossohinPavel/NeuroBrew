@@ -6,7 +6,6 @@
  */
 import type {
   Def0,
-  GetProfileById200,
   GetProfiles200Item,
   GetProfilesParams
 } from '../../models';
@@ -55,55 +54,6 @@ export const getGetProfilesUrl = (params?: GetProfilesParams,) => {
 export const getProfiles = async (params?: GetProfilesParams, options?: Parameters<typeof apiFetch>[1]): Promise<getProfilesResponse> => {
 
   return apiFetch<getProfilesResponse>(getGetProfilesUrl(params),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
-
-export type getProfileByIdResponse200 = {
-  data: GetProfileById200
-  status: 200
-}
-
-export type getProfileByIdResponse400 = {
-  data: Def0
-  status: 400
-}
-
-export type getProfileByIdResponse404 = {
-  data: Def0
-  status: 404
-}
-
-export type getProfileByIdResponse500 = {
-  data: Def0
-  status: 500
-}
-
-export type getProfileByIdResponseSuccess = (getProfileByIdResponse200) & {
-  headers: Headers;
-};
-export type getProfileByIdResponseError = (getProfileByIdResponse400 | getProfileByIdResponse404 | getProfileByIdResponse500) & {
-  headers: Headers;
-};
-
-export type getProfileByIdResponse = (getProfileByIdResponseSuccess | getProfileByIdResponseError)
-
-export const getGetProfileByIdUrl = (id: number,) => {
-
-
-
-
-  return `/profile/${id}`
-}
-
-export const getProfileById = async (id: number, options?: Parameters<typeof apiFetch>[1]): Promise<getProfileByIdResponse> => {
-
-  return apiFetch<getProfileByIdResponse>(getGetProfileByIdUrl(id),
   {
     ...options,
     method: 'GET'

@@ -10,7 +10,6 @@ export * from './getAgentsmd200';
 export * from './getChangelog200Item';
 export * from './getMyProjects200Item';
 export * from './getMyProjectsParams';
-export * from './getProfileById200';
 export * from './getProfiles200Item';
 export * from './getProfilesParams';
 export * from './getProject200';
