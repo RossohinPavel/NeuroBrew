@@ -29,4 +29,6 @@ export const UserResponseSchema = v.object({
 
 export const UsersResponseSchema = v.array(UserResponseSchema);
 
+export type UserResponse = v.InferOutput<typeof UserResponseSchema>;
+
 export type UsersResponse = v.InferOutput<typeof UsersResponseSchema>;
