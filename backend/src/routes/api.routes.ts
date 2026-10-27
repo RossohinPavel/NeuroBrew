@@ -1,11 +1,11 @@
 import { agentsmdRoutes } from "./agentsmd/routes.js";
 import { authRoutes } from "./auth/routes.js";
+import type { FastifyPluginAsync } from "fastify";
 import { healthRoutes } from "./health/routes.js";
 import { metadataRoutes } from "./metadata/routes.js";
 import { myProjectRoutes } from "./my-project/routes.js";
 import { projectRoutes } from "./project/routes.js";
 import { userRoutes } from "./user/routes.js";
-import type { FastifyPluginAsync } from "fastify";
 
 
 // Подключает разделы API с их маршрутными префиксами.

@@ -2,10 +2,10 @@ import * as v from "valibot";
 
 
 export const projectsQuerySchema = v.object({
-  name: v.optional(v.pipe(
+  username: v.optional(v.pipe(
     v.string(),
     v.minLength(1),
-    v.maxLength(128),
+    v.maxLength(64),
   )),
 });
 export type ProjectsQuery = v.InferOutput<typeof projectsQuerySchema>;

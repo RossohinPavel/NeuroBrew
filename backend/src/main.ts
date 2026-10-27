@@ -1,8 +1,8 @@
 import { accessTokenConfig, refreshTokenConfig } from "./session/session.config.js";
 import { apiRoutes } from "./routes/api.routes.js";
-import fastify from "fastify";
 import { drizzlePlugin } from "./database/drizzle.plugin.js";
 import { ENV } from "./config/index.js";
+import fastify from "fastify";
 import fastifyJwt from "@fastify/jwt";
 import sensible from "@fastify/sensible";
 

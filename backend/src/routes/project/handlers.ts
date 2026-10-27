@@ -8,12 +8,18 @@ export const getProjects: RouteHandler<{
   Querystring: schemas.ProjectsQuery;
   Reply: schemas.ProjectsResponse;
 }> = async (req, res) => {
-  const { name } = req.query;
+  const { username } = req.query;
 
   const projects = await req.server.drizzle
-    .select()
+    .select({
+      id: tables.project.id,
+      userId: tables.project.userId,
+      name: tables.project.name,
+      createdAt: tables.project.createdAt,
+    })
     .from(tables.project)
-    .where(name === undefined ? undefined : eq(tables.project.name, name));
+    .leftJoin(tables.profile, eq(tables.profile.userId, tables.project.userId))
+    .where(username === undefined ? undefined : eq(tables.profile.username, username));
 
   return res.code(200).send(projects.map((project) => ({
     ...project,
@@ -21,24 +27,3 @@ export const getProjects: RouteHandler<{
   })));
 };
 
-export const getProject: RouteHandler<{
-  Params: schemas.ProjectParams;
-  Reply: schemas.ProjectResponse;
-}> = async (req, res) => {
-  const { id } = req.params;
-
-  const [project] = await req.server.drizzle
-    .select()
-    .from(tables.project)
-    .where(eq(tables.project.id, id))
-    .limit(1);
-
-  if (!project) {
-    throw req.server.httpErrors.notFound("Project not found");
-  }
-
-  return res.code(200).send({
-    ...project,
-    createdAt: project.createdAt.toISOString(),
-  });
-};
