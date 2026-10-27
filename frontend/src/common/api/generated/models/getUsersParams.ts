@@ -5,9 +5,11 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export type LookupUser200 = {
-  id: number;
-  email: string;
-  username: string;
-  createdAt: string;
+export type GetUsersParams = {
+/**
+ * @minLength 1
+ * @maxLength 64
+ */
+username?: string;
+lookup?: boolean;
 };
