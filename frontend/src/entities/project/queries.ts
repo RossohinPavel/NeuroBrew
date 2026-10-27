@@ -1,35 +1,39 @@
 import "server-only";
 
+import { notFound } from "next/navigation";
 import { cache } from "react";
-import { getMyProjects } from "@/common/api/generated/endpoints";
-import type { GetProjects200Item } from "@/common/api/generated/models";
+import { getProjects, lookupProject } from "@/common/api/generated/endpoints";
 import { WITH_SESSION } from "@/entities/session";
 
 
 /** Возвращает проекты текущего пользователя или выбрасывает ошибку при неудачном запросе. */
 export const getMyProjectsOrThrow = cache(async () => {
-  const response = await getMyProjects(WITH_SESSION);
+  const response = await getProjects({ mine: true }, WITH_SESSION);
   if (response.status !== 200) {
     throw new Error("Failed to load the authenticated user's projects.");
   }
   return response.data;
 });
 
-/** Возвращает заглушку проекта с указанным названием до восстановления поиска через API. */
-export const getProjectByNameOr404 = cache(async (name: string) => {
-  console.warn("getProjectByNameOr404: нужно заменить заглушку вызовом API-метода.");
+/** Возвращает проект пользователя по логину и названию или показывает страницу 404. */
+export const getProjectByNameOr404 = cache(async (username: string, projectName: string) => {
+  const response = await lookupProject({
+    username,
+    projectName,
+  });
+  if (response.status !== 200) {
+    return notFound();
+  }
 
-  return {
-    id: 0,
-    accountId: 0,
-    name,
-    createdAt: "1970-01-01T00:00:00.000Z",
-  };
+  return response.data;
 });
 
-/** Возвращает пустой список до восстановления API поиска проектов по логину. */
-export const getProjectsOr404 = cache(async (_username: string): Promise<GetProjects200Item[]> => {
-  console.warn("getProjectsOr404: нужно заменить заглушку вызовом API-метода.");
+/** Возвращает проекты пользователя по логину или показывает страницу 404 при неудачном запросе. */
+export const getProjectsOr404 = cache(async (username: string) => {
+  const response = await getProjects({ username });
+  if (response.status !== 200) {
+    return notFound();
+  }
 
-  return [];
+  return response.data;
 });

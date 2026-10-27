@@ -1,6 +1,5 @@
 import { Suspense } from "react";
 import { getAgentsmdOr404 } from "@/entities/agentsmd";
-import { getProjectByNameOr404 } from "@/entities/project";
 
 
 type Props = PageProps<"/[username]/[project]/agents">;
@@ -18,11 +17,10 @@ export function Agents(props: Props) {
   );
 }
 
-/** Загружает проект по имени из пути и показывает содержимое его AGENTS.md. */
+/** Загружает AGENTS.md проекта из пути и показывает его содержимое. */
 async function AgentsContent({ params }: Props) {
-  const { project } = await params;
-  const foundProject = await getProjectByNameOr404(project);
-  const agentsmd = await getAgentsmdOr404(foundProject.id);
+  const { username, project } = await params;
+  const agentsmd = await getAgentsmdOr404(username, project);
 
   return (
     <div className="flex flex-col gap-2 p-4">

@@ -5,11 +5,15 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export type GetUsersParams = {
+export type LookupAgentsmdParams = {
 /**
  * @minLength 1
  * @maxLength 64
  */
-username?: string;
-lookup?: boolean;
+username: string;
+/**
+ * @minLength 1
+ * @maxLength 128
+ */
+projectName: string;
 };

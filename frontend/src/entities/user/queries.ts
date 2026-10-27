@@ -2,7 +2,7 @@ import "server-only";
 
 import { notFound } from "next/navigation";
 import { cache } from "react";
-import { me, getUsers } from "@/common/api/generated/endpoints";
+import { me, lookupUser } from "@/common/api/generated/endpoints";
 import { WITH_SESSION } from "@/entities/session";
 
 
@@ -17,7 +17,7 @@ export const getMeOrThrow = cache(async () => {
 
 /** Возвращает пользователя по логину или показывает страницу 404, если он не найден. */
 export const getUserOr404 = cache(async (username: string) => {
-  const response = await getUsers({ username, lookup: true });
+  const response = await lookupUser({ username });
   if (response.status !== 200) {
     return notFound();
   }

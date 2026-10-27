@@ -1,15 +1,19 @@
 import "server-only";
 
+import { notFound } from "next/navigation";
 import { cache } from "react";
+import { lookupAgentsmd } from "@/common/api/generated/endpoints";
 
 
-/** Возвращает заглушку AGENTS.md проекта до восстановления API загрузки документа. */
-export const getAgentsmdOr404 = cache(async (projectId: number) => {
-  console.warn("getAgentsmdOr404: нужно заменить заглушку вызовом API-метода.");
+/** Возвращает AGENTS.md проекта по логину и названию или показывает страницу 404. */
+export const getAgentsmdOr404 = cache(async (username: string, projectName: string) => {
+  const response = await lookupAgentsmd({
+    username,
+    projectName,
+  });
+  if (response.status !== 200) {
+    return notFound();
+  }
 
-  return {
-    id: 0,
-    projectId,
-    content: "Загрузка AGENTS.md временно недоступна.",
-  };
+  return response.data;
 });

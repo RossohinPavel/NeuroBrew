@@ -6,57 +6,63 @@
  */
 import type {
   Def0,
-  GetAgentsmd200
+  LookupAgentsmd200,
+  LookupAgentsmdParams
 } from '../../models';
 
 import { apiFetch } from '../../../fetcher';
 
-export type getAgentsmdResponse200 = {
-  data: GetAgentsmd200
+export type lookupAgentsmdResponse200 = {
+  data: LookupAgentsmd200
   status: 200
 }
 
-export type getAgentsmdResponse400 = {
+export type lookupAgentsmdResponse400 = {
   data: Def0
   status: 400
 }
 
-export type getAgentsmdResponse404 = {
+export type lookupAgentsmdResponse404 = {
   data: Def0
   status: 404
 }
 
-export type getAgentsmdResponse500 = {
+export type lookupAgentsmdResponse500 = {
   data: Def0
   status: 500
 }
 
-export type getAgentsmdResponseSuccess = (getAgentsmdResponse200) & {
+export type lookupAgentsmdResponseSuccess = (lookupAgentsmdResponse200) & {
   headers: Headers;
 };
-export type getAgentsmdResponseError = (getAgentsmdResponse400 | getAgentsmdResponse404 | getAgentsmdResponse500) & {
+export type lookupAgentsmdResponseError = (lookupAgentsmdResponse400 | lookupAgentsmdResponse404 | lookupAgentsmdResponse500) & {
   headers: Headers;
 };
 
-export type getAgentsmdResponse = (getAgentsmdResponseSuccess | getAgentsmdResponseError)
+export type lookupAgentsmdResponse = (lookupAgentsmdResponseSuccess | lookupAgentsmdResponseError)
 
-export const getGetAgentsmdUrl = (profileId: number,
-    projectId: number,) => {
+export const getLookupAgentsmdUrl = (params: LookupAgentsmdParams,) => {
+  const normalizedParams = new URLSearchParams();
 
+  Object.entries(params || {}).forEach(([key, value]) => {
 
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : String(value))
+    }
+  });
 
+  const stringifiedParams = normalizedParams.toString();
 
-  return `/profile/${profileId}/project/${projectId}/agents/`
+  return stringifiedParams.length > 0 ? `/agentsmd/lookup?${stringifiedParams}` : `/agentsmd/lookup`
 }
 
 /**
- * Returns the AGENTS.md for the specified project.
- * @summary Get AGENTS.md
+ * Looks up an AGENTS.md document by username and project name.
+ * @summary Lookup AGENTS.md
  */
-export const getAgentsmd = async (profileId: number,
-    projectId: number, options?: Parameters<typeof apiFetch>[1]): Promise<getAgentsmdResponse> => {
+export const lookupAgentsmd = async (params: LookupAgentsmdParams, options?: Parameters<typeof apiFetch>[1]): Promise<lookupAgentsmdResponse> => {
 
-  return apiFetch<getAgentsmdResponse>(getGetAgentsmdUrl(profileId,projectId),
+  return apiFetch<lookupAgentsmdResponse>(getLookupAgentsmdUrl(params),
   {
     ...options,
     method: 'GET'

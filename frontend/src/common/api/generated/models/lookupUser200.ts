@@ -5,7 +5,7 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export type GetUsers200Item = {
+export type LookupUser200 = {
   id: number;
   email: string;
   username: string;

@@ -6,6 +6,7 @@
  */
 
 export type GetProjectsParams = {
+mine?: boolean;
 /**
  * @minLength 1
  * @maxLength 64

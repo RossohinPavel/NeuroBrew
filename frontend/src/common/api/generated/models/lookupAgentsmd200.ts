@@ -5,7 +5,7 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export type GetAgentsmd200 = {
+export type LookupAgentsmd200 = {
   id: number;
   projectId: number;
   content: string;

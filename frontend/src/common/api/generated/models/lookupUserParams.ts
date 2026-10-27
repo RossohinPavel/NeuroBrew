@@ -5,9 +5,10 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export type GetMyProjects200Item = {
-  id: number;
-  userId: number;
-  name: string;
-  createdAt: string;
+export type LookupUserParams = {
+/**
+ * @minLength 1
+ * @maxLength 64
+ */
+username: string;
 };

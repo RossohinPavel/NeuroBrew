@@ -6,42 +6,42 @@
  */
 import type {
   Def0,
-  GetUsers200Item,
-  GetUsersParams
+  LookupUser200,
+  LookupUserParams
 } from '../../models';
 
 import { apiFetch } from '../../../fetcher';
 
-export type getUsersResponse200 = {
-  data: GetUsers200Item[]
+export type lookupUserResponse200 = {
+  data: LookupUser200
   status: 200
 }
 
-export type getUsersResponse400 = {
+export type lookupUserResponse400 = {
   data: Def0
   status: 400
 }
 
-export type getUsersResponse404 = {
+export type lookupUserResponse404 = {
   data: Def0
   status: 404
 }
 
-export type getUsersResponse500 = {
+export type lookupUserResponse500 = {
   data: Def0
   status: 500
 }
 
-export type getUsersResponseSuccess = (getUsersResponse200) & {
+export type lookupUserResponseSuccess = (lookupUserResponse200) & {
   headers: Headers;
 };
-export type getUsersResponseError = (getUsersResponse400 | getUsersResponse404 | getUsersResponse500) & {
+export type lookupUserResponseError = (lookupUserResponse400 | lookupUserResponse404 | lookupUserResponse500) & {
   headers: Headers;
 };
 
-export type getUsersResponse = (getUsersResponseSuccess | getUsersResponseError)
+export type lookupUserResponse = (lookupUserResponseSuccess | lookupUserResponseError)
 
-export const getGetUsersUrl = (params?: GetUsersParams,) => {
+export const getLookupUserUrl = (params: LookupUserParams,) => {
   const normalizedParams = new URLSearchParams();
 
   Object.entries(params || {}).forEach(([key, value]) => {
@@ -53,16 +53,16 @@ export const getGetUsersUrl = (params?: GetUsersParams,) => {
 
   const stringifiedParams = normalizedParams.toString();
 
-  return stringifiedParams.length > 0 ? `/user/?${stringifiedParams}` : `/user/`
+  return stringifiedParams.length > 0 ? `/user/lookup?${stringifiedParams}` : `/user/lookup`
 }
 
 /**
- * Returns users; empty lookups return 404.
- * @summary Get users
+ * Returns a user by username.
+ * @summary Look up a user
  */
-export const getUsers = async (params?: GetUsersParams, options?: Parameters<typeof apiFetch>[1]): Promise<getUsersResponse> => {
+export const lookupUser = async (params: LookupUserParams, options?: Parameters<typeof apiFetch>[1]): Promise<lookupUserResponse> => {
 
-  return apiFetch<getUsersResponse>(getGetUsersUrl(params),
+  return apiFetch<lookupUserResponse>(getLookupUserUrl(params),
   {
     ...options,
     method: 'GET'

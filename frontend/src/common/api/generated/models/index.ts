@@ -6,13 +6,9 @@
  */
 
 export * from './def0';
-export * from './getAgentsmd200';
 export * from './getChangelog200Item';
-export * from './getMyProjects200Item';
 export * from './getProjects200Item';
 export * from './getProjectsParams';
-export * from './getUsers200Item';
-export * from './getUsersParams';
 export * from './health200';
 export * from './health200Detail';
 export * from './health200DetailBackend';
@@ -26,6 +22,12 @@ export * from './health503Status';
 export * from './login200';
 export * from './login200TokenType';
 export * from './loginBody';
+export * from './lookupAgentsmd200';
+export * from './lookupAgentsmdParams';
+export * from './lookupProject200';
+export * from './lookupProjectParams';
+export * from './lookupUser200';
+export * from './lookupUserParams';
 export * from './me200';
 export * from './refresh200';
 export * from './refresh200TokenType';

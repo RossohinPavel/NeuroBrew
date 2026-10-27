@@ -19,8 +19,8 @@ export function Project(props: Props) {
 
 /** Загружает проект по имени и показывает его название и дату создания. */
 async function ProjectContent({ params }: Props) {
-  const { project } = await params;
-  const foundProject = await getProjectByNameOr404(project);
+  const { username, project } = await params;
+  const foundProject = await getProjectByNameOr404(username, project);
   const createdAt = new Date(foundProject.createdAt)
     .toLocaleDateString("ru-RU", { timeZone: "Europe/Moscow" });
 
