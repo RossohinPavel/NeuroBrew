@@ -27,3 +27,19 @@ export const getProjects: RouteHandler<{
   })));
 };
 
+export const getMyProjects: RouteHandler<{
+  Reply: schemas.ProjectsResponse;
+}> = async (req, res) => {
+  const { userId } = req.user;
+
+  const projects = await req.server.drizzle
+    .select()
+    .from(tables.project)
+    .where(eq(tables.project.userId, userId));
+
+  return res.code(200).send(projects.map((project) => ({
+    ...project,
+    createdAt: project.createdAt.toISOString(),
+  })));
+};
+
