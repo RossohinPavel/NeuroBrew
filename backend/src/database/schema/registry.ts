@@ -9,7 +9,7 @@ export const project = registrySchema.table("project", {
   id: integer()
     .primaryKey()
     .generatedAlwaysAsIdentity(),
-  accountId: integer()
+  userId: integer()
     .notNull()
     .references(() => user.id, { onDelete: "cascade" }),
   name: varchar({ length: 128 })
@@ -18,7 +18,7 @@ export const project = registrySchema.table("project", {
     .defaultNow()
     .notNull(),
 }, (table) => [
-  uniqueIndex("project_account_id_name_unique").on(table.accountId, table.name),
+  uniqueIndex("project_user_id_name_unique").on(table.userId, table.name),
 ]);
 
 export type ProjectInsert = InferInsertModel<typeof project>;
