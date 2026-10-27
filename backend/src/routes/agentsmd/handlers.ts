@@ -8,7 +8,7 @@ export const getAgentsmd: RouteHandler<{
   Params: schemas.AgentsmdParams;
   Reply: schemas.AgentsmdResponse;
 }> = async (req, res) => {
-  const { projectId, profileId: accountId } = req.params;
+  const { projectId, profileId: userId } = req.params;
 
   const [result] = await req.server.drizzle
     .select()
@@ -16,7 +16,7 @@ export const getAgentsmd: RouteHandler<{
     .innerJoin(tables.project, eq(tables.agentsmd.projectId, tables.project.id))
     .where(and(
       eq(tables.agentsmd.projectId, projectId),
-      eq(tables.project.accountId, accountId),
+      eq(tables.project.userId, userId),
     ))
     .limit(1);
 

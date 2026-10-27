@@ -12,7 +12,7 @@ export type ProjectsQuery = v.InferOutput<typeof projectsQuerySchema>;
 
 export const projectResponseSchema = v.object({
   id: v.number(),
-  accountId: v.number(),
+  userId: v.number(),
   name: v.string(),
   createdAt: v.pipe(
     v.string(),

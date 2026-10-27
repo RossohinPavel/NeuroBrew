@@ -15,7 +15,7 @@ export const getProjects: RouteHandler<{
     .select()
     .from(tables.project)
     .where(and(
-      eq(tables.project.accountId, userId),
+      eq(tables.project.userId, userId),
       name === undefined ? undefined : eq(tables.project.name, name),
     ));
 
