@@ -6,7 +6,6 @@
  */
 import type {
   Def0,
-  GetProject200,
   GetProjects200Item,
   GetProjectsParams
 } from '../../models';
@@ -37,8 +36,7 @@ export type getProjectsResponseError = (getProjectsResponse400 | getProjectsResp
 
 export type getProjectsResponse = (getProjectsResponseSuccess | getProjectsResponseError)
 
-export const getGetProjectsUrl = (profileId: number,
-    params?: GetProjectsParams,) => {
+export const getGetProjectsUrl = (params?: GetProjectsParams,) => {
   const normalizedParams = new URLSearchParams();
 
   Object.entries(params || {}).forEach(([key, value]) => {
@@ -50,72 +48,16 @@ export const getGetProjectsUrl = (profileId: number,
 
   const stringifiedParams = normalizedParams.toString();
 
-  return stringifiedParams.length > 0 ? `/profile/${profileId}/project/?${stringifiedParams}` : `/profile/${profileId}/project/`
+  return stringifiedParams.length > 0 ? `/project/?${stringifiedParams}` : `/project/`
 }
 
 /**
- * Returns projects for the specified profile.
+ * Returns projects.
  * @summary Get projects
  */
-export const getProjects = async (profileId: number,
-    params?: GetProjectsParams, options?: Parameters<typeof apiFetch>[1]): Promise<getProjectsResponse> => {
+export const getProjects = async (params?: GetProjectsParams, options?: Parameters<typeof apiFetch>[1]): Promise<getProjectsResponse> => {
 
-  return apiFetch<getProjectsResponse>(getGetProjectsUrl(profileId,params),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
-
-export type getProjectResponse200 = {
-  data: GetProject200
-  status: 200
-}
-
-export type getProjectResponse400 = {
-  data: Def0
-  status: 400
-}
-
-export type getProjectResponse404 = {
-  data: Def0
-  status: 404
-}
-
-export type getProjectResponse500 = {
-  data: Def0
-  status: 500
-}
-
-export type getProjectResponseSuccess = (getProjectResponse200) & {
-  headers: Headers;
-};
-export type getProjectResponseError = (getProjectResponse400 | getProjectResponse404 | getProjectResponse500) & {
-  headers: Headers;
-};
-
-export type getProjectResponse = (getProjectResponseSuccess | getProjectResponseError)
-
-export const getGetProjectUrl = (profileId: number,
-    id: number,) => {
-
-
-
-
-  return `/profile/${profileId}/project/${id}`
-}
-
-/**
- * Returns a project by ID.
- * @summary Get a project
- */
-export const getProject = async (profileId: number,
-    id: number, options?: Parameters<typeof apiFetch>[1]): Promise<getProjectResponse> => {
-
-  return apiFetch<getProjectResponse>(getGetProjectUrl(profileId,id),
+  return apiFetch<getProjectsResponse>(getGetProjectsUrl(params),
   {
     ...options,
     method: 'GET'

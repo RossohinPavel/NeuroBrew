@@ -5,10 +5,10 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export type GetProfilesParams = {
-email?: string;
+export type LookupUserParams = {
 /**
  * @minLength 1
+ * @maxLength 64
  */
-username?: string;
+username: string;
 };

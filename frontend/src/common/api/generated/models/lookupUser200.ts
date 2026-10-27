@@ -5,9 +5,9 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export type GetProject200 = {
+export type LookupUser200 = {
   id: number;
-  accountId: number;
-  name: string;
+  email: string;
+  username: string;
   createdAt: string;
 };

@@ -4,5 +4,5 @@ export * from './health/health';
 export * from './me/me';
 export * from './metadata/metadata';
 export * from './my-project/my-project';
-export * from './profile/profile';
 export * from './project/project';
+export * from './user/user';

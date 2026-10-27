@@ -45,7 +45,7 @@ export const getMeUrl = () => {
 
 
 
-  return `/me/`
+  return `/user/me`
 }
 
 /**
