@@ -6,6 +6,7 @@
  */
 import type {
   Def0,
+  GetMyProjects200Item,
   GetProjects200Item,
   GetProjectsParams
 } from '../../models';
@@ -58,6 +59,59 @@ export const getGetProjectsUrl = (params?: GetProjectsParams,) => {
 export const getProjects = async (params?: GetProjectsParams, options?: Parameters<typeof apiFetch>[1]): Promise<getProjectsResponse> => {
 
   return apiFetch<getProjectsResponse>(getGetProjectsUrl(params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+export type getMyProjectsResponse200 = {
+  data: GetMyProjects200Item[]
+  status: 200
+}
+
+export type getMyProjectsResponse400 = {
+  data: Def0
+  status: 400
+}
+
+export type getMyProjectsResponse401 = {
+  data: Def0
+  status: 401
+}
+
+export type getMyProjectsResponse500 = {
+  data: Def0
+  status: 500
+}
+
+export type getMyProjectsResponseSuccess = (getMyProjectsResponse200) & {
+  headers: Headers;
+};
+export type getMyProjectsResponseError = (getMyProjectsResponse400 | getMyProjectsResponse401 | getMyProjectsResponse500) & {
+  headers: Headers;
+};
+
+export type getMyProjectsResponse = (getMyProjectsResponseSuccess | getMyProjectsResponseError)
+
+export const getGetMyProjectsUrl = () => {
+
+
+
+
+  return `/project/my`
+}
+
+/**
+ * Returns projects for the currently authenticated account.
+ * @summary Get my projects
+ */
+export const getMyProjects = async ( options?: Parameters<typeof apiFetch>[1]): Promise<getMyProjectsResponse> => {
+
+  return apiFetch<getMyProjectsResponse>(getGetMyProjectsUrl(),
   {
     ...options,
     method: 'GET'

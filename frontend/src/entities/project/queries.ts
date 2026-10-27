@@ -8,7 +8,7 @@ import { WITH_SESSION } from "@/entities/session";
 
 /** Возвращает проекты текущего пользователя или выбрасывает ошибку при неудачном запросе. */
 export const getMyProjectsOrThrow = cache(async () => {
-  const response = await getMyProjects(undefined, WITH_SESSION);
+  const response = await getMyProjects(WITH_SESSION);
   if (response.status !== 200) {
     throw new Error("Failed to load the authenticated user's projects.");
   }

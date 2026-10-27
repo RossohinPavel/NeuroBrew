@@ -9,7 +9,6 @@ export * from './def0';
 export * from './getAgentsmd200';
 export * from './getChangelog200Item';
 export * from './getMyProjects200Item';
-export * from './getMyProjectsParams';
 export * from './getProjects200Item';
 export * from './getProjectsParams';
 export * from './health200';
