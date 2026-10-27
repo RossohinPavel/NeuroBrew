@@ -4,13 +4,13 @@ import { eq } from "drizzle-orm";
 import type { RouteHandler } from "fastify";
 
 
-export const getUsers: RouteHandler<{
-  Querystring: schemas.UsersQuery;
-  Reply: schemas.UsersResponse;
+export const lookupUser: RouteHandler<{
+  Querystring: schemas.UserLookupQuery;
+  Reply: schemas.UserResponse;
 }> = async (req, res) => {
-  const { username, lookup } = req.query;
+  const { username } = req.query;
 
-  const users = await req.server.drizzle
+  const [user] = await req.server.drizzle
     .select({
       id: tables.user.id,
       email: tables.user.email,
@@ -19,16 +19,17 @@ export const getUsers: RouteHandler<{
     })
     .from(tables.user)
     .innerJoin(tables.profile, eq(tables.profile.userId, tables.user.id))
-    .where(username === undefined ? undefined : eq(tables.profile.username, username));
+    .where(eq(tables.profile.username, username))
+    .limit(1);
 
-  if (lookup === true && users.length === 0) {
-    throw req.server.httpErrors.notFound("Users not found");
+  if (!user) {
+    throw req.server.httpErrors.notFound("User not found");
   }
 
-  return res.code(200).send(users.map((user) => ({
+  return res.code(200).send({
     ...user,
     createdAt: user.createdAt.toISOString(),
-  })));
+  });
 };
 
 export const getMe: RouteHandler<{
