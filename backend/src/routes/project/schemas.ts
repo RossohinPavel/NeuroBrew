@@ -2,6 +2,7 @@ import * as v from "valibot";
 
 
 export const projectsQuerySchema = v.object({
+  mine: v.optional(v.boolean()),
   username: v.optional(v.pipe(
     v.string(),
     v.minLength(1),

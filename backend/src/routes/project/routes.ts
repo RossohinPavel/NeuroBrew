@@ -7,11 +7,13 @@ import { toJsonSchema } from "@valibot/to-json-schema";
 
 export const projectRoutes: FastifyPluginAsync = async (server) => {
   server.get("/", {
+    preHandler: async (req) => req.query.mine ? await requireAccessToken(req) : undefined,
     schema: {
       operationId: "getProjects",
       summary: "Get projects",
-      description: "Returns projects.",
+      description: "Lists projects by username; mine=true requires a token and returns yours.",
       tags: ["project"],
+      security: [{}, { bearerAuth: [] }],
       querystring: toJsonSchema(
         schemas.projectsQuerySchema,
         { typeMode: "input", errorMode: "throw" },
@@ -22,28 +24,9 @@ export const projectRoutes: FastifyPluginAsync = async (server) => {
           { typeMode: "output", errorMode: "throw" },
         ),
         400: { $ref: "HttpError" },
-        500: { $ref: "HttpError" },
-      },
-    },
-  }, handlers.getProjects);
-
-  server.get("/my", {
-    onRequest: requireAccessToken,
-    schema: {
-      operationId: "getMyProjects",
-      summary: "Get my projects",
-      description: "Returns projects for the currently authenticated account.",
-      tags: ["project"],
-      security: [{ bearerAuth: [] }],
-      response: {
-        200: toJsonSchema(
-          schemas.projectsResponseSchema,
-          { typeMode: "output", errorMode: "throw" },
-        ),
-        400: { $ref: "HttpError" },
         401: { $ref: "HttpError" },
         500: { $ref: "HttpError" },
       },
     },
-  }, handlers.getMyProjects);
+  }, handlers.getProjects);
 };

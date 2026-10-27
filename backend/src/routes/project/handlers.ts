@@ -8,38 +8,30 @@ export const getProjects: RouteHandler<{
   Querystring: schemas.ProjectsQuery;
   Reply: schemas.ProjectsResponse;
 }> = async (req, res) => {
-  const { username } = req.query;
+  const { mine, username } = req.query;
 
-  const projects = await req.server.drizzle
+  const query = req.server.drizzle
     .select({
       id: tables.project.id,
       userId: tables.project.userId,
       name: tables.project.name,
       createdAt: tables.project.createdAt,
     })
-    .from(tables.project)
-    .leftJoin(tables.profile, eq(tables.profile.userId, tables.project.userId))
-    .where(username === undefined ? undefined : eq(tables.profile.username, username));
+    .from(tables.project);
+
+  if (mine === true) {
+    query
+      .where(eq(tables.project.userId, req.user.userId));
+  } else if (username !== undefined) {
+    query
+      .leftJoin(tables.profile, eq(tables.profile.userId, tables.project.userId))
+      .where(eq(tables.profile.username, username));
+  }
+
+  const projects = await query;
 
   return res.code(200).send(projects.map((project) => ({
     ...project,
     createdAt: project.createdAt.toISOString(),
   })));
 };
-
-export const getMyProjects: RouteHandler<{
-  Reply: schemas.ProjectsResponse;
-}> = async (req, res) => {
-  const { userId } = req.user;
-
-  const projects = await req.server.drizzle
-    .select()
-    .from(tables.project)
-    .where(eq(tables.project.userId, userId));
-
-  return res.code(200).send(projects.map((project) => ({
-    ...project,
-    createdAt: project.createdAt.toISOString(),
-  })));
-};
-
