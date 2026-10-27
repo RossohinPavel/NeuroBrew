@@ -1,18 +1,15 @@
 import * as v from "valibot";
 
 
-export const UsersQuerySchema = v.object({
-  email: v.optional(v.pipe(
-    v.string(),
-    v.email(),
-  )),
-  username: v.optional(v.pipe(
+export const UserByUsernameParamsSchema = v.object({
+  username: v.pipe(
     v.string(),
     v.minLength(1),
-  )),
+    v.maxLength(64),
+  ),
 });
 
-export type UsersQuery = v.InferOutput<typeof UsersQuerySchema>;
+export type UserByUsernameParams = v.InferOutput<typeof UserByUsernameParamsSchema>;
 
 export const UserResponseSchema = v.object({
   id: v.number(),
@@ -27,8 +24,4 @@ export const UserResponseSchema = v.object({
   ),
 });
 
-export const UsersResponseSchema = v.array(UserResponseSchema);
-
 export type UserResponse = v.InferOutput<typeof UserResponseSchema>;
-
-export type UsersResponse = v.InferOutput<typeof UsersResponseSchema>;
