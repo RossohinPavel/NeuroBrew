@@ -14,5 +14,5 @@ export const apiRoutes: FastifyPluginAsync = async (server) => {
   server.register(authRoutes, { prefix: "/auth" });
   server.register(userRoutes, { prefix: "/user" });
   server.register(projectRoutes, { prefix: "/project" });
-  server.register(agentsmdRoutes, { prefix: "/profile/:profileId/project/:projectId/agents" });
+  server.register(agentsmdRoutes, { prefix: "/agentsmd" });
 };

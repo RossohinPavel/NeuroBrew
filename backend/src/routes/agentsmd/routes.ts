@@ -1,18 +1,20 @@
 import * as handlers from "./handlers.js";
 import * as schemas from "./schemas.js";
-import { createIdParamsSchema } from "../../schemas/index.js";
 import type { FastifyPluginAsync } from "fastify";
 import { toJsonSchema } from "@valibot/to-json-schema";
 
 
 export const agentsmdRoutes: FastifyPluginAsync = async (server) => {
-  server.get("/", {
+  server.get("/lookup", {
     schema: {
-      operationId: "getAgentsmd",
-      summary: "Get AGENTS.md",
-      description: "Returns the AGENTS.md for the specified project.",
+      operationId: "lookupAgentsmd",
+      summary: "Lookup AGENTS.md",
+      description: "Looks up an AGENTS.md document by username and project name.",
       tags: ["agentsmd"],
-      params: createIdParamsSchema("profileId", "projectId"),
+      querystring: toJsonSchema(
+        schemas.agentsmdLookupQuerySchema,
+        { typeMode: "input", errorMode: "throw" },
+      ),
       response: {
         200: toJsonSchema(
           schemas.agentsmdResponseSchema,
@@ -23,5 +25,5 @@ export const agentsmdRoutes: FastifyPluginAsync = async (server) => {
         500: { $ref: "HttpError" },
       },
     },
-  }, handlers.getAgentsmd);
+  }, handlers.lookupAgentsmd);
 };

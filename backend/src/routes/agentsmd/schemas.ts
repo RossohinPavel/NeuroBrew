@@ -1,12 +1,19 @@
 import * as v from "valibot";
-import { postgresIdSchema } from "../../schemas/index.js";
 
 
-export const agentsmdParamsSchema = v.object({
-  profileId: postgresIdSchema,
-  projectId: postgresIdSchema,
+export const agentsmdLookupQuerySchema = v.object({
+  username: v.pipe(
+    v.string(),
+    v.minLength(1),
+    v.maxLength(64),
+  ),
+  projectName: v.pipe(
+    v.string(),
+    v.minLength(1),
+    v.maxLength(128),
+  ),
 });
-export type AgentsmdParams = v.InferOutput<typeof agentsmdParamsSchema>;
+export type AgentsmdLookupQuery = v.InferOutput<typeof agentsmdLookupQuerySchema>;
 
 export const agentsmdResponseSchema = v.object({
   id: v.pipe(
