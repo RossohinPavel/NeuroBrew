@@ -4,11 +4,11 @@ import { eq } from "drizzle-orm";
 import type { RouteHandler } from "fastify";
 
 
-export const getUserByUsername: RouteHandler<{
-  Params: schemas.UserByUsernameParams;
+export const lookupUser: RouteHandler<{
+  Querystring: schemas.UserLookupQuery;
   Reply: schemas.UserResponse;
 }> = async (req, res) => {
-  const { username } = req.params;
+  const { username } = req.query;
 
   const [user] = await req.server.drizzle
     .select({

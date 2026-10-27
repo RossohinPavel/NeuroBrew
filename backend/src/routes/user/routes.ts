@@ -6,14 +6,14 @@ import { toJsonSchema } from "@valibot/to-json-schema";
 
 
 export const userRoutes: FastifyPluginAsync = async (server) => {
-  server.get("/by-username/:username", {
+  server.get("/lookup", {
     schema: {
-      operationId: "getUserByUsername",
-      summary: "Get a user by username",
+      operationId: "lookupUser",
+      summary: "Look up a user",
       description: "Returns a user by username.",
       tags: ["user"],
-      params: toJsonSchema(
-        schemas.UserByUsernameParamsSchema,
+      querystring: toJsonSchema(
+        schemas.UserLookupQuerySchema,
         { typeMode: "input", errorMode: "throw" },
       ),
       response: {
@@ -26,7 +26,7 @@ export const userRoutes: FastifyPluginAsync = async (server) => {
         500: { $ref: "HttpError" },
       },
     },
-  }, handlers.getUserByUsername);
+  }, handlers.lookupUser);
 
   server.get("/me", {
     onRequest: requireAccessToken,

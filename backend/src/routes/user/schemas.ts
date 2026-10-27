@@ -1,7 +1,7 @@
 import * as v from "valibot";
 
 
-export const UserByUsernameParamsSchema = v.object({
+export const UserLookupQuerySchema = v.object({
   username: v.pipe(
     v.string(),
     v.minLength(1),
@@ -9,7 +9,7 @@ export const UserByUsernameParamsSchema = v.object({
   ),
 });
 
-export type UserByUsernameParams = v.InferOutput<typeof UserByUsernameParamsSchema>;
+export type UserLookupQuery = v.InferOutput<typeof UserLookupQuerySchema>;
 
 export const UserResponseSchema = v.object({
   id: v.number(),
