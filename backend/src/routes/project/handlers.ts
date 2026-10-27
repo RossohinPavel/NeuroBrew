@@ -1,6 +1,6 @@
 import type * as schemas from "./schemas.js";
 import * as tables from "../../database/schema/index.js";
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import type { RouteHandler } from "fastify";
 
 
@@ -34,4 +34,30 @@ export const getProjects: RouteHandler<{
     ...project,
     createdAt: project.createdAt.toISOString(),
   })));
+};
+
+export const lookupProject: RouteHandler<{
+  Querystring: schemas.ProjectLookupQuery;
+  Reply: schemas.ProjectResponse;
+}> = async (req, res) => {
+  const { username, projectName } = req.query;
+
+  const [result] = await req.server.drizzle
+    .select({ project: tables.project })
+    .from(tables.project)
+    .innerJoin(tables.profile, and(
+      eq(tables.project.userId, tables.profile.userId),
+      eq(tables.profile.username, username),
+    ))
+    .where(eq(tables.project.name, projectName))
+    .limit(1);
+
+  if (!result) {
+    throw req.server.httpErrors.notFound("Project not found");
+  }
+
+  return res.code(200).send({
+    ...result.project,
+    createdAt: result.project.createdAt.toISOString(),
+  });
 };

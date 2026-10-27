@@ -11,6 +11,20 @@ export const projectsQuerySchema = v.object({
 });
 export type ProjectsQuery = v.InferOutput<typeof projectsQuerySchema>;
 
+export const projectLookupQuerySchema = v.object({
+  username: v.pipe(
+    v.string(),
+    v.minLength(1),
+    v.maxLength(64),
+  ),
+  projectName: v.pipe(
+    v.string(),
+    v.minLength(1),
+    v.maxLength(128),
+  ),
+});
+export type ProjectLookupQuery = v.InferOutput<typeof projectLookupQuerySchema>;
+
 export const projectResponseSchema = v.object({
   id: v.number(),
   userId: v.number(),

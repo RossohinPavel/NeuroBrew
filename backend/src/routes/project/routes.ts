@@ -6,6 +6,28 @@ import { toJsonSchema } from "@valibot/to-json-schema";
 
 
 export const projectRoutes: FastifyPluginAsync = async (server) => {
+  server.get("/lookup", {
+    schema: {
+      operationId: "lookupProject",
+      summary: "Lookup project",
+      description: "Looks up a project by username and project name.",
+      tags: ["project"],
+      querystring: toJsonSchema(
+        schemas.projectLookupQuerySchema,
+        { typeMode: "input", errorMode: "throw" },
+      ),
+      response: {
+        200: toJsonSchema(
+          schemas.projectResponseSchema,
+          { typeMode: "output", errorMode: "throw" },
+        ),
+        400: { $ref: "HttpError" },
+        404: { $ref: "HttpError" },
+        500: { $ref: "HttpError" },
+      },
+    },
+  }, handlers.lookupProject);
+
   server.get("/", {
     preHandler: async (req) => req.query.mine ? await requireAccessToken(req) : undefined,
     schema: {

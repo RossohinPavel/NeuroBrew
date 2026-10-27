@@ -13,13 +13,11 @@ export const lookupAgentsmd: RouteHandler<{
   const [result] = await req.server.drizzle
     .select({ agentsmd: tables.agentsmd })
     .from(tables.agentsmd)
-    .innerJoin(tables.project, and(
-      eq(tables.agentsmd.projectId, tables.project.id),
-      eq(tables.project.name, projectName),
-    ))
-    .innerJoin(tables.profile, and(
-      eq(tables.project.userId, tables.profile.userId),
+    .innerJoin(tables.project, eq(tables.agentsmd.projectId, tables.project.id))
+    .innerJoin(tables.profile, eq(tables.project.userId, tables.profile.userId))
+    .where(and(
       eq(tables.profile.username, username),
+      eq(tables.project.name, projectName),
     ))
     .limit(1);
 
