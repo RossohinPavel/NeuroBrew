@@ -1,3 +1,4 @@
+import type * as contracts from "@shared/contracts";
 import type * as schemas from "./schemas.js";
 import * as tables from "../../database/schema/index.js";
 import { and, eq } from "drizzle-orm";
@@ -34,6 +35,40 @@ export const getProjects: RouteHandler<{
     ...project,
     createdAt: project.createdAt.toISOString(),
   })));
+};
+
+export const createProject: RouteHandler<{
+  Body: contracts.CreateProjectRequest;
+  Reply: schemas.ProjectResponse;
+}> = async (req, res) => {
+  const project = await req.server.drizzle.transaction(async (tx) => {
+    const [project] = await tx
+      .insert(tables.project)
+      .values({
+        userId: req.user.userId,
+        name: req.body.name,
+      })
+      .onConflictDoNothing({ target: [tables.project.userId, tables.project.name] })
+      .returning();
+
+    if (!project) {
+      throw req.server.httpErrors.conflict("Project name is already in use");
+    }
+
+    await tx
+      .insert(tables.agentsmd)
+      .values({
+        projectId: project.id,
+        content: `# ${project.name}`,
+      });
+
+    return project;
+  });
+
+  return res.code(201).send({
+    ...project,
+    createdAt: project.createdAt.toISOString(),
+  });
 };
 
 export const lookupProject: RouteHandler<{

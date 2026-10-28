@@ -1,6 +1,17 @@
 import * as v from "valibot";
 
 
+export const projectResponseSchema = v.object({
+  id: v.number(),
+  userId: v.number(),
+  name: v.string(),
+  createdAt: v.pipe(
+    v.string(),
+    v.isoTimestamp(),
+  ),
+});
+export type ProjectResponse = v.InferOutput<typeof projectResponseSchema>;
+
 export const projectsQuerySchema = v.object({
   mine: v.optional(v.boolean()),
   username: v.optional(v.pipe(
@@ -10,6 +21,9 @@ export const projectsQuerySchema = v.object({
   )),
 });
 export type ProjectsQuery = v.InferOutput<typeof projectsQuerySchema>;
+
+export const projectsResponseSchema = v.array(projectResponseSchema);
+export type ProjectsResponse = v.InferOutput<typeof projectsResponseSchema>;
 
 export const projectLookupQuerySchema = v.object({
   username: v.pipe(
@@ -24,18 +38,3 @@ export const projectLookupQuerySchema = v.object({
   ),
 });
 export type ProjectLookupQuery = v.InferOutput<typeof projectLookupQuerySchema>;
-
-export const projectResponseSchema = v.object({
-  id: v.number(),
-  userId: v.number(),
-  name: v.string(),
-  createdAt: v.pipe(
-    v.string(),
-    v.isoTimestamp(),
-  ),
-});
-export type ProjectResponse = v.InferOutput<typeof projectResponseSchema>;
-
-export const projectsResponseSchema = v.array(projectResponseSchema);
-export type ProjectsResponse = v.InferOutput<typeof projectsResponseSchema>;
-
