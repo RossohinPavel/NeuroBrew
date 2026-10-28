@@ -28,8 +28,6 @@ export function CreateProjectForm() {
   });
 
   const onSubmit = async (formData: CreateProjectRequest) => {
-    form.clearErrors("root.server");
-
     const { success, data, error } = await createProjectAction(formData);
 
     if (!success) {
@@ -48,6 +46,7 @@ export function CreateProjectForm() {
       <form
         autoComplete="off"
         id="form-create-project"
+        onChange={() => form.clearErrors("root.server")}
         onSubmit={(event) => {
           void form.handleSubmit(onSubmit)(event);
         }}
