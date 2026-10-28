@@ -19,7 +19,7 @@ import { createProjectAction } from "./action";
 
 
 /** Предоставляет форму создания нового проекта. */
-export function NewProjectForm() {
+export function CreateProjectForm() {
   const router = useRouter();
 
   const form = useForm<CreateProjectRequest>({
@@ -47,7 +47,7 @@ export function NewProjectForm() {
     <div>
       <form
         autoComplete="off"
-        id="form-new-project"
+        id="form-create-project"
         onSubmit={(event) => {
           void form.handleSubmit(onSubmit)(event);
         }}
@@ -63,12 +63,12 @@ export function NewProjectForm() {
               name="name"
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="new-project-name">Название проекта</FieldLabel>
+                  <FieldLabel htmlFor="create-project-name">Название проекта</FieldLabel>
                   <Input
                     {...field}
                     autoComplete="off"
                     aria-invalid={fieldState.invalid}
-                    id="new-project-name"
+                    id="create-project-name"
                     placeholder="Название проекта"
                     required
                     type="text"

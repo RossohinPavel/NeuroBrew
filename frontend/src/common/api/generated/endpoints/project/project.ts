@@ -5,6 +5,8 @@
  * OpenAPI spec version: 1.0.0
  */
 import type {
+  CreateProject201,
+  CreateProjectBody,
   Def0,
   GetProjects200Item,
   GetProjectsParams,
@@ -13,66 +15,6 @@ import type {
 } from '../../models';
 
 import { apiFetch } from '../../../fetcher';
-
-export type lookupProjectResponse200 = {
-  data: LookupProject200
-  status: 200
-}
-
-export type lookupProjectResponse400 = {
-  data: Def0
-  status: 400
-}
-
-export type lookupProjectResponse404 = {
-  data: Def0
-  status: 404
-}
-
-export type lookupProjectResponse500 = {
-  data: Def0
-  status: 500
-}
-
-export type lookupProjectResponseSuccess = (lookupProjectResponse200) & {
-  headers: Headers;
-};
-export type lookupProjectResponseError = (lookupProjectResponse400 | lookupProjectResponse404 | lookupProjectResponse500) & {
-  headers: Headers;
-};
-
-export type lookupProjectResponse = (lookupProjectResponseSuccess | lookupProjectResponseError)
-
-export const getLookupProjectUrl = (params: LookupProjectParams,) => {
-  const normalizedParams = new URLSearchParams();
-
-  Object.entries(params || {}).forEach(([key, value]) => {
-
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
-    }
-  });
-
-  const stringifiedParams = normalizedParams.toString();
-
-  return stringifiedParams.length > 0 ? `/project/lookup?${stringifiedParams}` : `/project/lookup`
-}
-
-/**
- * Looks up a project by username and project name.
- * @summary Lookup project
- */
-export const lookupProject = async (params: LookupProjectParams, options?: Parameters<typeof apiFetch>[1]): Promise<lookupProjectResponse> => {
-
-  return apiFetch<lookupProjectResponse>(getLookupProjectUrl(params),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
 
 export type getProjectsResponse200 = {
   data: GetProjects200Item[]
@@ -125,6 +67,138 @@ export const getGetProjectsUrl = (params?: GetProjectsParams,) => {
 export const getProjects = async (params?: GetProjectsParams, options?: Parameters<typeof apiFetch>[1]): Promise<getProjectsResponse> => {
 
   return apiFetch<getProjectsResponse>(getGetProjectsUrl(params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+export type createProjectResponse201 = {
+  data: CreateProject201
+  status: 201
+}
+
+export type createProjectResponse400 = {
+  data: Def0
+  status: 400
+}
+
+export type createProjectResponse401 = {
+  data: Def0
+  status: 401
+}
+
+export type createProjectResponse409 = {
+  data: Def0
+  status: 409
+}
+
+export type createProjectResponse500 = {
+  data: Def0
+  status: 500
+}
+
+export type createProjectResponseSuccess = (createProjectResponse201) & {
+  headers: Headers;
+};
+export type createProjectResponseError = (createProjectResponse400 | createProjectResponse401 | createProjectResponse409 | createProjectResponse500) & {
+  headers: Headers;
+};
+
+export type createProjectResponse = (createProjectResponseSuccess | createProjectResponseError)
+
+export const getCreateProjectUrl = () => {
+
+
+
+
+  return `/project/`
+}
+
+/**
+ * Creates a project for the authenticated user.
+ * @summary Create a project
+ */
+export const createProject = async (createProjectBody: CreateProjectBody, options?: Parameters<typeof apiFetch>[1]): Promise<createProjectResponse> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return apiFetch<createProjectResponse>(getCreateProjectUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(createProjectBody)
+  }
+);}
+
+
+export type lookupProjectResponse200 = {
+  data: LookupProject200
+  status: 200
+}
+
+export type lookupProjectResponse400 = {
+  data: Def0
+  status: 400
+}
+
+export type lookupProjectResponse404 = {
+  data: Def0
+  status: 404
+}
+
+export type lookupProjectResponse500 = {
+  data: Def0
+  status: 500
+}
+
+export type lookupProjectResponseSuccess = (lookupProjectResponse200) & {
+  headers: Headers;
+};
+export type lookupProjectResponseError = (lookupProjectResponse400 | lookupProjectResponse404 | lookupProjectResponse500) & {
+  headers: Headers;
+};
+
+export type lookupProjectResponse = (lookupProjectResponseSuccess | lookupProjectResponseError)
+
+export const getLookupProjectUrl = (params: LookupProjectParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : String(value))
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/project/lookup?${stringifiedParams}` : `/project/lookup`
+}
+
+/**
+ * Looks up a project by username and project name.
+ * @summary Lookup project
+ */
+export const lookupProject = async (params: LookupProjectParams, options?: Parameters<typeof apiFetch>[1]): Promise<lookupProjectResponse> => {
+
+  return apiFetch<lookupProjectResponse>(getLookupProjectUrl(params),
   {
     ...options,
     method: 'GET'
