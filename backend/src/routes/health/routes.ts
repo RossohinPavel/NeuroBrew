@@ -10,13 +10,12 @@ export const healthRoutes: FastifyPluginAsync = async (server) => {
   // Это упрощеный live запрос. Отвечат на вопрос - живы ли сервисы или нет. 
   // При чем, этот ответ именно для стороннего сервиса. Т.е. даже если процесс запущен, но
   // намертво завис (например, застрял в вечном цикле) - то мы считаем, что этот сервис мертв.
-  server.get("/", {
+  server.post(".live", {
     schema: {
       operationId: "health",
       summary: "Check service health",
       description: "Returns the current health status of the backend service.",
       tags: ["health"],
-
       response: {
         200: toJsonSchema(schemas.LiveResponseSchema, {
           typeMode: "output",
