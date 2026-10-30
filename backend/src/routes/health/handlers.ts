@@ -1,4 +1,4 @@
-import type { LiveResponse } from "./schemas.js";
+import type { LiveResponse } from "@shared/contracts";
 import type { RouteHandler } from "fastify";
 import { sql } from "drizzle-orm";
 

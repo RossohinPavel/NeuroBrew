@@ -1,5 +1,5 @@
+import * as contracts from "@shared/contracts";
 import * as handlers from "./handlers.js";
-import * as schemas from "./schemas.js";
 import type { FastifyPluginAsync } from "fastify";
 import { toJsonSchema } from "@valibot/to-json-schema";
 
@@ -17,11 +17,11 @@ export const healthRoutes: FastifyPluginAsync = async (server) => {
       description: "Returns the current health status of the backend service.",
       tags: ["health"],
       response: {
-        200: toJsonSchema(schemas.LiveResponseSchema, {
+        200: toJsonSchema(contracts.LiveResponseSchema, {
           typeMode: "output",
           errorMode: "throw",
         }),
-        503: toJsonSchema(schemas.LiveResponseSchema, {
+        503: toJsonSchema(contracts.LiveResponseSchema, {
           typeMode: "output",
           errorMode: "throw",
         }),
