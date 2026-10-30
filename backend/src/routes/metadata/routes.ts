@@ -5,7 +5,7 @@ import { toJsonSchema } from "@valibot/to-json-schema";
 
 
 export const metadataRoutes: FastifyPluginAsync = async (server) => {
-  server.get("/changelog", {
+  server.post(".changelog.list", {
     schema: {
       operationId: "getChangelog",
       summary: "Get changelog",

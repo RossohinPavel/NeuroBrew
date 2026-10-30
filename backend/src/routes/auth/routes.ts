@@ -7,7 +7,7 @@ import { toJsonSchema } from "@valibot/to-json-schema";
 
 
 export const authRoutes: FastifyPluginAsync = async (server) => {
-  server.post("/register", {
+  server.post(".register", {
     schema: {
       operationId: "register",
       summary: "Register a user",
@@ -28,7 +28,7 @@ export const authRoutes: FastifyPluginAsync = async (server) => {
     },
   }, handlers.register);
 
-  server.post("/login", {
+  server.post(".login", {
     schema: {
       operationId: "login",
       summary: "Log in a user",
@@ -49,7 +49,7 @@ export const authRoutes: FastifyPluginAsync = async (server) => {
     },
   }, handlers.login);
 
-  server.post("/refresh", {
+  server.post(".refresh", {
     onRequest: requireRefreshToken,
     schema: {
       operationId: "refresh",
