@@ -1,14 +1,14 @@
-import type * as schemas from "./schemas.js";
+import type * as contracts from "@shared/contracts";
 import * as tables from "../../database/schema/index.js";
 import { and, eq } from "drizzle-orm";
 import type { RouteHandler } from "fastify";
 
 
-export const lookupAgentsmd: RouteHandler<{
-  Querystring: schemas.AgentsmdLookupQuery;
-  Reply: schemas.AgentsmdResponse;
+export const getAgentsmd: RouteHandler<{
+  Body: contracts.AgentsmdGetRequest;
+  Reply: contracts.AgentsmdResponse;
 }> = async (req, res) => {
-  const { username, projectName } = req.query;
+  const { username, projectName } = req.body;
 
   const [result] = await req.server.drizzle
     .select({ agentsmd: tables.agentsmd })

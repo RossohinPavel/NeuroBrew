@@ -5,10 +5,10 @@ import type { RouteHandler } from "fastify";
 
 
 export const getUser: RouteHandler<{
-  Querystring: contracts.UserGetQuery;
+  Body: contracts.UserGetRequest;
   Reply: contracts.UserResponse;
 }> = async (req, res) => {
-  const { username } = req.query;
+  const { username } = req.body;
 
   const [user] = await req.server.drizzle
     .select({

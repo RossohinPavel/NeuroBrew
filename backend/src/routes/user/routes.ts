@@ -5,14 +5,14 @@ import { toJsonSchema } from "@valibot/to-json-schema";
 
 
 export const userRoutes: FastifyPluginAsync = async (server) => {
-  server.get(".get", {
+  server.post(".get", {
     schema: {
       operationId: "getUser",
       summary: "Get a user",
       description: "Returns a user by username.",
       tags: ["user"],
-      querystring: toJsonSchema(
-        contracts.UserGetQuerySchema,
+      body: toJsonSchema(
+        contracts.UserGetRequestSchema,
         { typeMode: "input", errorMode: "throw" },
       ),
       response: {

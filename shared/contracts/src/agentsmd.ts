@@ -1,7 +1,7 @@
 import * as v from "valibot";
 
 
-export const agentsmdLookupQuerySchema = v.object({
+export const AgentsmdGetRequestSchema = v.object({
   username: v.pipe(
     v.string(),
     v.minLength(1),
@@ -13,9 +13,9 @@ export const agentsmdLookupQuerySchema = v.object({
     v.maxLength(128),
   ),
 });
-export type AgentsmdLookupQuery = v.InferOutput<typeof agentsmdLookupQuerySchema>;
+export type AgentsmdGetRequest = v.InferInput<typeof AgentsmdGetRequestSchema>;
 
-export const agentsmdResponseSchema = v.object({
+export const AgentsmdResponseSchema = v.object({
   id: v.pipe(
     v.number(),
     v.integer(),
@@ -26,4 +26,4 @@ export const agentsmdResponseSchema = v.object({
   ),
   content: v.string(),
 });
-export type AgentsmdResponse = v.InferOutput<typeof agentsmdResponseSchema>;
+export type AgentsmdResponse = v.InferOutput<typeof AgentsmdResponseSchema>;

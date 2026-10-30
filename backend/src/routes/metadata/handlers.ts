@@ -4,8 +4,8 @@ import { desc } from "drizzle-orm";
 import type { RouteHandler } from "fastify";
 
 
-export const getChangelog: RouteHandler<{
-  Reply: contracts.ChangelogResponse;
+export const listChangelog: RouteHandler<{
+  Reply: contracts.ChangelogListResponse;
 }> = async (req, res) => {
   const entries = await req.server.drizzle
     .select()

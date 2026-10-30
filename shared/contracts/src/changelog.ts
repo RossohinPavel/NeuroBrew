@@ -1,7 +1,7 @@
 import * as v from "valibot";
 
 
-export const changelogResponseSchema = v.array(
+export const ChangelogListResponseSchema = v.array(
   v.object({
     id: v.number(),
     createdAt: v.pipe(
@@ -12,4 +12,4 @@ export const changelogResponseSchema = v.array(
   }),
 );
 
-export type ChangelogResponse = v.InferOutput<typeof changelogResponseSchema>;
+export type ChangelogListResponse = v.InferOutput<typeof ChangelogListResponseSchema>;
