@@ -1,7 +1,7 @@
 import * as contracts from "@shared/contracts";
 import * as handlers from "./handlers.js";
 import type { FastifyPluginAsync } from "fastify";
-import { requireRefreshToken } from "../../session/session.guard.js";
+import { requireAccessToken, requireRefreshToken } from "../../session/session.guard.js";
 import { toJsonSchema } from "@valibot/to-json-schema";
 
 
@@ -67,4 +67,24 @@ export const authRoutes: FastifyPluginAsync = async (server) => {
       },
     },
   }, handlers.refresh);
+
+  server.post(".me", {
+    onRequest: requireAccessToken,
+    schema: {
+      operationId: "me",
+      summary: "Get current user",
+      description: "Returns the currently authenticated user.",
+      tags: ["auth"],
+      security: [{ bearerAuth: [] }],
+      response: {
+        200: toJsonSchema(contracts.UserResponseSchema, {
+          typeMode: "output",
+          errorMode: "throw",
+        }),
+        400: { $ref: "HttpError" },
+        401: { $ref: "HttpError" },
+        500: { $ref: "HttpError" },
+      },
+    },
+  }, handlers.me);
 };
