@@ -1,11 +1,11 @@
-import type * as schemas from "./schemas.js";
+import type * as contracts from "@shared/contracts";
 import * as tables from "../../database/schema/index.js";
 import { desc } from "drizzle-orm";
 import type { RouteHandler } from "fastify";
 
 
 export const getChangelog: RouteHandler<{
-  Reply: schemas.ChangelogResponse;
+  Reply: contracts.ChangelogResponse;
 }> = async (req, res) => {
   const entries = await req.server.drizzle
     .select()

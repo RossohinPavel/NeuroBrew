@@ -1,5 +1,5 @@
+import * as contracts from "@shared/contracts";
 import * as handlers from "./handlers.js";
-import * as schemas from "./schemas.js";
 import type { FastifyPluginAsync } from "fastify";
 import { toJsonSchema } from "@valibot/to-json-schema";
 
@@ -12,7 +12,7 @@ export const metadataRoutes: FastifyPluginAsync = async (server) => {
       description: "Returns the application changelog.",
       tags: ["metadata"],
       response: {
-        200: toJsonSchema(schemas.changelogResponseSchema, {
+        200: toJsonSchema(contracts.changelogResponseSchema, {
           typeMode: "output",
           errorMode: "throw",
         }),
