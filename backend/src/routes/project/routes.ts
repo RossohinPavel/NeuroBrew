@@ -33,7 +33,7 @@ export const projectRoutes: FastifyPluginAsync = async (server) => {
     schema: {
       operationId: "listProjects",
       summary: "List projects",
-      description: "Lists projects by username; mine=true requires a token and returns the authenticated user's projects.",
+      description: "Lists projects by username or the authenticated user when mine=true.",
       tags: ["project"],
       security: [{}, { bearerAuth: [] }],
       body: toJsonSchema(

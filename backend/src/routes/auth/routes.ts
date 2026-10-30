@@ -1,7 +1,7 @@
 import * as contracts from "@shared/contracts";
 import * as handlers from "./handlers.js";
-import type { FastifyPluginAsync } from "fastify";
 import { requireAccessToken, requireRefreshToken } from "../../session/session.guard.js";
+import type { FastifyPluginAsync } from "fastify";
 import { toJsonSchema } from "@valibot/to-json-schema";
 
 
