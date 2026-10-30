@@ -1,5 +1,4 @@
 import type * as contracts from "@shared/contracts";
-import type * as schemas from "./schemas.js";
 import * as tables from "../../database/schema/index.js";
 import { hash, verify } from "argon2";
 import { eq } from "drizzle-orm";
@@ -8,7 +7,7 @@ import type { RouteHandler } from "fastify";
 
 export const register: RouteHandler<{
   Body: contracts.RegisterRequest;
-  Reply: schemas.AuthTokensResponse;
+  Reply: contracts.AuthTokensResponse;
 }> = async (req, res) => {
   const { email, password, username } = req.body;
 
@@ -54,7 +53,7 @@ export const register: RouteHandler<{
 
 export const login: RouteHandler<{
   Body: contracts.LoginRequest;
-  Reply: schemas.AuthTokensResponse;
+  Reply: contracts.AuthTokensResponse;
 }> = async (req, res) => {
   const { email, password } = req.body;
 
@@ -83,7 +82,7 @@ export const login: RouteHandler<{
 };
 
 export const refresh: RouteHandler<{
-  Reply: schemas.AuthTokensResponse;
+  Reply: contracts.AuthTokensResponse;
 }> = async (req, res) => {
   // Это стандартное поле jwt плагина, поэтому используем его.
   const { userId } = req.user;

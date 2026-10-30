@@ -1,6 +1,5 @@
 import * as contracts from "@shared/contracts";
 import * as handlers from "./handlers.js";
-import * as schemas from "./schemas.js";
 import type { FastifyPluginAsync } from "fastify";
 import { requireRefreshToken } from "../../session/session.guard.js";
 import { toJsonSchema } from "@valibot/to-json-schema";
@@ -18,7 +17,7 @@ export const authRoutes: FastifyPluginAsync = async (server) => {
         errorMode: "throw",
       }),
       response: { 
-        201: toJsonSchema(schemas.authTokensResponseSchema, {
+        201: toJsonSchema(contracts.authTokensResponseSchema, {
           typeMode: "output",
           errorMode: "throw",
         }),
@@ -39,7 +38,7 @@ export const authRoutes: FastifyPluginAsync = async (server) => {
         errorMode: "throw",
       }),
       response: {
-        200: toJsonSchema(schemas.authTokensResponseSchema, {
+        200: toJsonSchema(contracts.authTokensResponseSchema, {
           typeMode: "output",
           errorMode: "throw",
         }),
@@ -58,7 +57,7 @@ export const authRoutes: FastifyPluginAsync = async (server) => {
       tags: ["auth"],
       security: [{ bearerAuth: [] }],
       response: {
-        200: toJsonSchema(schemas.authTokensResponseSchema, {
+        200: toJsonSchema(contracts.authTokensResponseSchema, {
           typeMode: "output",
           errorMode: "throw",
         }),
