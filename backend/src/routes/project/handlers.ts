@@ -1,15 +1,40 @@
 import type * as contracts from "@shared/contracts";
-import type * as schemas from "./schemas.js";
 import * as tables from "../../database/schema/index.js";
 import { and, eq } from "drizzle-orm";
 import type { RouteHandler } from "fastify";
 
 
-export const getProjects: RouteHandler<{
-  Querystring: schemas.ProjectsQuery;
-  Reply: schemas.ProjectsResponse;
+export const getProject: RouteHandler<{
+  Body: contracts.ProjectGetRequest;
+  Reply: contracts.ProjectResponse;
 }> = async (req, res) => {
-  const { mine, username } = req.query;
+  const { username, projectName } = req.body;
+
+  const [result] = await req.server.drizzle
+    .select({ project: tables.project })
+    .from(tables.project)
+    .innerJoin(tables.profile, and(
+      eq(tables.project.userId, tables.profile.userId),
+      eq(tables.profile.username, username),
+    ))
+    .where(eq(tables.project.name, projectName))
+    .limit(1);
+
+  if (!result) {
+    throw req.server.httpErrors.notFound("Project not found");
+  }
+
+  return res.code(200).send({
+    ...result.project,
+    createdAt: result.project.createdAt.toISOString(),
+  });
+};
+
+export const listProjects: RouteHandler<{
+  Body: contracts.ProjectListRequest;
+  Reply: contracts.ProjectListResponse;
+}> = async (req, res) => {
+  const { mine, username } = req.body;
 
   const query = req.server.drizzle
     .select({
@@ -39,7 +64,7 @@ export const getProjects: RouteHandler<{
 
 export const createProject: RouteHandler<{
   Body: contracts.CreateProjectRequest;
-  Reply: schemas.ProjectResponse;
+  Reply: contracts.ProjectResponse;
 }> = async (req, res) => {
   const project = await req.server.drizzle.transaction(async (tx) => {
     const [project] = await tx
@@ -71,28 +96,3 @@ export const createProject: RouteHandler<{
   });
 };
 
-export const lookupProject: RouteHandler<{
-  Querystring: schemas.ProjectLookupQuery;
-  Reply: schemas.ProjectResponse;
-}> = async (req, res) => {
-  const { username, projectName } = req.query;
-
-  const [result] = await req.server.drizzle
-    .select({ project: tables.project })
-    .from(tables.project)
-    .innerJoin(tables.profile, and(
-      eq(tables.project.userId, tables.profile.userId),
-      eq(tables.profile.username, username),
-    ))
-    .where(eq(tables.project.name, projectName))
-    .limit(1);
-
-  if (!result) {
-    throw req.server.httpErrors.notFound("Project not found");
-  }
-
-  return res.code(200).send({
-    ...result.project,
-    createdAt: result.project.createdAt.toISOString(),
-  });
-};

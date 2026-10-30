@@ -1,27 +1,48 @@
 import * as contracts from "@shared/contracts";
 import * as handlers from "./handlers.js";
-import * as schemas from "./schemas.js";
 import type { FastifyPluginAsync } from "fastify";
 import { requireAccessToken } from "../../session/session.guard.js";
 import { toJsonSchema } from "@valibot/to-json-schema";
 
 
 export const projectRoutes: FastifyPluginAsync = async (server) => {
-  server.get("/", {
-    preHandler: async (req) => req.query.mine ? await requireAccessToken(req) : undefined,
+  server.post(".get", {
     schema: {
-      operationId: "getProjects",
-      summary: "Get projects",
-      description: "Lists projects by username; mine=true requires a token and returns yours.",
+      operationId: "getProject",
+      summary: "Get a project",
+      description: "Returns a project by username and project name.",
       tags: ["project"],
-      security: [{}, { bearerAuth: [] }],
-      querystring: toJsonSchema(
-        schemas.projectsQuerySchema,
+      body: toJsonSchema(
+        contracts.ProjectGetRequestSchema,
         { typeMode: "input", errorMode: "throw" },
       ),
       response: {
         200: toJsonSchema(
-          schemas.projectsResponseSchema,
+          contracts.ProjectResponseSchema,
+          { typeMode: "output", errorMode: "throw" },
+        ),
+        400: { $ref: "HttpError" },
+        404: { $ref: "HttpError" },
+        500: { $ref: "HttpError" },
+      },
+    },
+  }, handlers.getProject);
+
+  server.post(".list", {
+    preHandler: async (req) => req.body.mine ? await requireAccessToken(req) : undefined,
+    schema: {
+      operationId: "listProjects",
+      summary: "List projects",
+      description: "Lists projects by username; mine=true requires a token and returns the authenticated user's projects.",
+      tags: ["project"],
+      security: [{}, { bearerAuth: [] }],
+      body: toJsonSchema(
+        contracts.ProjectListRequestSchema,
+        { typeMode: "input", errorMode: "throw" },
+      ),
+      response: {
+        200: toJsonSchema(
+          contracts.ProjectListResponseSchema,
           { typeMode: "output", errorMode: "throw" },
         ),
         400: { $ref: "HttpError" },
@@ -29,9 +50,9 @@ export const projectRoutes: FastifyPluginAsync = async (server) => {
         500: { $ref: "HttpError" },
       },
     },
-  }, handlers.getProjects);
+  }, handlers.listProjects);
 
-  server.post("/", {
+  server.post(".create", {
     onRequest: requireAccessToken,
     schema: {
       operationId: "createProject",
@@ -45,7 +66,7 @@ export const projectRoutes: FastifyPluginAsync = async (server) => {
       ),
       response: {
         201: toJsonSchema(
-          schemas.projectResponseSchema,
+          contracts.ProjectResponseSchema,
           { typeMode: "output", errorMode: "throw" },
         ),
         400: { $ref: "HttpError" },
@@ -55,26 +76,4 @@ export const projectRoutes: FastifyPluginAsync = async (server) => {
       },
     },
   }, handlers.createProject);
-
-  server.get("/lookup", {
-    schema: {
-      operationId: "lookupProject",
-      summary: "Lookup project",
-      description: "Looks up a project by username and project name.",
-      tags: ["project"],
-      querystring: toJsonSchema(
-        schemas.projectLookupQuerySchema,
-        { typeMode: "input", errorMode: "throw" },
-      ),
-      response: {
-        200: toJsonSchema(
-          schemas.projectResponseSchema,
-          { typeMode: "output", errorMode: "throw" },
-        ),
-        400: { $ref: "HttpError" },
-        404: { $ref: "HttpError" },
-        500: { $ref: "HttpError" },
-      },
-    },
-  }, handlers.lookupProject);
 };
