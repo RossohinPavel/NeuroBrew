@@ -6,68 +6,75 @@
  */
 import type {
   Def0,
-  LookupAgentsmd200,
-  LookupAgentsmdParams
+  GetAgentsmd200,
+  GetAgentsmdBody
 } from '../../models';
 
 import { apiFetch } from '../../../fetcher';
 
-export type lookupAgentsmdResponse200 = {
-  data: LookupAgentsmd200
+export type getAgentsmdResponse200 = {
+  data: GetAgentsmd200
   status: 200
 }
 
-export type lookupAgentsmdResponse400 = {
+export type getAgentsmdResponse400 = {
   data: Def0
   status: 400
 }
 
-export type lookupAgentsmdResponse404 = {
+export type getAgentsmdResponse404 = {
   data: Def0
   status: 404
 }
 
-export type lookupAgentsmdResponse500 = {
+export type getAgentsmdResponse500 = {
   data: Def0
   status: 500
 }
 
-export type lookupAgentsmdResponseSuccess = (lookupAgentsmdResponse200) & {
+export type getAgentsmdResponseSuccess = (getAgentsmdResponse200) & {
   headers: Headers;
 };
-export type lookupAgentsmdResponseError = (lookupAgentsmdResponse400 | lookupAgentsmdResponse404 | lookupAgentsmdResponse500) & {
+export type getAgentsmdResponseError = (getAgentsmdResponse400 | getAgentsmdResponse404 | getAgentsmdResponse500) & {
   headers: Headers;
 };
 
-export type lookupAgentsmdResponse = (lookupAgentsmdResponseSuccess | lookupAgentsmdResponseError)
+export type getAgentsmdResponse = (getAgentsmdResponseSuccess | getAgentsmdResponseError)
 
-export const getLookupAgentsmdUrl = (params: LookupAgentsmdParams,) => {
-  const normalizedParams = new URLSearchParams();
+export const getGetAgentsmdUrl = () => {
 
-  Object.entries(params || {}).forEach(([key, value]) => {
 
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
-    }
-  });
 
-  const stringifiedParams = normalizedParams.toString();
 
-  return stringifiedParams.length > 0 ? `/agentsmd/lookup?${stringifiedParams}` : `/agentsmd/lookup`
+  return `/agentsmd.get`
 }
 
 /**
- * Looks up an AGENTS.md document by username and project name.
- * @summary Lookup AGENTS.md
+ * Returns an AGENTS.md document by username and project name.
+ * @summary Get AGENTS.md
  */
-export const lookupAgentsmd = async (params: LookupAgentsmdParams, options?: Parameters<typeof apiFetch>[1]): Promise<lookupAgentsmdResponse> => {
+export const getAgentsmd = async (getAgentsmdBody: GetAgentsmdBody, options?: Parameters<typeof apiFetch>[1]): Promise<getAgentsmdResponse> => {
 
-  return apiFetch<lookupAgentsmdResponse>(getLookupAgentsmdUrl(params),
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return apiFetch<getAgentsmdResponse>(getGetAgentsmdUrl(),
   {
     ...options,
-    method: 'GET'
-
-
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(getAgentsmdBody)
   }
 );}
 

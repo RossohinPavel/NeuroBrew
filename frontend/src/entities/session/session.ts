@@ -30,13 +30,10 @@ export const WITH_SESSION: ApiRequestInit = {
   prepareHeaders: async (headers) => {
     const cookieStore = await cookies();
     const accessToken = cookieStore.get(SessionCookies.accessToken.name)?.value;
-
     if (accessToken === undefined) {
       throw new Error("Authentication is required to perform this action.");
     }
-
     headers.set("Authorization", `Bearer ${accessToken}`);
-
     return headers;
   },
   // Подстраховка на случай того, что токен успел протухнуть в полете к бекенду))

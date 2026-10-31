@@ -35,7 +35,7 @@ export const getHealthUrl = () => {
 
 
 
-  return `/health/`
+  return `/health.live`
 }
 
 /**
@@ -47,7 +47,7 @@ export const health = async ( options?: Parameters<typeof apiFetch>[1]): Promise
   return apiFetch<healthResponse>(getHealthUrl(),
   {
     ...options,
-    method: 'GET'
+    method: 'POST'
 
 
   }

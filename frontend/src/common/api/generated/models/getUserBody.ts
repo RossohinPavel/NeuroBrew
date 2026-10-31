@@ -5,8 +5,10 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export type LookupAgentsmd200 = {
-  id: number;
-  projectId: number;
-  content: string;
+export type GetUserBody = {
+  /**
+     * @minLength 1
+     * @maxLength 64
+     */
+  username: string;
 };

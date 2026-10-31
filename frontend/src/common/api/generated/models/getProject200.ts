@@ -5,8 +5,9 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export type GetChangelog200Item = {
+export type GetProject200 = {
   id: number;
+  userId: number;
+  name: string;
   createdAt: string;
-  title: string;
 };

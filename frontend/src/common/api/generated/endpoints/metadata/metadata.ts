@@ -6,48 +6,48 @@
  */
 import type {
   Def0,
-  GetChangelog200Item
+  ListChangelog200Item
 } from '../../models';
 
 import { apiFetch } from '../../../fetcher';
 
-export type getChangelogResponse200 = {
-  data: GetChangelog200Item[]
+export type listChangelogResponse200 = {
+  data: ListChangelog200Item[]
   status: 200
 }
 
-export type getChangelogResponse500 = {
+export type listChangelogResponse500 = {
   data: Def0
   status: 500
 }
 
-export type getChangelogResponseSuccess = (getChangelogResponse200) & {
+export type listChangelogResponseSuccess = (listChangelogResponse200) & {
   headers: Headers;
 };
-export type getChangelogResponseError = (getChangelogResponse500) & {
+export type listChangelogResponseError = (listChangelogResponse500) & {
   headers: Headers;
 };
 
-export type getChangelogResponse = (getChangelogResponseSuccess | getChangelogResponseError)
+export type listChangelogResponse = (listChangelogResponseSuccess | listChangelogResponseError)
 
-export const getGetChangelogUrl = () => {
-
-
+export const getListChangelogUrl = () => {
 
 
-  return `/metadata/changelog`
+
+
+  return `/metadata.changelog.list`
 }
 
 /**
  * Returns the application changelog.
- * @summary Get changelog
+ * @summary List changelog entries
  */
-export const getChangelog = async ( options?: Parameters<typeof apiFetch>[1]): Promise<getChangelogResponse> => {
+export const listChangelog = async ( options?: Parameters<typeof apiFetch>[1]): Promise<listChangelogResponse> => {
 
-  return apiFetch<getChangelogResponse>(getGetChangelogUrl(),
+  return apiFetch<listChangelogResponse>(getListChangelogUrl(),
   {
     ...options,
-    method: 'GET'
+    method: 'POST'
 
 
   }

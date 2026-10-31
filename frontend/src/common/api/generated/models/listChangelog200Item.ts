@@ -5,11 +5,8 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export type GetProjectsParams = {
-mine?: boolean;
-/**
- * @minLength 1
- * @maxLength 64
- */
-username?: string;
+export type ListChangelog200Item = {
+  id: number;
+  createdAt: string;
+  title: string;
 };

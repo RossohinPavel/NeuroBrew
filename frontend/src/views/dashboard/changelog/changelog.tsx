@@ -1,10 +1,10 @@
-import { getChangelog } from "@/common/api/generated/endpoints";
+import { listChangelog } from "@/common/api/generated/endpoints";
 import { ChangelogCard } from "./changelog-card";
 
 
 /** Представляет журнал изменений пользователя. */
 export async function Changelog() {
-  const response = await getChangelog();
+  const response = await listChangelog();
 
   if (response.status !== 200) {
     throw new Error("Failed to load the changelog.");

@@ -5,9 +5,9 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export type GetProjects200Item = {
+export type GetUser200 = {
   id: number;
-  userId: number;
-  name: string;
+  email: string;
+  username: string;
   createdAt: string;
 };

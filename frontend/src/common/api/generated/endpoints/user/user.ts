@@ -6,68 +6,75 @@
  */
 import type {
   Def0,
-  LookupUser200,
-  LookupUserParams
+  GetUser200,
+  GetUserBody
 } from '../../models';
 
 import { apiFetch } from '../../../fetcher';
 
-export type lookupUserResponse200 = {
-  data: LookupUser200
+export type getUserResponse200 = {
+  data: GetUser200
   status: 200
 }
 
-export type lookupUserResponse400 = {
+export type getUserResponse400 = {
   data: Def0
   status: 400
 }
 
-export type lookupUserResponse404 = {
+export type getUserResponse404 = {
   data: Def0
   status: 404
 }
 
-export type lookupUserResponse500 = {
+export type getUserResponse500 = {
   data: Def0
   status: 500
 }
 
-export type lookupUserResponseSuccess = (lookupUserResponse200) & {
+export type getUserResponseSuccess = (getUserResponse200) & {
   headers: Headers;
 };
-export type lookupUserResponseError = (lookupUserResponse400 | lookupUserResponse404 | lookupUserResponse500) & {
+export type getUserResponseError = (getUserResponse400 | getUserResponse404 | getUserResponse500) & {
   headers: Headers;
 };
 
-export type lookupUserResponse = (lookupUserResponseSuccess | lookupUserResponseError)
+export type getUserResponse = (getUserResponseSuccess | getUserResponseError)
 
-export const getLookupUserUrl = (params: LookupUserParams,) => {
-  const normalizedParams = new URLSearchParams();
+export const getGetUserUrl = () => {
 
-  Object.entries(params || {}).forEach(([key, value]) => {
 
-    if (value !== undefined) {
-      normalizedParams.append(key, value === null ? 'null' : String(value))
-    }
-  });
 
-  const stringifiedParams = normalizedParams.toString();
 
-  return stringifiedParams.length > 0 ? `/user/lookup?${stringifiedParams}` : `/user/lookup`
+  return `/user.get`
 }
 
 /**
  * Returns a user by username.
- * @summary Look up a user
+ * @summary Get a user
  */
-export const lookupUser = async (params: LookupUserParams, options?: Parameters<typeof apiFetch>[1]): Promise<lookupUserResponse> => {
+export const getUser = async (getUserBody: GetUserBody, options?: Parameters<typeof apiFetch>[1]): Promise<getUserResponse> => {
 
-  return apiFetch<lookupUserResponse>(getLookupUserUrl(params),
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return apiFetch<getUserResponse>(getGetUserUrl(),
   {
     ...options,
-    method: 'GET'
-
-
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(getUserBody)
   }
 );}
 

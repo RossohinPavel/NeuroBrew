@@ -8,6 +8,7 @@ import type {
   Def0,
   Login200,
   LoginBody,
+  Me200,
   Refresh200,
   Register201,
   RegisterBody
@@ -44,7 +45,7 @@ export const getRegisterUrl = () => {
 
 
 
-  return `/auth/register`
+  return `/auth.register`
 }
 
 /**
@@ -106,7 +107,7 @@ export const getLoginUrl = () => {
 
 
 
-  return `/auth/login`
+  return `/auth.login`
 }
 
 /**
@@ -173,7 +174,7 @@ export const getRefreshUrl = () => {
 
 
 
-  return `/auth/refresh`
+  return `/auth.refresh`
 }
 
 /**
@@ -183,6 +184,59 @@ export const getRefreshUrl = () => {
 export const refresh = async ( options?: Parameters<typeof apiFetch>[1]): Promise<refreshResponse> => {
 
   return apiFetch<refreshResponse>(getRefreshUrl(),
+  {
+    ...options,
+    method: 'POST'
+
+
+  }
+);}
+
+
+export type meResponse200 = {
+  data: Me200
+  status: 200
+}
+
+export type meResponse400 = {
+  data: Def0
+  status: 400
+}
+
+export type meResponse401 = {
+  data: Def0
+  status: 401
+}
+
+export type meResponse500 = {
+  data: Def0
+  status: 500
+}
+
+export type meResponseSuccess = (meResponse200) & {
+  headers: Headers;
+};
+export type meResponseError = (meResponse400 | meResponse401 | meResponse500) & {
+  headers: Headers;
+};
+
+export type meResponse = (meResponseSuccess | meResponseError)
+
+export const getMeUrl = () => {
+
+
+
+
+  return `/auth.me`
+}
+
+/**
+ * Returns the currently authenticated user.
+ * @summary Get current user
+ */
+export const me = async ( options?: Parameters<typeof apiFetch>[1]): Promise<meResponse> => {
+
+  return apiFetch<meResponse>(getMeUrl(),
   {
     ...options,
     method: 'POST'
