@@ -1,15 +1,15 @@
 import "server-only";
 
 import { Suspense } from "react";
-import { isUserAuthenticated } from "@/entities/session";
+import { canUseBackendAsUser } from "@/entities/session";
 import { Dashboard } from "./dashboard";
 import { Landing } from "./landing";
 
 
 async function Content() {
-  const isAuthenticated = await isUserAuthenticated();
+  const canUseBackend = await canUseBackendAsUser();
   
-  return isAuthenticated ? <Dashboard /> : <Landing />;
+  return canUseBackend ? <Dashboard /> : <Landing />;
 }
 
 export function Home() {

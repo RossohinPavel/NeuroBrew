@@ -17,23 +17,23 @@ export type ApiRequestInit = RequestInit & {
 };
 
 /** Выполняет запрос к backend API в серверном окружении frontend. */
-export const apiFetch = async <T>(url: string, options: ApiRequestInit): Promise<T> => {
+export const apiFetch = async <T>(url: string | URL, options: ApiRequestInit): Promise<T> => {
   const { prepareHeaders, processResponse, ...fetchOptions } = options;
+  
   const requestUrl = new URL(url, ENV.BACKEND_URL);
+  if (prepareHeaders) {
+    fetchOptions.headers = await prepareHeaders(new Headers(fetchOptions.headers));
+  }
 
-  const preparedHeaders = prepareHeaders
-    ? await prepareHeaders(new Headers(fetchOptions.headers))
-    : fetchOptions.headers;
-  const requestOptions = {
+  let response = await fetch(requestUrl, {
     ...fetchOptions,
-    headers: preparedHeaders,
-    signal: AbortSignal.timeout(30_000),
-  };
+    signal: AbortSignal.timeout(10_000),
+  });
 
-  const initialResponse = await fetch(requestUrl, requestOptions);
-  const response = processResponse
-    ? await processResponse(initialResponse, requestUrl, requestOptions)
-    : initialResponse;
+  if (processResponse) {
+    response = await processResponse(response, requestUrl, fetchOptions);
+  }
+
   const data = await response.json() as unknown;
 
   if (response.status >= 500) {
@@ -42,6 +42,5 @@ export const apiFetch = async <T>(url: string, options: ApiRequestInit): Promise
       ENV.NODE_ENV === "development" ? { cause: data } : undefined,
     );
   }
-
   return { data, status: response.status, headers: response.headers } as T;
 };

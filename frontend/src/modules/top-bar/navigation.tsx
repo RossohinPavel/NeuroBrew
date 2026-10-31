@@ -1,16 +1,16 @@
 import "server-only";
 
-import { isUserAuthenticated } from "@/entities/session";
+import { canUseBackendAsUser } from "@/entities/session";
 import { getMeOrThrow } from "@/entities/user";
 import { AuthenticatedNavigation } from "./nav-auth";
 import { UnauthenticatedNavigation } from "./nav-unauth";
 
 
-/** Отображает навигацию в соответствии с состоянием сессии. */
+/** Выбирает навигацию по возможности работать с бэкендом от имени пользователя. */
 export async function Navigation() {
-  const isAuthenticated = await isUserAuthenticated();
+  const canUseBackend = await canUseBackendAsUser();
 
-  if (isAuthenticated) {
+  if (canUseBackend) {
     const user = await getMeOrThrow();
 
     return <AuthenticatedNavigation username={user.username} />;
