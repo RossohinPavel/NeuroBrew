@@ -15,6 +15,19 @@ export const AgentsmdGetRequestSchema = v.object({
 });
 export type AgentsmdGetRequest = v.InferInput<typeof AgentsmdGetRequestSchema>;
 
+export const AgentsmdUpdateRequestSchema = v.object({
+  projectName: v.pipe(
+    v.string(),
+    v.minLength(1),
+    v.maxLength(128),
+  ),
+  content: v.pipe(
+    v.string(),
+    v.maxLength(32768),
+  ),
+});
+export type AgentsmdUpdateRequest = v.InferInput<typeof AgentsmdUpdateRequestSchema>;
+
 export const AgentsmdResponseSchema = v.object({
   id: v.pipe(
     v.number(),

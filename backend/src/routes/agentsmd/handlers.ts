@@ -27,3 +27,27 @@ export const getAgentsmd: RouteHandler<{
 
   return res.code(200).send(result.agentsmd);
 };
+
+export const updateAgentsmd: RouteHandler<{
+  Body: contracts.AgentsmdUpdateRequest;
+  Reply: contracts.AgentsmdResponse;
+}> = async (req, res) => {
+  const { projectName, content } = req.body;
+
+  const [agentsmd] = await req.server.drizzle
+    .update(tables.agentsmd)
+    .set({ content })
+    .from(tables.project)
+    .where(and(
+      eq(tables.agentsmd.projectId, tables.project.id),
+      eq(tables.project.userId, req.user.userId),
+      eq(tables.project.name, projectName),
+    ))
+    .returning();
+
+  if (!agentsmd) {
+    throw req.server.httpErrors.notFound("AGENTS.md not found");
+  }
+
+  return res.code(200).send(agentsmd);
+};

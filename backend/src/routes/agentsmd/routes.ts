@@ -1,6 +1,7 @@
 import * as contracts from "@shared/contracts";
 import * as handlers from "./handlers.js";
 import type { FastifyPluginAsync } from "fastify";
+import { requireAccessToken } from "../../session/session.guard.js";
 import { toJsonSchema } from "@valibot/to-json-schema";
 
 
@@ -26,4 +27,29 @@ export const agentsmdRoutes: FastifyPluginAsync = async (server) => {
       },
     },
   }, handlers.getAgentsmd);
+
+  server.post(".update", {
+    onRequest: requireAccessToken,
+    schema: {
+      operationId: "updateAgentsmd",
+      summary: "Update AGENTS.md",
+      description: "Updates an AGENTS.md document for the authenticated user.",
+      tags: ["agentsmd"],
+      security: [{ bearerAuth: [] }],
+      body: toJsonSchema(
+        contracts.AgentsmdUpdateRequestSchema,
+        { typeMode: "input", errorMode: "throw" },
+      ),
+      response: {
+        200: toJsonSchema(
+          contracts.AgentsmdResponseSchema,
+          { typeMode: "output", errorMode: "throw" },
+        ),
+        400: { $ref: "HttpError" },
+        401: { $ref: "HttpError" },
+        404: { $ref: "HttpError" },
+        500: { $ref: "HttpError" },
+      },
+    },
+  }, handlers.updateAgentsmd);
 };
