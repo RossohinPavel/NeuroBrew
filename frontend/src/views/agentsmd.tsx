@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import { getAgentsmdOr404 } from "@/entities/agentsmd";
-import { canUseBackendAsUser } from "@/entities/session";
+import { getSession } from "@/entities/session";
 import { getMeOrThrow } from "@/entities/user";
 import { AgentsmdEditForm, AgentsmdEditSkeleton } from "@/features/agentsmd-edit";
 
@@ -25,8 +25,8 @@ async function AgentsmdContent({ params }: Props) {
   const { username, project } = await params;
   const agentsmd = await getAgentsmdOr404(username, project);
   
-  const canUseBackend = await canUseBackendAsUser();
-  const isAuthor = canUseBackend && (await getMeOrThrow()).username === username;
+  const session = await getSession();
+  const isAuthor = session !== undefined && (await getMeOrThrow()).username === username;
 
   return <AgentsmdEditForm content={agentsmd.content} isAuthor={isAuthor} projectName={project} />;
 }

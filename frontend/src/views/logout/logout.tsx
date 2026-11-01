@@ -1,14 +1,13 @@
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
-import { canUseBackendAsUser } from "@/entities/session";
+import { getSession } from "@/entities/session";
 import { LogoutForm } from "@/features/logout";
 
 
 /** Для выхода оптимистично считаем наличие токена достаточным признаком сессии. */
 async function Content() {
-  const canUseBackend = await canUseBackendAsUser();
-
-  if (!canUseBackend) {
+  const session = await getSession();
+  if (session === undefined) {
     redirect("/");
   }
   return <LogoutForm />;

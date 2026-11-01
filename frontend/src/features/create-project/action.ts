@@ -2,7 +2,7 @@
 
 import { createProject } from "@/common/api/generated/endpoints";
 import type { ActionResponse } from "@/common/server-action";
-import { WITH_SESSION } from "@/entities/session";
+import { getSessionOrThrow } from "@/entities/session";
 import { getMeOrThrow } from "@/entities/user";
 import type { CreateProjectRequest } from "@shared/contracts";
 
@@ -11,7 +11,8 @@ import type { CreateProjectRequest } from "@shared/contracts";
 export const createProjectAction = async (
   formData: CreateProjectRequest,
 ): ActionResponse<{ name: string; username: string }> => {
-  const result = await createProject(formData, WITH_SESSION);
+  const session = await getSessionOrThrow();
+  const result = await createProject(formData, session);
 
   if (result.status === 400 || result.status === 409) {
     return {

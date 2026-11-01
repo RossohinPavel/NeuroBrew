@@ -2,7 +2,7 @@
 
 import { updateAgentsmd } from "@/common/api/generated/endpoints";
 import type { ActionResponse } from "@/common/server-action";
-import { WITH_SESSION } from "@/entities/session";
+import { getSessionOrThrow } from "@/entities/session";
 import type { AgentsmdUpdateRequest } from "@shared/contracts";
 
 
@@ -10,7 +10,8 @@ import type { AgentsmdUpdateRequest } from "@shared/contracts";
 export const editAgentsmdAction = async (
   formData: AgentsmdUpdateRequest,
 ): ActionResponse<{ content: string }> => {
-  const result = await updateAgentsmd(formData, WITH_SESSION);
+  const session = await getSessionOrThrow();
+  const result = await updateAgentsmd(formData, session);
 
   if (result.status === 200) {
     return {

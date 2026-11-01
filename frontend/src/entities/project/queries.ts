@@ -3,12 +3,13 @@ import "server-only";
 import { notFound } from "next/navigation";
 import { cache } from "react";
 import { getProject, listProjects } from "@/common/api/generated/endpoints";
-import { WITH_SESSION } from "@/entities/session";
+import { getSessionOrThrow } from "@/entities/session";
 
 
 /** Возвращает проекты текущего пользователя или выбрасывает ошибку при неудачном запросе. */
 export const getMyProjectsOrThrow = cache(async () => {
-  const response = await listProjects({ mine: true }, WITH_SESSION);
+  const session = await getSessionOrThrow();
+  const response = await listProjects({ mine: true }, session);
   if (response.status !== 200) {
     throw new Error("Failed to load the authenticated user's projects.");
   }

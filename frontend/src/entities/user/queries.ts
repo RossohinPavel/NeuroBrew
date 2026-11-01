@@ -3,12 +3,13 @@ import "server-only";
 import { notFound } from "next/navigation";
 import { cache } from "react";
 import { me, getUser } from "@/common/api/generated/endpoints";
-import { WITH_SESSION } from "@/entities/session";
+import { getSessionOrThrow } from "@/entities/session";
 
 
 /** Возвращает текущего пользователя или выбрасывает ошибку при неудачном запросе. */
 export const getMeOrThrow = cache(async () => {
-  const response = await me(WITH_SESSION);
+  const session = await getSessionOrThrow();
+  const response = await me(session);
   if (response.status !== 200) {
     throw new Error("Failed to load the authenticated user.");
   }

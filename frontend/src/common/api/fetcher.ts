@@ -3,11 +3,8 @@ import "server-only";
 import { ENV } from "@/common/env";
 
 
-/** Дополняет опции запроса обработчиками заголовков и ответа API-клиента. */
+/** Дополняет опции запроса обработчиком ответа API-клиента. */
 export type ApiRequestInit = RequestInit & {
-  /** Подготавливает заголовки перед выполнением запроса. */
-  prepareHeaders?: (headers: Headers) => Headers | Promise<Headers>;
-
   /** Возвращает исходный ответ или ответ повторного запроса, используя его URL и опции. */
   processResponse?: (
     response: Response,
@@ -18,12 +15,9 @@ export type ApiRequestInit = RequestInit & {
 
 /** Выполняет запрос к backend API в серверном окружении frontend. */
 export const apiFetch = async <T>(url: string | URL, options: ApiRequestInit): Promise<T> => {
-  const { prepareHeaders, processResponse, ...fetchOptions } = options;
-  
+  const { processResponse, ...fetchOptions } = options;
+
   const requestUrl = new URL(url, ENV.BACKEND_URL);
-  if (prepareHeaders) {
-    fetchOptions.headers = await prepareHeaders(new Headers(fetchOptions.headers));
-  }
 
   let response = await fetch(requestUrl, {
     ...fetchOptions,

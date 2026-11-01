@@ -2,14 +2,14 @@ import "server-only";
 
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
-import { canUseBackendAsUser } from "@/entities/session";
+import { getSession } from "@/entities/session";
 import { CreateProjectForm } from "@/features/create-project";
 
 
 /** Показывает форму создания проекта пользователю с доступом к бэкенду. */
 async function Content() {
-  const canUseBackend = await canUseBackendAsUser();
-  if (!canUseBackend) {
+  const session = await getSession();
+  if (session === undefined) {
     redirect("/login");
   }
   return <CreateProjectForm />;
