@@ -1,16 +1,26 @@
-import { Suspense } from "react";
-import { CreateProjectForm } from "@/features/create-project";
-import { NewGuard } from "./guard";
+import "server-only";
 
+import { redirect } from "next/navigation";
+import { Suspense } from "react";
+import { canUseBackendAsUser } from "@/entities/session";
+import { CreateProjectForm } from "@/features/create-project";
+
+
+/** Показывает форму создания проекта пользователю с доступом к бэкенду. */
+async function Content() {
+  const canUseBackend = await canUseBackendAsUser();
+  if (!canUseBackend) {
+    redirect("/login");
+  }
+  return <CreateProjectForm />;
+}
 
 /** Представляет страницу создания проекта. */
 export function New() {
   return (
     <main className="grid flex-1 place-items-center">
       <Suspense fallback={null}>
-        <NewGuard>
-          <CreateProjectForm />
-        </NewGuard>
+        <Content />
       </Suspense>
     </main>
   );

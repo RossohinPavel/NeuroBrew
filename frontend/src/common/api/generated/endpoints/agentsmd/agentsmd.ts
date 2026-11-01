@@ -7,7 +7,9 @@
 import type {
   Def0,
   GetAgentsmd200,
-  GetAgentsmdBody
+  GetAgentsmdBody,
+  UpdateAgentsmd200,
+  UpdateAgentsmdBody
 } from '../../models';
 
 import { apiFetch } from '../../../fetcher';
@@ -75,6 +77,78 @@ return apiFetch<getAgentsmdResponse>(getGetAgentsmdUrl(),
     method: 'POST',
     headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
     body: JSON.stringify(getAgentsmdBody)
+  }
+);}
+
+
+export type updateAgentsmdResponse200 = {
+  data: UpdateAgentsmd200
+  status: 200
+}
+
+export type updateAgentsmdResponse400 = {
+  data: Def0
+  status: 400
+}
+
+export type updateAgentsmdResponse401 = {
+  data: Def0
+  status: 401
+}
+
+export type updateAgentsmdResponse404 = {
+  data: Def0
+  status: 404
+}
+
+export type updateAgentsmdResponse500 = {
+  data: Def0
+  status: 500
+}
+
+export type updateAgentsmdResponseSuccess = (updateAgentsmdResponse200) & {
+  headers: Headers;
+};
+export type updateAgentsmdResponseError = (updateAgentsmdResponse400 | updateAgentsmdResponse401 | updateAgentsmdResponse404 | updateAgentsmdResponse500) & {
+  headers: Headers;
+};
+
+export type updateAgentsmdResponse = (updateAgentsmdResponseSuccess | updateAgentsmdResponseError)
+
+export const getUpdateAgentsmdUrl = () => {
+
+
+
+
+  return `/agentsmd.update`
+}
+
+/**
+ * Updates an AGENTS.md document for the authenticated user.
+ * @summary Update AGENTS.md
+ */
+export const updateAgentsmd = async (updateAgentsmdBody: UpdateAgentsmdBody, options?: Parameters<typeof apiFetch>[1]): Promise<updateAgentsmdResponse> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return apiFetch<updateAgentsmdResponse>(getUpdateAgentsmdUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(updateAgentsmdBody)
   }
 );}
 

@@ -1,5 +1,5 @@
-import { Suspense } from "react";
 import { redirect } from "next/navigation";
+import { Suspense } from "react";
 import { canUseBackendAsUser } from "@/entities/session";
 import { LogoutForm } from "@/features/logout";
 
@@ -11,7 +11,6 @@ async function Content() {
   if (!canUseBackend) {
     redirect("/");
   }
-
   return <LogoutForm />;
 }
 

@@ -46,7 +46,7 @@ export const WITH_SESSION: ApiRequestInit = {
     const headers = new Headers(options.headers);
     headers.set("Authorization", `Bearer ${refreshResponse.data.accessToken}`);
 
-    return apiFetch(url, {...options, headers});
+    return apiFetch(url, { ...options, headers });
   },
 };
 

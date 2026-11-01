@@ -36,3 +36,5 @@ export * from './refresh200TokenType';
 export * from './register201';
 export * from './register201TokenType';
 export * from './registerBody';
+export * from './updateAgentsmd200';
+export * from './updateAgentsmdBody';
