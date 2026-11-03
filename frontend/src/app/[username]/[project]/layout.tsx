@@ -9,11 +9,9 @@ export default function Layout(props: LayoutProps<"/[username]/[project]">) {
     <>
       <ProjectNavigation />
       <Separator />
-      <SidebarProvider className="relative min-h-0 flex-1">
+      <SidebarProvider className="min-h-0 flex-1">
         <FileSidebar />
-        <div className="flex min-w-0 flex-1 flex-col">
-          {props.children}
-        </div>
+        {props.children}
       </SidebarProvider>
     </>
   );
