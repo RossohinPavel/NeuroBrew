@@ -81,9 +81,10 @@ export const createProject: RouteHandler<{
     }
 
     await tx
-      .insert(tables.agentsmd)
+      .insert(tables.file)
       .values({
         projectId: project.id,
+        path: "AGENTS.md",
         content: `# ${project.name}`,
       });
 

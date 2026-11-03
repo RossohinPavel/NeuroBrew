@@ -1,5 +1,5 @@
 import { type InferInsertModel, type InferSelectModel } from "drizzle-orm";
-import { integer, snakeCase, timestamp, uniqueIndex, varchar } from "drizzle-orm/pg-core";
+import { integer, snakeCase, text, timestamp, uniqueIndex, varchar } from "drizzle-orm/pg-core";
 import { user } from "./user.js";
 
 
@@ -24,51 +24,27 @@ export const project = registrySchema.table("project", {
 export type ProjectInsert = InferInsertModel<typeof project>;
 export type ProjectSelect = InferSelectModel<typeof project>;
 
-export const agentsmd = registrySchema.table("agentsmd", {
-  id: integer()
-    .primaryKey()
-    .generatedAlwaysAsIdentity(),
-  projectId: integer()
-    .notNull()
-    .unique()
-    .references(() => project.id, { onDelete: "cascade" }),
-  content: varchar({ length: 32768 }) // Примерно 4–5 тысяч слов.
-    .notNull(),
-});
-
-export type AgentsmdInsert = InferInsertModel<typeof agentsmd>;
-export type AgentsmdSelect = InferSelectModel<typeof agentsmd>;
-
-export const rule = registrySchema.table("rule", {
+export const file = registrySchema.table("file", {
   id: integer()
     .primaryKey()
     .generatedAlwaysAsIdentity(),
   projectId: integer()
     .notNull()
     .references(() => project.id, { onDelete: "cascade" }),
-  name: varchar({ length: 64 })
+  createdAt: timestamp({ withTimezone: true })
+    .defaultNow()
     .notNull(),
-  content: varchar({ length: 4096 }) // Примерно 500–700 слов.
+  updatedAt: timestamp({ withTimezone: true })
+    .defaultNow()
+    .$onUpdate(() => new Date())
     .notNull(),
-});
+  path: varchar({ length: 255 })
+    .notNull(),
+  content: text()
+    .notNull(),
+}, (table) => [
+  uniqueIndex("file_project_id_path_unique").on(table.projectId, table.path),
+]);
 
-export type RuleInsert = InferInsertModel<typeof rule>;
-export type RuleSelect = InferSelectModel<typeof rule>;
-
-export const skill = registrySchema.table("skill", {
-  id: integer()
-    .primaryKey()
-    .generatedAlwaysAsIdentity(),
-  projectId: integer()
-    .notNull()
-    .references(() => project.id, { onDelete: "cascade" }),
-  name: varchar({ length: 64 })
-    .notNull(),
-  description: varchar({ length: 512 }) // Примерно 65–85 слов.
-    .notNull(),
-  content: varchar({ length: 4096 }) // Примерно 500–700 слов.
-    .notNull(),
-});
-
-export type SkillInsert = InferInsertModel<typeof skill>;
-export type SkillSelect = InferSelectModel<typeof skill>;
+export type FileInsert = InferInsertModel<typeof file>;
+export type FileSelect = InferSelectModel<typeof file>;
