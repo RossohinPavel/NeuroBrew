@@ -16,7 +16,7 @@ async function Content() {
 }
 
 /** Представляет страницу создания проекта. */
-export function New() {
+export function NewProject() {
   return (
     <main className="grid flex-1 place-items-center">
       <Suspense fallback={null}>
