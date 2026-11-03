@@ -8,8 +8,6 @@
 export * from './createProject201';
 export * from './createProjectBody';
 export * from './def0';
-export * from './getAgentsmd200';
-export * from './getAgentsmdBody';
 export * from './getProject200';
 export * from './getProjectBody';
 export * from './getUser200';
@@ -36,5 +34,3 @@ export * from './refresh200TokenType';
 export * from './register201';
 export * from './register201TokenType';
 export * from './registerBody';
-export * from './updateAgentsmd200';
-export * from './updateAgentsmdBody';

@@ -26,21 +26,7 @@ export function Content() {
           nativeButton={false}
           render={<Link href={projectHref} />}
         >
-          About
-        </TabsTrigger>
-        <TabsTrigger
-          value="rules"
-          nativeButton={false}
-          render={<Link href={`${projectHref}/rules`} />}
-        >
-          Rules
-        </TabsTrigger>
-        <TabsTrigger
-          value="skills"
-          nativeButton={false}
-          render={<Link href={`${projectHref}/skills`} />}
-        >
-          Skills
+          Files
         </TabsTrigger>
       </TabsList>
     </Tabs>
