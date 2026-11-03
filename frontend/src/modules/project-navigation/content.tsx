@@ -29,13 +29,6 @@ export function Content() {
           About
         </TabsTrigger>
         <TabsTrigger
-          value="agentsmd"
-          nativeButton={false}
-          render={<Link href={`${projectHref}/agentsmd`} />}
-        >
-          AGENTS
-        </TabsTrigger>
-        <TabsTrigger
           value="rules"
           nativeButton={false}
           render={<Link href={`${projectHref}/rules`} />}

@@ -7,7 +7,6 @@ export function Skeleton() {
     <Tabs value="">
       <TabsList variant="line" render={<nav inert />}>
         <TabsTrigger value="">About</TabsTrigger>
-        <TabsTrigger value="agents">AGENTS</TabsTrigger>
         <TabsTrigger value="rules">Rules</TabsTrigger>
         <TabsTrigger value="skills">Skills</TabsTrigger>
       </TabsList>
