@@ -14,7 +14,7 @@ type Props = {
 /** Показывает страницу создания файла проекта. */
 export function NewFile({ params }: Props) {
   return (
-    <main className="min-w-0 flex-1 p-4">
+    <main className="flex min-h-0 min-w-0 flex-1 flex-col p-4">
       <Suspense fallback={null}>
         <NewFileContent params={params} />
       </Suspense>

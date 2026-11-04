@@ -1,13 +1,113 @@
+"use client";
+
+import { valibotResolver } from "@hookform/resolvers/valibot";
+import { CreateFileRequestSchema, type CreateFileRequest } from "@shared/contracts";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { Controller, useForm } from "react-hook-form";
+import { Button } from "@/common/shadcn/ui/button";
+import { Field, FieldError, FieldLabel } from "@/common/shadcn/ui/field";
+import { Input } from "@/common/shadcn/ui/input";
+import { Textarea } from "@/common/shadcn/ui/textarea";
+import { newFileAction } from "./action";
+
+
 type Props = {
   username: string;
   project: string;
 };
 
-/** Принимает владельца и проект для формы создания файла. */
-export function NewFileForm(_props: Props) {
+/** Создает файл в выбранном проекте и возвращает к его странице после сохранения. */
+export function NewFileForm({ username, project }: Props) {
+  const router = useRouter();
+
+  const form = useForm<CreateFileRequest>({
+    resolver: valibotResolver(CreateFileRequestSchema),
+    defaultValues: {
+      projectName: project,
+      path: "",
+      content: "",
+    },
+  });
+
+  const onSubmit = async (formData: CreateFileRequest) => {
+    const { success, error } = await newFileAction(formData);
+
+    if (!success) {
+      form.setError("root.server", {
+        message: error.message,
+        type: "server",
+      });
+      return;
+    }
+
+    router.push(`/${encodeURIComponent(username)}/${encodeURIComponent(project)}`);
+  };
+
   return (
-    <form>
-      <p>Здесь будет форма создания файла.</p>
+    <form
+      autoComplete="off"
+      className="flex min-h-0 flex-1 flex-col gap-4"
+      onChange={() => form.clearErrors("root.server")}
+      onSubmit={(event) => {
+        void form.handleSubmit(onSubmit)(event);
+      }}
+    >
+      <div className="flex items-center gap-3">
+        <Link
+          className="max-w-48 truncate font-medium"
+          href={`/${encodeURIComponent(username)}/${encodeURIComponent(project)}`}
+          title={project}
+        >
+          {project}
+        </Link>
+        <Controller
+          control={form.control}
+          name="path"
+          render={({ field, fieldState }) => (
+            <Field className="min-w-0 flex-1" data-invalid={fieldState.invalid}>
+              <FieldLabel className="sr-only" htmlFor="new-file-path">Путь к файлу</FieldLabel>
+              <Input
+                {...field}
+                aria-invalid={fieldState.invalid}
+                id="new-file-path"
+                placeholder="Путь к файлу"
+                required
+                type="text"
+              />
+              {fieldState.invalid && (
+                <FieldError errors={[fieldState.error]} />
+              )}
+            </Field>
+          )}
+        />
+        <Button disabled={form.formState.isSubmitting} type="submit">
+          {form.formState.isSubmitting ? "Сохранение..." : "Сохранить"}
+        </Button>
+      </div>
+      {form.formState.errors.root?.server && (
+        <FieldError errors={[form.formState.errors.root.server]} />
+      )}
+      <Controller
+        control={form.control}
+        name="content"
+        render={({ field, fieldState }) => (
+          <Field className="min-h-0 flex-1" data-invalid={fieldState.invalid}>
+            <FieldLabel className="sr-only" htmlFor="new-file-content">Содержимое файла</FieldLabel>
+            <Textarea
+              {...field}
+              aria-invalid={fieldState.invalid}
+              className="min-h-0 flex-1 resize-none field-sizing-fixed"
+              id="new-file-content"
+              placeholder="Содержимое файла"
+              required
+            />
+            {fieldState.invalid && (
+              <FieldError errors={[fieldState.error]} />
+            )}
+          </Field>
+        )}
+      />
     </form>
   );
 }
