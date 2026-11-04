@@ -6,7 +6,8 @@ import {
   SidebarGroup,
   SidebarHeader,
 } from "@/common/shadcn/ui/sidebar";
-import { NewFileLink, NewFileLinkSkeleton } from "./new-file-link";
+import { Input } from "@/common/shadcn/ui/input";
+import { NewFileLink } from "./new-file-link";
 import type { FileSidebarParams } from "./types";
 
 
@@ -19,9 +20,12 @@ export function FileSidebar({ params }: { params: FileSidebarParams }) {
       collapsible="none"
     >
       <SidebarHeader>
-        <Suspense fallback={<NewFileLinkSkeleton />}>
-          <NewFileLink params={params} />
-        </Suspense>
+        <div className="flex items-center gap-2">
+          <Input aria-label="Поиск файлов" placeholder="Поиск файлов..." type="search" />
+          <Suspense fallback={null}>
+            <NewFileLink params={params} />
+          </Suspense>
+        </div>
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup />

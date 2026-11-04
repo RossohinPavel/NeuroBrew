@@ -1,21 +1,34 @@
+import "server-only";
+
 import Link from "next/link";
+import { RiAddLine } from "@remixicon/react";
 import { Button } from "@/common/shadcn/ui/button";
+import { getMe } from "@/entities/user";
 import type { FileSidebarParams } from "./types";
 
 
-/** Строит ссылку на создание файла в текущем проекте. */
+/** Показывает создание файла только владельцу проекта. */
 export async function NewFileLink({ params }: { params: FileSidebarParams }) {
-  const { username, project } = await params;
+  const [user, { username, project }] = await Promise.all([
+    getMe(),
+    params,
+  ]);
+  
+  if (user?.username !== username) {
+    return null;
+  }
+
   const newFileHref = `/${encodeURIComponent(username)}/${encodeURIComponent(project)}/new`;
 
   return (
-    <Button nativeButton={false} render={<Link href={newFileHref} />}>
-      Создать файл
+    <Button
+      aria-label="Создать файл"
+      nativeButton={false}
+      render={<Link href={newFileHref} />}
+      size="icon"
+      variant="outline"
+    >
+      <RiAddLine />
     </Button>
   );
-}
-
-/** Сохраняет место кнопки до получения параметров проекта. */
-export function NewFileLinkSkeleton() {
-  return <Button disabled>Создать файл</Button>;
 }
