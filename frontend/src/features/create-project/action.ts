@@ -14,6 +14,18 @@ export const createProjectAction = async (
   const session = await getSessionOrThrow();
   const result = await createProject(formData, session);
 
+  if (result.status === 201) {
+    const user = await getMeOrThrow();
+
+    return {
+      success: true,
+      data: {
+        name: result.data.name,
+        username: user.username,
+      },
+    };
+  }
+
   if (result.status === 400 || result.status === 409) {
     return {
       success: false,
@@ -21,17 +33,5 @@ export const createProjectAction = async (
     };
   }
 
-  if (result.status !== 201) {
-    throw new Error(`Failed to create project: ${result.status}`);
-  }
-
-  const user = await getMeOrThrow();
-
-  return {
-    success: true,
-    data: {
-      name: result.data.name,
-      username: user.username,
-    },
-  };
+  throw new Error(`Failed to create project: ${result.status}`);
 };

@@ -11,19 +11,27 @@ import type { LoginRequest } from "@shared/contracts";
 export const loginAction = async (formData: LoginRequest): ActionResponse => {
   const result = await login(formData);
 
-  if (result.status !== 200) {
-    const message = result.data.message ?? "Не удалось войти.";
+  if (result.status === 200) {
+    const { accessToken, refreshToken, expiresIn } = result.data;
+    const accessTokenCookie = Session.createAccessTokenCookie(accessToken, expiresIn);
+    const refreshTokenCookie = Session.createRefreshTokenCookie(refreshToken);
 
-    return { success: false, error: { message } };
+    const cookieStore = await cookies();
+    cookieStore.set(accessTokenCookie);
+    cookieStore.set(refreshTokenCookie);
+
+    return {
+      success: true,
+      data: true,
+    };
   }
 
-  const { accessToken, refreshToken, expiresIn } = result.data;
-  const accessTokenCookie = Session.createAccessTokenCookie(accessToken, expiresIn);
-  const refreshTokenCookie = Session.createRefreshTokenCookie(refreshToken);
+  if (result.status === 401) {
+    return {
+      success: false,
+      error: { message: result.data.message ?? "Не удалось войти." },
+    };
+  }
 
-  const cookieStore = await cookies();
-  cookieStore.set(accessTokenCookie);
-  cookieStore.set(refreshTokenCookie);
-
-  return { success: true, data: true };
+  throw new Error(`Failed to log in: ${result.status}`);
 };
