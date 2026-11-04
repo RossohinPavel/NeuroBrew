@@ -1,5 +1,6 @@
 import { authRoutes } from "./auth/routes.js";
 import type { FastifyPluginAsync } from "fastify";
+import { fileRoutes } from "./file/routes.js";
 import { healthRoutes } from "./health/routes.js";
 import { metadataRoutes } from "./metadata/routes.js";
 import { projectRoutes } from "./project/routes.js";
@@ -13,4 +14,5 @@ export const apiRoutes: FastifyPluginAsync = async (server) => {
   server.register(authRoutes, { prefix: "/auth" });
   server.register(userRoutes, { prefix: "/user" });
   server.register(projectRoutes, { prefix: "/project" });
+  server.register(fileRoutes, { prefix: "/file" });
 };
