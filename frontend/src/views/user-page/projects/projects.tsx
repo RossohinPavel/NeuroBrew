@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Button } from "@/common/shadcn/ui/button";
 import { ItemGroup } from "@/common/shadcn/ui/item";
 import { getProjectsOr404 } from "@/entities/project";
-import { getSession } from "@/entities/session";
+import { getMe } from "@/entities/user";
 import { ProjectItem } from "./project-item";
 
 
@@ -12,16 +12,16 @@ type Props = {
 
 /** Загружает и показывает проекты пользователя по логину. */
 export async function Projects({ username }: Props) {
-  const [projects, session] = await Promise.all([
+  const [projects, user] = await Promise.all([
     getProjectsOr404(username),
-    getSession(),
+    getMe(),
   ]);
 
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <div>Проекты</div>
-        {session !== undefined && (
+        {user?.username === username && (
           <Button nativeButton={false} render={<Link href="/new" />}>
             New
           </Button>
