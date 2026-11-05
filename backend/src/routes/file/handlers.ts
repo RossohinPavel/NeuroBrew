@@ -1,9 +1,36 @@
 import type * as contracts from "@shared/contracts";
 import * as tables from "../../database/schema/index.js";
-import { and, DrizzleQueryError, eq, sql } from "drizzle-orm";
+import { and, asc, DrizzleQueryError, eq, sql } from "drizzle-orm";
 import postgres from "postgres";
 import type { RouteHandler } from "fastify";
 
+
+// Возвращает файлы проекта по имени пользователя и названию проекта или пустой список.
+export const listFiles: RouteHandler<{
+  Body: contracts.FileListRequest;
+  Reply: contracts.FileListResponse;
+}> = async (req, res) => {
+  const { username, projectName } = req.body;
+
+  const files = await req.server.drizzle
+    .select({ file: tables.file })
+    .from(tables.file)
+    .innerJoin(tables.project, and(
+      eq(tables.file.projectId, tables.project.id),
+      eq(tables.project.name, projectName),
+    ))
+    .innerJoin(tables.profile, and(
+      eq(tables.project.userId, tables.profile.userId),
+      eq(tables.profile.username, username),
+    ))
+    .orderBy(asc(tables.file.path));
+
+  return res.code(200).send(files.map(({ file }) => ({
+    ...file,
+    createdAt: file.createdAt.toISOString(),
+    updatedAt: file.updatedAt.toISOString(),
+  })));
+};
 
 // Создает файл только в проекте текущего пользователя.
 export const createFile: RouteHandler<{
