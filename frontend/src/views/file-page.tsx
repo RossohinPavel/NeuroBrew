@@ -1,9 +1,11 @@
+import { notFound } from "next/navigation";
 import { Suspense } from "react";
+import { getFile } from "@/common/api/generated/endpoints";
 
 
 type Props = PageProps<"/[username]/[project]/file/[...path]">;
 
-/** Показывает параметры запрошенного файла проекта. */
+/** Показывает содержимое запрошенного файла проекта. */
 export function FilePage(props: Props) {
   return (
     <main className="min-w-0 flex-1 p-4">
@@ -14,15 +16,24 @@ export function FilePage(props: Props) {
   );
 }
 
-/** Дожидается параметров маршрута и выводит их на странице. */
+/** Загружает файл по параметрам маршрута и показывает его содержимое. */
 async function FilePageContent({ params }: Props) {
   const { username, project, path } = await params;
+  const result = await getFile({
+    username,
+    projectName: project,
+    path: decodeURIComponent(path.join("/")),
+  });
 
-  return (
-    <div>
-      <p>Пользователь: {username}</p>
-      <p>Проект: {project}</p>
-      <p>Путь: {path.join("/")}</p>
-    </div>
-  );
+  if (result.status === 200) {
+    return (
+      <pre className="whitespace-pre-wrap break-words">{result.data.content}</pre>
+    );
+  }
+
+  if (result.status === 404) {
+    return notFound();
+  }
+
+  throw new Error(`Failed to load the project's file: ${result.status}`);
 }

@@ -10,6 +10,8 @@ export * from './createFileBody';
 export * from './createProject201';
 export * from './createProjectBody';
 export * from './def0';
+export * from './getFile200';
+export * from './getFileBody';
 export * from './getProject200';
 export * from './getProjectBody';
 export * from './getUser200';

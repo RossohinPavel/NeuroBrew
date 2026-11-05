@@ -2,6 +2,7 @@ import "server-only";
 
 import { Collapsible } from "@base-ui/react/collapsible";
 import { RiArrowRightSLine, RiFileLine, RiFolderLine } from "@remixicon/react";
+import Link from "next/link";
 import { listFiles } from "@/common/api/generated/endpoints";
 import {
   SidebarMenu,
@@ -13,15 +14,15 @@ import type { FileSidebarParams } from "./types";
 
 
 interface FileTree {
-  [name: string]: FileTree | undefined;
+  [name: string]: FileTree | string;
 }
 
 /** Отображает файл или папку вместе с вложенными элементами. */
-function Tree({ name, children }: { name: string; children?: FileTree }) {
-  if (children === undefined) {
+function Tree({ name, children }: { name: string; children: FileTree | string }) {
+  if (typeof children === "string") {
     return (
       <SidebarMenuItem>
-        <SidebarMenuButton>
+        <SidebarMenuButton render={<Link href={children} />}>
           <RiFileLine />
           {name}
         </SidebarMenuButton>
@@ -65,20 +66,28 @@ export async function FileSidebarContent({ params }: { params: FileSidebarParams
   }
 
   const tree: FileTree = {};
+  const projectHref = `/${encodeURIComponent(username)}/${encodeURIComponent(projectName)}`;
 
   data
-    .map(({ path }) => path.split("/"))
-    .sort((left, right) => right.length - left.length)
-    .forEach((dirs) => {
+    .sort((left, right) => {
+      const leftSlashes = (left.path.match(/\//g) ?? []).length;
+      const rightSlashes = (right.path.match(/\//g) ?? []).length;
+
+      return rightSlashes - leftSlashes;
+    })
+    .forEach(({ path }) => {
+      const dirs = path.split("/");
+      const fileHref = `${projectHref}/file/${dirs.map(encodeURIComponent).join("/")}`;
       const file = dirs.pop()!;
       let branch = tree;
 
       for (const name of dirs) {
         const folder = branch[name] ??= {};
-        branch = folder;
+        // Промежуточный сегмент пути всегда обозначает папку.
+        branch = folder as FileTree;
       }
 
-      branch[file] = undefined;
+      branch[file] = fileHref;
     });
 
   return (
