@@ -36,6 +36,26 @@ export const FileResponseSchema = v.object({
 });
 export type FileResponse = v.InferOutput<typeof FileResponseSchema>;
 
+// Идентифицирует файл по владельцу проекта, имени проекта и пути внутри него.
+export const FileGetRequestSchema = v.object({
+  username: v.pipe(
+    v.string(),
+    v.minLength(1),
+    v.maxLength(64),
+  ),
+  projectName: v.pipe(
+    v.string(),
+    v.minLength(1),
+    v.maxLength(128),
+  ),
+  path: v.pipe(
+    v.string(),
+    v.minLength(1),
+    v.maxLength(255),
+  ),
+});
+export type FileGetRequest = v.InferInput<typeof FileGetRequestSchema>;
+
 export const FileListRequestSchema = v.object({
   username: v.pipe(
     v.string(),

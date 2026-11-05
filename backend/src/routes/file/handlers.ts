@@ -5,6 +5,38 @@ import postgres from "postgres";
 import type { RouteHandler } from "fastify";
 
 
+// Возвращает файл по имени владельца проекта, имени проекта и пути к файлу.
+export const getFile: RouteHandler<{
+  Body: contracts.FileGetRequest;
+  Reply: contracts.FileResponse;
+}> = async (req, res) => {
+  const { username, projectName, path } = req.body;
+
+  const [result] = await req.server.drizzle
+    .select({ file: tables.file })
+    .from(tables.file)
+    .innerJoin(tables.project, and(
+      eq(tables.file.projectId, tables.project.id),
+      eq(tables.project.name, projectName),
+    ))
+    .innerJoin(tables.profile, and(
+      eq(tables.project.userId, tables.profile.userId),
+      eq(tables.profile.username, username),
+    ))
+    .where(eq(tables.file.path, path))
+    .limit(1);
+
+  if (!result) {
+    throw req.server.httpErrors.notFound("File not found");
+  }
+
+  return res.code(200).send({
+    ...result.file,
+    createdAt: result.file.createdAt.toISOString(),
+    updatedAt: result.file.updatedAt.toISOString(),
+  });
+};
+
 // Возвращает файлы проекта по имени пользователя и названию проекта или пустой список.
 export const listFiles: RouteHandler<{
   Body: contracts.FileListRequest;
