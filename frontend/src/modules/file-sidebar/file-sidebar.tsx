@@ -1,4 +1,5 @@
 import { Suspense } from "react";
+import { Input } from "@/common/shadcn/ui/input";
 import {
   Sidebar,
   SidebarContent,
@@ -6,7 +7,7 @@ import {
   SidebarGroup,
   SidebarHeader,
 } from "@/common/shadcn/ui/sidebar";
-import { Input } from "@/common/shadcn/ui/input";
+import { FileSidebarContent } from "./file-sidebar-content";
 import { NewFileLink } from "./new-file-link";
 import type { FileSidebarParams } from "./types";
 
@@ -28,7 +29,11 @@ export function FileSidebar({ params }: { params: FileSidebarParams }) {
         </div>
       </SidebarHeader>
       <SidebarContent>
-        <SidebarGroup />
+        <SidebarGroup>
+          <Suspense fallback={null}>
+            <FileSidebarContent params={params} />
+          </Suspense>
+        </SidebarGroup>
         <SidebarGroup />
       </SidebarContent>
       <SidebarFooter />

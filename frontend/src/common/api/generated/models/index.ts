@@ -25,6 +25,8 @@ export * from './health503DetailBackend';
 export * from './health503DetailPostgres';
 export * from './health503Status';
 export * from './listChangelog200Item';
+export * from './listFiles200Item';
+export * from './listFilesBody';
 export * from './listProjects200Item';
 export * from './listProjectsBody';
 export * from './login200';
