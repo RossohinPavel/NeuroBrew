@@ -1,5 +1,2 @@
-/** Асинхронные параметры проекта, необходимые сайдбару. */
-export type FileSidebarParams = Promise<{
-  username: string;
-  project: string;
-}>;
+/** Параметры маршрута проекта, которые получает сайдбар. */
+export type FileSidebarParams = LayoutProps<"/[username]/[project]">["params"];

@@ -4,19 +4,14 @@ import { getMeOrThrow } from "@/entities/user";
 import { FileCreateForm } from "@/features/file-create";
 
 
-type Props = {
-  params: Promise<{
-    username: string;
-    project: string;
-  }>;
-};
+type Props = PageProps<"/[username]/[project]/new">;
 
 /** Показывает страницу создания файла проекта. */
-export function FileCreate({ params }: Props) {
+export function FileCreate(props: Props) {
   return (
     <main className="flex min-h-0 min-w-0 flex-1 flex-col p-4">
       <Suspense fallback={null}>
-        <FileCreateContent params={params} />
+        <FileCreateContent {...props} />
       </Suspense>
     </main>
   );
