@@ -3,7 +3,6 @@ import { Changelog, ChangelogSkeleton } from "./changelog";
 import { Feed } from "./feed";
 import { MyProjects, MyProjectsSkeleton } from "./my-projects";
 
-
 /** Представляет дашборд пользователя. */
 export function Dashboard() {
   return (

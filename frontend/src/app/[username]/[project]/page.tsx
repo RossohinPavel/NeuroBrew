@@ -1,1 +1,32 @@
-export { Project as default } from "@/views/project";
+import { Suspense } from "react";
+import { getProjectByNameOr404 } from "@/entities/project";
+
+type Props = PageProps<"/[username]/[project]">;
+
+/** Показывает основные сведения о проекте пользователя. */
+export default function Project(props: Props) {
+  return (
+    <main className="min-w-0 flex-1">
+      <Suspense fallback={null}>
+        <ProjectContent {...props} />
+      </Suspense>
+    </main>
+  );
+}
+
+/** Загружает проект по имени и показывает его название и дату создания. */
+async function ProjectContent({ params }: Props) {
+  const { username, project } = await params;
+  const foundProject = await getProjectByNameOr404(username, project);
+  const createdAt = new Date(foundProject.createdAt)
+    .toLocaleDateString("ru-RU", { timeZone: "Europe/Moscow" });
+
+  return (
+    <div className="flex flex-col gap-2 p-4">
+      <h1 className="text-xl font-semibold">{foundProject.name}</h1>
+      <p className="text-sm text-muted-foreground">
+        Дата создания: <time dateTime={foundProject.createdAt}>{createdAt}</time>
+      </p>
+    </div>
+  );
+}
