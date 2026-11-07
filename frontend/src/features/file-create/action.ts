@@ -7,7 +7,7 @@ import type { CreateFileRequest, FileResponse } from "@shared/contracts";
 
 
 /** Создает файл в проекте текущего пользователя и возвращает его данные. */
-export const newFileAction = async (
+export const fileCreateAction = async (
   formData: CreateFileRequest,
 ): ActionResponse<FileResponse> => {
   const session = await getSessionOrThrow();

@@ -6,18 +6,18 @@ import { getFile } from "@/common/api/generated/endpoints";
 type Props = PageProps<"/[username]/[project]/file/[...path]">;
 
 /** Показывает содержимое запрошенного файла проекта. */
-export function FilePage(props: Props) {
+export function File(props: Props) {
   return (
     <main className="min-w-0 flex-1 p-4">
       <Suspense fallback={null}>
-        <FilePageContent {...props} />
+        <FileContent {...props} />
       </Suspense>
     </main>
   );
 }
 
 /** Загружает файл по параметрам маршрута и показывает его содержимое. */
-async function FilePageContent({ params }: Props) {
+async function FileContent({ params }: Props) {
   const { username, project, path } = await params;
   const result = await getFile({
     username,

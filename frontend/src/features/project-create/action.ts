@@ -8,7 +8,7 @@ import type { CreateProjectRequest } from "@shared/contracts";
 
 
 /** Создает проект и возвращает данные для перехода на его страницу. */
-export const createProjectAction = async (
+export const projectCreateAction = async (
   formData: CreateProjectRequest,
 ): ActionResponse<{ name: string; username: string }> => {
   const session = await getSessionOrThrow();

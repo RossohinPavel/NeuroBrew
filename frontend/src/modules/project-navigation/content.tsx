@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useParams, useSelectedLayoutSegment } from "next/navigation";
+import { useParams } from "next/navigation";
 import { Tabs, TabsList, TabsTrigger } from "@/common/shadcn/ui/tabs";
 
 
@@ -11,11 +11,10 @@ export function Content() {
     username: string;
     project: string;
   }>();
-  const activeSegment = useSelectedLayoutSegment() ?? "";
   const projectHref = `/${encodeURIComponent(username)}/${encodeURIComponent(project)}`;
 
   return (
-    <Tabs value={activeSegment}>
+    <Tabs value={""}>
       <TabsList
         variant="line"
         aria-label="Навигация проекта"

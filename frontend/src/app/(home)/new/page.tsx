@@ -1,1 +1,1 @@
-export { NewProject as default } from "@/views/new-project";
+export { ProjectCreate as default } from "@/views/project-create";

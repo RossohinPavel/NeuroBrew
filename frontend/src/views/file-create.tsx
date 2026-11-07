@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { getMeOrThrow } from "@/entities/user";
-import { NewFileForm } from "@/features/new-file";
+import { FileCreateForm } from "@/features/file-create";
 
 
 type Props = {
@@ -12,18 +12,18 @@ type Props = {
 };
 
 /** Показывает страницу создания файла проекта. */
-export function NewFile({ params }: Props) {
+export function FileCreate({ params }: Props) {
   return (
     <main className="flex min-h-0 min-w-0 flex-1 flex-col p-4">
       <Suspense fallback={null}>
-        <NewFileContent params={params} />
+        <FileCreateContent params={params} />
       </Suspense>
     </main>
   );
 }
 
 /** Показывает форму только владельцу проекта из параметров маршрута. */
-async function NewFileContent({ params }: Props) {
+async function FileCreateContent({ params }: Props) {
   const [{ username, project }, user] = await Promise.all([
     params,
     getMeOrThrow(),
@@ -33,5 +33,5 @@ async function NewFileContent({ params }: Props) {
     notFound();
   }
 
-  return <NewFileForm username={username} project={project} />;
+  return <FileCreateForm username={username} project={project} />;
 }

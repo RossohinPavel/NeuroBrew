@@ -1,1 +1,1 @@
-export { NewFile as default } from "@/views/new-file";
+export { FileCreate as default } from "@/views/file-create";

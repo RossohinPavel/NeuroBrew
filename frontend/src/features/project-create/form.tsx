@@ -15,11 +15,11 @@ import {
   FieldSet,
 } from "@/common/shadcn/ui/field";
 import { Input } from "@/common/shadcn/ui/input";
-import { createProjectAction } from "./action";
+import { projectCreateAction } from "./action";
 
 
 /** Предоставляет форму создания нового проекта. */
-export function CreateProjectForm() {
+export function ProjectCreateForm() {
   const router = useRouter();
 
   const form = useForm<CreateProjectRequest>({
@@ -28,7 +28,7 @@ export function CreateProjectForm() {
   });
 
   const onSubmit = async (formData: CreateProjectRequest) => {
-    const { success, data, error } = await createProjectAction(formData);
+    const { success, data, error } = await projectCreateAction(formData);
 
     if (!success) {
       form.setError("root.server", {
@@ -45,7 +45,7 @@ export function CreateProjectForm() {
     <div>
       <form
         autoComplete="off"
-        id="form-create-project"
+        id="form-project-create"
         onChange={() => form.clearErrors("root.server")}
         onSubmit={(event) => {
           void form.handleSubmit(onSubmit)(event);
@@ -62,12 +62,12 @@ export function CreateProjectForm() {
               name="name"
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="create-project-name">Название проекта</FieldLabel>
+                  <FieldLabel htmlFor="project-create-name">Название проекта</FieldLabel>
                   <Input
                     {...field}
                     autoComplete="off"
                     aria-invalid={fieldState.invalid}
-                    id="create-project-name"
+                    id="project-create-name"
                     placeholder="Название проекта"
                     required
                     type="text"

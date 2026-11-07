@@ -9,7 +9,7 @@ import { Button } from "@/common/shadcn/ui/button";
 import { Field, FieldError, FieldLabel } from "@/common/shadcn/ui/field";
 import { Input } from "@/common/shadcn/ui/input";
 import { Textarea } from "@/common/shadcn/ui/textarea";
-import { newFileAction } from "./action";
+import { fileCreateAction } from "./action";
 
 
 type Props = {
@@ -18,7 +18,7 @@ type Props = {
 };
 
 /** Создает файл в выбранном проекте и возвращает к его странице после сохранения. */
-export function NewFileForm({ username, project }: Props) {
+export function FileCreateForm({ username, project }: Props) {
   const router = useRouter();
 
   const form = useForm<CreateFileRequest>({
@@ -31,7 +31,7 @@ export function NewFileForm({ username, project }: Props) {
   });
 
   const onSubmit = async (formData: CreateFileRequest) => {
-    const { success, error } = await newFileAction(formData);
+    const { success, error } = await fileCreateAction(formData);
 
     if (!success) {
       form.setError("root.server", {
@@ -66,11 +66,11 @@ export function NewFileForm({ username, project }: Props) {
           name="path"
           render={({ field, fieldState }) => (
             <Field className="min-w-0 flex-1" data-invalid={fieldState.invalid}>
-              <FieldLabel className="sr-only" htmlFor="new-file-path">Путь к файлу</FieldLabel>
+              <FieldLabel className="sr-only" htmlFor="file-create-path">Путь к файлу</FieldLabel>
               <Input
                 {...field}
                 aria-invalid={fieldState.invalid}
-                id="new-file-path"
+                id="file-create-path"
                 placeholder="Путь к файлу"
                 required
                 type="text"
@@ -93,12 +93,12 @@ export function NewFileForm({ username, project }: Props) {
         name="content"
         render={({ field, fieldState }) => (
           <Field className="min-h-0 flex-1" data-invalid={fieldState.invalid}>
-            <FieldLabel className="sr-only" htmlFor="new-file-content">Содержимое файла</FieldLabel>
+            <FieldLabel className="sr-only" htmlFor="file-create-content">Содержимое файла</FieldLabel>
             <Textarea
               {...field}
               aria-invalid={fieldState.invalid}
               className="min-h-0 flex-1 resize-none field-sizing-fixed"
-              id="new-file-content"
+              id="file-create-content"
               placeholder="Содержимое файла"
               required
             />
