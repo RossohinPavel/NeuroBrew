@@ -1,8 +1,8 @@
 import "server-only";
 
 import { Suspense } from "react";
-import { ProjectCreateForm } from "@/capabilities/project-create";
-import { SessionGuard } from "@/blocks/session-guard";
+import { ProjectCreateForm } from "@/features/project-create";
+import { SessionGuard } from "@/modules/session-guard";
 
 
 /** Представляет страницу создания проекта. */

@@ -5,7 +5,7 @@ import {
   ItemActions,
   ItemContent,
   ItemTitle,
-} from "@/shared/shadcn/ui/item";
+} from "@/common/shadcn/ui/item";
 
 
 interface Props {

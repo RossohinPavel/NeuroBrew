@@ -2,7 +2,7 @@ import {
   Card,
   CardHeader,
   CardTitle,
-} from "@/shared/shadcn/ui/card";
+} from "@/common/shadcn/ui/card";
 
 
 /** Представляет ленту событий пользователя. */

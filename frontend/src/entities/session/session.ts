@@ -2,8 +2,8 @@ import "server-only";
 
 import { cookies } from "next/headers";
 import { cache } from "react";
-import type { ApiRequestInit } from "@/shared/api/fetcher";
-import { refresh } from "@/shared/api/generated/endpoints";
+import type { ApiRequestInit } from "@/common/api/fetcher";
+import { refresh } from "@/common/api/generated/endpoints";
 import { Cookies as SessionCookies } from "./cookies";
 
 

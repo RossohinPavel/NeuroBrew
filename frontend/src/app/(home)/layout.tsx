@@ -1,4 +1,4 @@
-import { Separator } from "@/shared/shadcn/ui/separator";
+import { Separator } from "@/common/shadcn/ui/separator";
 
 
 export default function Layout(props: LayoutProps<"/">) {

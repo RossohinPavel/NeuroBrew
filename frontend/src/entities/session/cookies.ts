@@ -1,4 +1,4 @@
-import { ENV } from "@/shared/env";
+import { ENV } from "@/common/env";
 import type { ResponseCookie } from "next/dist/compiled/@edge-runtime/cookies";
 
 
