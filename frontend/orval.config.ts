@@ -6,14 +6,14 @@ export default defineConfig({
     input: "../backend/.temp/openapi.json",
     output: {
       mode: "tags-split",
-      target: "src/common/api/generated/endpoints",
-      schemas: "src/common/api/generated/models",
+      target: "src/shared/api/generated/endpoints",
+      schemas: "src/shared/api/generated/models",
       client: "fetch",
       clean: true,
       tagsSplitDeduplication: true,
       override: {
         mutator: {
-          path: "src/common/api/fetcher.ts",
+          path: "src/shared/api/fetcher.ts",
           name: "apiFetch",
         },
         fetch: { includeHttpResponseReturnType: true },

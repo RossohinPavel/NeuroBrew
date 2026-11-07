@@ -1,4 +1,4 @@
-import { ItemGroup } from "@/common/shadcn/ui/item";
+import { ItemGroup } from "@/shared/shadcn/ui/item";
 import { getMyProjectsOrThrow } from "@/entities/project";
 import { getMeOrThrow } from "@/entities/user";
 import { MyProjectsCard } from "./my-projects-card";

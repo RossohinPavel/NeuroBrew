@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { getMeOrThrow } from "@/entities/user";
-import { FileCreateForm } from "@/features/file-create";
+import { FileCreateForm } from "@/capabilities/file-create";
 
 
 type Props = PageProps<"/[username]/[project]/new">;

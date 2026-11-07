@@ -1,4 +1,4 @@
-import { listChangelog } from "@/common/api/generated/endpoints";
+import { listChangelog } from "@/shared/api/generated/endpoints";
 import { ChangelogCard } from "./changelog-card";
 
 

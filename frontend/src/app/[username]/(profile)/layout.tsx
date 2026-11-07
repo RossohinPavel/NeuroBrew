@@ -1,9 +1,9 @@
 import { Suspense } from "react";
-import { Separator } from "@/common/shadcn/ui/separator";
+import { Separator } from "@/shared/shadcn/ui/separator";
 import {
   ProfileNavigation,
   ProfileNavigationSkeleton,
-} from "@/modules/profile-navigation";
+} from "@/blocks/profile-navigation";
 
 
 export default function Layout(props: LayoutProps<"/[username]">) {

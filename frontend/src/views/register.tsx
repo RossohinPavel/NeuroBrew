@@ -1,6 +1,6 @@
 import { Suspense } from "react";
-import { RegisterForm } from "@/features/register";
-import { SessionGuard } from "@/modules/session-guard";
+import { RegisterForm } from "@/capabilities/register";
+import { SessionGuard } from "@/blocks/session-guard";
 
 
 /** Представляет страницу регистрации аккаунта. */

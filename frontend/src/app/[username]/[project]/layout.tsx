@@ -1,11 +1,11 @@
 import { Suspense } from "react";
-import { Separator } from "@/common/shadcn/ui/separator";
-import { SidebarProvider } from "@/common/shadcn/ui/sidebar";
-import { FileSidebar } from "@/modules/file-sidebar";
+import { Separator } from "@/shared/shadcn/ui/separator";
+import { SidebarProvider } from "@/shared/shadcn/ui/sidebar";
+import { FileSidebar } from "@/blocks/file-sidebar";
 import {
   ProjectNavigation,
   ProjectNavigationSkeleton,
-} from "@/modules/project-navigation";
+} from "@/blocks/project-navigation";
 
 
 export default function Layout(props: LayoutProps<"/[username]/[project]">) {

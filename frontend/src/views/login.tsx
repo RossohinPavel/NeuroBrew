@@ -1,6 +1,6 @@
 import { Suspense } from "react";
-import { LoginForm } from "@/features/login";
-import { SessionGuard } from "@/modules/session-guard";
+import { LoginForm } from "@/capabilities/login";
+import { SessionGuard } from "@/blocks/session-guard";
 
 
 /** Представляет страницу входа в аккаунт. */
