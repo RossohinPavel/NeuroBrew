@@ -1,7 +1,7 @@
 "use server";
 
 import { createProject } from "@/common/api/generated/endpoints";
-import type { ActionResponse } from "@/common/server-action";
+import type { ActionResponse } from "@/common/types/server-action";
 import { getSessionOrThrow } from "@/entities/session";
 import { getMeOrThrow } from "@/entities/user";
 import type { CreateProjectRequest } from "@shared/contracts";

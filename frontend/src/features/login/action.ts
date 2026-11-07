@@ -2,7 +2,7 @@
 
 import { cookies } from "next/headers";
 import { login } from "@/common/api/generated/endpoints";
-import type { ActionResponse } from "@/common/server-action";
+import type { ActionResponse } from "@/common/types/server-action";
 import * as Session from "@/entities/session";
 import type { LoginRequest } from "@shared/contracts";
 

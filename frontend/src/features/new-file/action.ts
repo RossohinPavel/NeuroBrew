@@ -1,7 +1,7 @@
 "use server";
 
 import { createFile } from "@/common/api/generated/endpoints";
-import type { ActionResponse } from "@/common/server-action";
+import type { ActionResponse } from "@/common/types/server-action";
 import { getSessionOrThrow } from "@/entities/session";
 import type { CreateFileRequest, FileResponse } from "@shared/contracts";
 
