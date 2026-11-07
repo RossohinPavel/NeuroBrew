@@ -6,7 +6,7 @@ import { Tabs, TabsList, TabsTrigger } from "@/common/shadcn/ui/tabs";
 
 
 /** Показывает ссылки на разделы проекта и выделяет текущий раздел. */
-export function Content() {
+export function ProjectNavigation() {
   const { username, project } = useParams<{
     username: string;
     project: string;

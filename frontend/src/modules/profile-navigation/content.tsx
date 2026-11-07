@@ -8,7 +8,8 @@ import { Tabs, TabsList, TabsTrigger } from "@/common/shadcn/ui/tabs";
 const tabs = ["projects"];
 
 
-export function Content() {
+/** Отображает навигацию по обзору профиля и проектам в виде вкладок. */
+export function ProfileNavigation() {
   const { username } = useParams<{ username: string }>();
   const searchParams = useSearchParams();
   const tab = searchParams.get("tab");

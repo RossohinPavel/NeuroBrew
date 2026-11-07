@@ -2,7 +2,7 @@ import { Tabs, TabsList, TabsTrigger } from "@/common/shadcn/ui/tabs";
 
 
 /** Сохраняет размеры навигации профиля во время загрузки её содержимого. */
-export function Skeleton() {
+export function ProfileNavigationSkeleton() {
   return (
     <Tabs value="overview">
       <TabsList variant="line" render={<nav inert />}>

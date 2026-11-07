@@ -1,1 +1,2 @@
-export { ProjectNavigation } from "./project-navigation";
+export { ProjectNavigation } from "./content";
+export { ProjectNavigationSkeleton } from "./skeleton";

@@ -1,4 +1,5 @@
-import { Suspense } from "react";
+import "server-only";
+
 import { getUserOr404 } from "@/entities/user";
 
 
@@ -6,17 +7,8 @@ type Props = {
   username: string;
 };
 
-/** Показывает обзор профиля после загрузки данных. */
-export function Overview(props: Props) {
-  return (
-    <Suspense fallback={null}>
-      <Content {...props} />
-    </Suspense>
-  );
-}
-
 /** Загружает и показывает сведения о пользователе. */
-async function Content({ username }: Props) {
+export async function Overview({ username }: Props) {
   const user = await getUserOr404(username);
 
   return (
