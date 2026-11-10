@@ -1,6 +1,6 @@
 import { Suspense } from "react";
-import { Overview } from "./_components/overview";
-import { Projects } from "./_components/projects";
+import { OverviewTab } from "@/components/overview-tab";
+import { ProjectsTab } from "@/components/projects-tab";
 
 
 type Props = PageProps<"/[username]">;
@@ -20,12 +20,11 @@ export default function UserPage(props: Props) {
 
 /** Выбирает виджет профиля по параметру вкладки. */
 async function UserPageContent({ params, searchParams }: Props) {
-  const { tab } = await searchParams;
-  const { username } = await params;
+  const [{ tab }, { username }] = await Promise.all([searchParams, params]);
 
   if (tab === "projects") {
-    return <Projects username={username} />;
+    return <ProjectsTab username={username} />;
   }
 
-  return <Overview username={username} />;
+  return <OverviewTab username={username} />;
 }

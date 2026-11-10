@@ -8,7 +8,7 @@ type Props = {
 };
 
 /** Загружает и показывает сведения о пользователе. */
-export async function Overview({ username }: Props) {
+export async function OverviewTab({ username }: Props) {
   const user = await getUserOr404(username);
 
   return (

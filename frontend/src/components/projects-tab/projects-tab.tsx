@@ -11,7 +11,7 @@ type Props = {
 };
 
 /** Загружает и показывает проекты пользователя по логину. */
-export async function Projects({ username }: Props) {
+export async function ProjectsTab({ username }: Props) {
   const [projects, user] = await Promise.all([
     getProjectsOr404(username),
     getMe(),
