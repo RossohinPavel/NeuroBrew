@@ -1,8 +1,8 @@
 import "server-only";
 
 import { Suspense } from "react";
-import { Dashboard } from "@/components/pages/dashboard";
-import { Landing } from "@/components/pages/landing";
+import { Dashboard } from "@/components/dashboard";
+import { Landing } from "@/components/landing";
 import { getSession } from "@/entities/session";
 
 
