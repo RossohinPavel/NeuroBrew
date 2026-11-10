@@ -3,10 +3,9 @@ import type { RouteHandler } from "fastify";
 import { sql } from "drizzle-orm";
 
 
-type CheckDependency = (p: PromiseLike<unknown>) => Promise<LiveResponse["detail"]["postgres"]>;
-
-
-const checkDependency: CheckDependency = async (promise) => {
+const checkDependency = async (
+  promise: PromiseLike<unknown>,
+): Promise<LiveResponse["detail"]["postgres"]> => {
   try {
     await promise;
     return { status: "pass" };
@@ -17,7 +16,6 @@ const checkDependency: CheckDependency = async (promise) => {
     };
   }
 };
-
 
 export const getHealthStatus: RouteHandler<{
   Reply: {
