@@ -8,6 +8,10 @@ const envSchema = v.object({
     v.string(),
     v.minLength(1),
   ),
+  REDIS_URL: v.pipe(
+    v.string(),
+    v.minLength(1),
+  ),
   JWT_ACCESS_SECRET: v.pipe(
     v.string(),
     v.minLength(32),

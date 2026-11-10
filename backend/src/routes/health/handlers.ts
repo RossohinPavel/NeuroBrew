@@ -3,30 +3,39 @@ import type { RouteHandler } from "fastify";
 import { sql } from "drizzle-orm";
 
 
+type CheckDependency = (p: PromiseLike<unknown>) => Promise<LiveResponse["detail"]["postgres"]>;
+
+
+const checkDependency: CheckDependency = async (promise) => {
+  try {
+    await promise;
+    return { status: "pass" };
+  } catch (error) {
+    return {
+      status: "fail",
+      output: error instanceof Error ? error.message : String(error),
+    };
+  }
+};
+
+
 export const getHealthStatus: RouteHandler<{
   Reply: {
     200: LiveResponse;
     503: LiveResponse;
   };
 }> = async (req, res) => {
-  let status: LiveResponse["status"] = "pass";
   const detail: LiveResponse["detail"] = {
     backend: { status: "pass" },
-    postgres: { status: "pass" },
+    postgres: await checkDependency(req.server.drizzle.execute(sql`select 1`)),
+    redis: await checkDependency(req.server.redis.ping()),
   };
+  let status: LiveResponse["status"] = "pass";
 
-  try {
-    await req.server.drizzle.execute(sql`select 1`);
-
-    detail.postgres = { status: "pass" };
-  } catch (error) {
-    req.log.error(error, "PostgreSQL health check failed");
-
-    status = "fail";
-    detail.postgres = {
-      status: "fail",
-      output: error instanceof Error ? error.message : String(error),
-    };
+  for (const value of Object.values(detail)) {
+    if (value.status === "fail") {
+      status = "fail";
+    }
   }
 
   return res.code(status === "pass" ? 200 : 503).send({

@@ -4,6 +4,7 @@ import { drizzlePlugin } from "./database/drizzle.plugin.js";
 import { ENV } from "./config/index.js";
 import fastify from "fastify";
 import fastifyJwt from "@fastify/jwt";
+import fastifyRedis from "@fastify/redis";
 import sensible from "@fastify/sensible";
 
 
@@ -16,6 +17,7 @@ const app = fastify({
   },
 });
 
+app.register(fastifyRedis, { url: ENV.REDIS_URL });
 app.register(drizzlePlugin, { url: ENV.DATABASE_URL });
 app.register(fastifyJwt, accessTokenConfig);
 app.register(fastifyJwt, refreshTokenConfig);

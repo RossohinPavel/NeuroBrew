@@ -19,6 +19,7 @@ export const LiveResponseSchema = v.object({
   detail: v.object({
     backend: v.union([passSchema, failSchema]),
     postgres: v.union([passSchema, failSchema]),
+    redis: v.union([passSchema, failSchema]),
   }),
 });
 
