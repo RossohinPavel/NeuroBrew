@@ -20,26 +20,27 @@
     "lint": "pnpm typecheck && oxlint src --fix"
   },
   "dependencies": {
-    "@fastify/jwt": "^10.2.4",
+    "@fastify/jwt": "^10.2.7",
+    "@fastify/redis": "^9.0.1",
     "@fastify/sensible": "^6.0.7",
     "@shared/contracts": "workspace:*",
     "@valibot/to-json-schema": "^1.8.0",
-    "argon2": "^0.45.1",
+    "argon2": "^0.45.2",
     "drizzle-orm": "1.0.0-rc.4",
-    "fastify": "^5.12.5",
+    "fastify": "^5.12.8",
     "fastify-plugin": "^6.0.1",
     "postgres": "^3.4.9",
     "valibot": "catalog:"
   },
   "devDependencies": {
     "@fastify/one-line-logger": "^2.2.1",
-    "@fastify/swagger": "^9.9.1",
+    "@fastify/swagger": "^9.9.3",
     "@stylistic/eslint-plugin": "^5.10.0",
-    "@types/node": "^26.6.5",
+    "@types/node": "^26.6.6",
     "drizzle-kit": "1.0.0-rc.4",
-    "oxlint": "^1.87.0",
-    "oxlint-tsgolint": "^7.0.2004",
-    "rimraf": "^6.1.3",
+    "oxlint": "^1.93.0",
+    "oxlint-tsgolint": "^7.0.2006",
+    "rimraf": "^6.1.4",
     "tsx": "^4.23.15",
     "typescript": "^7.0.2"
   }
