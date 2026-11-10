@@ -9,7 +9,18 @@ services:
     volumes:
       - neurobrew-pgdata:/var/lib/postgresql
     ports:
-      - "${POSTGRES_PORT}:5432"
+      - "5423:5432"
+
+  redis:
+    restart: unless-stopped
+    image: redis:8.10.3-alpine3.23
+    command: >-
+      redis-server
+      --save ""
+      --maxmemory 500mb
+      --maxmemory-policy allkeys-lfu
+    ports:
+      - "6379:6379"
 
 
 volumes:
