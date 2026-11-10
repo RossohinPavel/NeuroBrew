@@ -2,8 +2,8 @@ import "server-only";
 
 import { notFound } from "next/navigation";
 import { cache } from "react";
-import { me, getUser } from "@/common/api/generated/endpoints";
 import { getSession } from "@/entities/session";
+import { me, getUser } from "@/shared/api/generated/endpoints";
 
 
 /** Возвращает текущего пользователя, если он авторизован. */

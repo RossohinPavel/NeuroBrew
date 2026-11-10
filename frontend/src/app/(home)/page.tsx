@@ -1,9 +1,10 @@
 import "server-only";
 
 import { Suspense } from "react";
+import { Dashboard } from "@/components/pages/dashboard";
+import { Landing } from "@/components/pages/landing";
 import { getSession } from "@/entities/session";
-import { Dashboard } from "@/modules/pages/dashboard";
-import { Landing } from "@/modules/pages/landing";
+
 
 async function Content() {
   const session = await getSession();

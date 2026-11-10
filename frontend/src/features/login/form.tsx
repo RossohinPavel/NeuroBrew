@@ -5,7 +5,7 @@ import { LoginRequestSchema, type LoginRequest } from "@shared/contracts";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
-import { Button } from "@/common/shadcn/ui/button";
+import { Button } from "@/shared/shadcn/ui/button";
 import { 
   Card, 
   CardContent, 
@@ -13,15 +13,15 @@ import {
   CardFooter, 
   CardHeader, 
   CardTitle, 
-} from "@/common/shadcn/ui/card";
+} from "@/shared/shadcn/ui/card";
 import { 
   Field, 
   FieldDescription, 
   FieldError, 
   FieldGroup, 
   FieldLabel, 
-} from "@/common/shadcn/ui/field";
-import { Input } from "@/common/shadcn/ui/input";
+} from "@/shared/shadcn/ui/field";
+import { Input } from "@/shared/shadcn/ui/input";
 import { loginAction } from "./action";
 
 

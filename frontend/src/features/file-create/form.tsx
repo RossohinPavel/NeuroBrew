@@ -5,10 +5,10 @@ import { CreateFileRequestSchema, type CreateFileRequest } from "@shared/contrac
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
-import { Button } from "@/common/shadcn/ui/button";
-import { Field, FieldError, FieldLabel } from "@/common/shadcn/ui/field";
-import { Input } from "@/common/shadcn/ui/input";
-import { Textarea } from "@/common/shadcn/ui/textarea";
+import { Button } from "@/shared/shadcn/ui/button";
+import { Field, FieldError, FieldLabel } from "@/shared/shadcn/ui/field";
+import { Input } from "@/shared/shadcn/ui/input";
+import { Textarea } from "@/shared/shadcn/ui/textarea";
 import { fileCreateAction } from "./action";
 
 
@@ -93,7 +93,12 @@ export function FileCreateForm({ username, project }: Props) {
         name="content"
         render={({ field, fieldState }) => (
           <Field className="min-h-0 flex-1" data-invalid={fieldState.invalid}>
-            <FieldLabel className="sr-only" htmlFor="file-create-content">Содержимое файла</FieldLabel>
+            <FieldLabel 
+              className="sr-only" 
+              htmlFor="file-create-content"
+            >
+              Содержимое файла
+            </FieldLabel>
             <Textarea
               {...field}
               aria-invalid={fieldState.invalid}

@@ -2,8 +2,8 @@ import "server-only";
 
 import { notFound } from "next/navigation";
 import { cache } from "react";
-import { getProject, listProjects } from "@/common/api/generated/endpoints";
 import { getSessionOrThrow } from "@/entities/session";
+import { getProject, listProjects } from "@/shared/api/generated/endpoints";
 
 
 /** Возвращает проекты текущего пользователя или выбрасывает ошибку при неудачном запросе. */

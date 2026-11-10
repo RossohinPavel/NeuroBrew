@@ -3,6 +3,7 @@ import { Suspense } from "react";
 import { getMeOrThrow } from "@/entities/user";
 import { FileCreateForm } from "@/features/file-create";
 
+
 type Props = PageProps<"/[username]/[project]/new">;
 
 /** Показывает страницу создания файла проекта. */

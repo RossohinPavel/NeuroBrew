@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
-import { getFile } from "@/common/api/generated/endpoints";
+import { getFile } from "@/shared/api/generated/endpoints";
+
 
 type Props = PageProps<"/[username]/[project]/file/[...path]">;
 

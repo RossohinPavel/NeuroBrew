@@ -2,6 +2,7 @@ import { Suspense } from "react";
 import { Overview } from "./_components/overview";
 import { Projects } from "./_components/projects";
 
+
 type Props = PageProps<"/[username]">;
 
 /** Показывает основные сведения об учетной записи пользователя. */

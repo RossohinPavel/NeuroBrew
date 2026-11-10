@@ -1,9 +1,9 @@
 "use server";
 
 import { cookies } from "next/headers";
-import { register } from "@/common/api/generated/endpoints";
-import type { ActionResponse } from "@/common/types/server-action";
 import * as Session from "@/entities/session";
+import { register } from "@/shared/api/generated/endpoints";
+import type { ActionResponse } from "@/shared/types/server-action";
 import type { RegisterRequest } from "@shared/contracts";
 
 

@@ -1,8 +1,8 @@
 import Link from "next/link";
-import { Button } from "@/common/shadcn/ui/button";
-import { ItemGroup } from "@/common/shadcn/ui/item";
 import { getProjectsOr404 } from "@/entities/project";
 import { getMe } from "@/entities/user";
+import { Button } from "@/shared/shadcn/ui/button";
+import { ItemGroup } from "@/shared/shadcn/ui/item";
 import { ProjectItem } from "./project-item";
 
 

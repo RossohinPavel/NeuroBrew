@@ -1,8 +1,9 @@
 import "server-only";
 
 import { Suspense } from "react";
+import { SessionGuard } from "@/components/session-guard";
 import { ProjectCreateForm } from "@/features/project-create";
-import { SessionGuard } from "@/modules/session-guard";
+
 
 /** Представляет страницу создания проекта. */
 export default function CreateProject() {

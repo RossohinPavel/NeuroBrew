@@ -4,7 +4,7 @@ import { valibotResolver } from "@hookform/resolvers/valibot";
 import { CreateProjectRequestSchema, type CreateProjectRequest } from "@shared/contracts";
 import { useRouter } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
-import { Button } from "@/common/shadcn/ui/button";
+import { Button } from "@/shared/shadcn/ui/button";
 import {
   Field,
   FieldDescription,
@@ -13,8 +13,8 @@ import {
   FieldLabel,
   FieldLegend,
   FieldSet,
-} from "@/common/shadcn/ui/field";
-import { Input } from "@/common/shadcn/ui/input";
+} from "@/shared/shadcn/ui/field";
+import { Input } from "@/shared/shadcn/ui/input";
 import { projectCreateAction } from "./action";
 
 

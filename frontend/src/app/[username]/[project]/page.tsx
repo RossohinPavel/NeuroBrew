@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import { getProjectByNameOr404 } from "@/entities/project";
 
+
 type Props = PageProps<"/[username]/[project]">;
 
 /** Показывает основные сведения о проекте пользователя. */
