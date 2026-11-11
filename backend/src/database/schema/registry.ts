@@ -1,5 +1,5 @@
 import { type InferInsertModel, type InferSelectModel } from "drizzle-orm";
-import { integer, snakeCase, text, timestamp, uniqueIndex, varchar } from "drizzle-orm/pg-core";
+import { integer, snakeCase, timestamp, uniqueIndex, varchar } from "drizzle-orm/pg-core";
 import { user } from "./user.js";
 
 
@@ -24,6 +24,8 @@ export const project = registrySchema.table("project", {
 export type ProjectInsert = InferInsertModel<typeof project>;
 export type ProjectSelect = InferSelectModel<typeof project>;
 
+export const fileType = registrySchema.enum("file_type", ["agentsmd", "skill", "rule"]);
+
 export const file = registrySchema.table("file", {
   id: integer()
     .primaryKey()
@@ -40,7 +42,9 @@ export const file = registrySchema.table("file", {
     .notNull(),
   name: varchar({ length: 128 })
     .notNull(),
-  content: text()
+  type: fileType()
+    .notNull(),
+  content: varchar({ length: 32768 })
     .notNull(),
 }, (table) => [
   uniqueIndex("file_project_id_name_unique").on(table.projectId, table.name),

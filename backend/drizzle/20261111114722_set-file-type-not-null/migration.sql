@@ -1,0 +1,1 @@
+ALTER TABLE "registry"."file" ALTER COLUMN "type" SET NOT NULL;
