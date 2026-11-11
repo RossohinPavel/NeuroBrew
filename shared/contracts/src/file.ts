@@ -1,21 +1,23 @@
 import * as v from "valibot";
 
 
-// Принимает имя проекта, путь и непустое содержимое нового файла.
+// Принимает имя проекта, тип, имя и содержимое нового файла.
 export const CreateFileRequestSchema = v.object({
   projectName: v.pipe(
     v.string(),
     v.minLength(1),
     v.maxLength(128),
   ),
-  path: v.pipe(
+  type: v.picklist(["agentsmd", "skill", "rule"]),
+  name: v.pipe(
     v.string(),
     v.minLength(1),
-    v.maxLength(255),
+    v.maxLength(128),
   ),
   content: v.pipe(
     v.string(),
     v.minLength(1),
+    v.maxLength(32768),
   ),
 });
 export type CreateFileRequest = v.InferInput<typeof CreateFileRequestSchema>;
@@ -23,7 +25,8 @@ export type CreateFileRequest = v.InferInput<typeof CreateFileRequestSchema>;
 export const FileResponseSchema = v.object({
   id: v.number(),
   projectId: v.number(),
-  path: v.string(),
+  type: v.picklist(["agentsmd", "skill", "rule"]),
+  name: v.string(),
   content: v.string(),
   createdAt: v.pipe(
     v.string(),
@@ -35,40 +38,3 @@ export const FileResponseSchema = v.object({
   ),
 });
 export type FileResponse = v.InferOutput<typeof FileResponseSchema>;
-
-// Идентифицирует файл по владельцу проекта, имени проекта и пути внутри него.
-export const FileGetRequestSchema = v.object({
-  username: v.pipe(
-    v.string(),
-    v.minLength(1),
-    v.maxLength(64),
-  ),
-  projectName: v.pipe(
-    v.string(),
-    v.minLength(1),
-    v.maxLength(128),
-  ),
-  path: v.pipe(
-    v.string(),
-    v.minLength(1),
-    v.maxLength(255),
-  ),
-});
-export type FileGetRequest = v.InferInput<typeof FileGetRequestSchema>;
-
-export const FileListRequestSchema = v.object({
-  username: v.pipe(
-    v.string(),
-    v.minLength(1),
-    v.maxLength(64),
-  ),
-  projectName: v.pipe(
-    v.string(),
-    v.minLength(1),
-    v.maxLength(128),
-  ),
-});
-export type FileListRequest = v.InferInput<typeof FileListRequestSchema>;
-
-export const FileListResponseSchema = v.array(FileResponseSchema);
-export type FileListResponse = v.InferOutput<typeof FileListResponseSchema>;

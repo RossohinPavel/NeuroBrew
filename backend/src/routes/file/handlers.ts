@@ -1,75 +1,17 @@
 import type * as contracts from "@shared/contracts";
 import * as tables from "../../database/schema/index.js";
-import { and, asc, DrizzleQueryError, eq, sql } from "drizzle-orm";
+import { and, DrizzleQueryError, eq, sql } from "drizzle-orm";
 import postgres from "postgres";
 import type { RouteHandler } from "fastify";
 
 
-// Возвращает файл по имени владельца проекта, имени проекта и пути к файлу.
-export const getFile: RouteHandler<{
-  Body: contracts.FileGetRequest;
-  Reply: contracts.FileResponse;
-}> = async (req, res) => {
-  const { username, projectName, path } = req.body;
-
-  const [result] = await req.server.drizzle
-    .select({ file: tables.file })
-    .from(tables.file)
-    .innerJoin(tables.project, and(
-      eq(tables.file.projectId, tables.project.id),
-      eq(tables.project.name, projectName),
-    ))
-    .innerJoin(tables.profile, and(
-      eq(tables.project.userId, tables.profile.userId),
-      eq(tables.profile.username, username),
-    ))
-    .where(eq(tables.file.path, path))
-    .limit(1);
-
-  if (!result) {
-    throw req.server.httpErrors.notFound("File not found");
-  }
-
-  return res.code(200).send({
-    ...result.file,
-    createdAt: result.file.createdAt.toISOString(),
-    updatedAt: result.file.updatedAt.toISOString(),
-  });
-};
-
-// Возвращает файлы проекта по имени пользователя и названию проекта или пустой список.
-export const listFiles: RouteHandler<{
-  Body: contracts.FileListRequest;
-  Reply: contracts.FileListResponse;
-}> = async (req, res) => {
-  const { username, projectName } = req.body;
-
-  const files = await req.server.drizzle
-    .select({ file: tables.file })
-    .from(tables.file)
-    .innerJoin(tables.project, and(
-      eq(tables.file.projectId, tables.project.id),
-      eq(tables.project.name, projectName),
-    ))
-    .innerJoin(tables.profile, and(
-      eq(tables.project.userId, tables.profile.userId),
-      eq(tables.profile.username, username),
-    ))
-    .orderBy(asc(tables.file.path));
-
-  return res.code(200).send(files.map(({ file }) => ({
-    ...file,
-    createdAt: file.createdAt.toISOString(),
-    updatedAt: file.updatedAt.toISOString(),
-  })));
-};
-
-// Создает файл только в проекте текущего пользователя.
+// Создает файл в проекте текущего пользователя и закрепляет имя AGENTS.md за типом agentsmd.
 export const createFile: RouteHandler<{
   Body: contracts.CreateFileRequest;
   Reply: contracts.FileResponse;
 }> = async (req, res) => {
-  const { projectName, path, content } = req.body;
+  const { projectName, type, content } = req.body;
+  const name = type === "agentsmd" ? "AGENTS.md" : req.body.name;
 
   try {
     const [file] = await req.server.drizzle
@@ -77,7 +19,8 @@ export const createFile: RouteHandler<{
       .select(req.server.drizzle
         .select({
           projectId: tables.project.id,
-          path: sql<string>`${path}`.as("path"),
+          type: sql<contracts.CreateFileRequest["type"]>`${type}`.as("type"),
+          name: sql<string>`${name}`.as("name"),
           content: sql<string>`${content}`.as("content"),
         })
         .from(tables.project)
@@ -102,7 +45,7 @@ export const createFile: RouteHandler<{
       && error.cause instanceof postgres.PostgresError
       && error.cause.code === "23505"
     ) {
-      throw req.server.httpErrors.conflict("File path is already in use");
+      throw req.server.httpErrors.conflict("File name is already in use");
     }
 
     throw error;
