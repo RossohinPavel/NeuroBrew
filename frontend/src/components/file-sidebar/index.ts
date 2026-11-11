@@ -1,1 +1,1 @@
-export { FileSidebar } from "./file-sidebar";
+export { FileSidebar } from "./sidebar";
