@@ -13,7 +13,9 @@ export const listChangelog: RouteHandler<{
   const cachedEntries = await req.server.redis.get(CHANGELOG_CACHE_KEY);
 
   if (cachedEntries !== null) {
-    return res.code(200).send(JSON.parse(cachedEntries));
+    return res.code(200).send(
+      JSON.parse(cachedEntries) as unknown as contracts.ChangelogListResponse,
+    );
   }
 
   const entries = await req.server.drizzle

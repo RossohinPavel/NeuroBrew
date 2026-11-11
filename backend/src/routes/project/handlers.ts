@@ -84,7 +84,8 @@ export const createProject: RouteHandler<{
       .insert(tables.file)
       .values({
         projectId: project.id,
-        path: "AGENTS.md",
+        type: "agentsmd",
+        name: "AGENTS.md",
         content: `# ${project.name}`,
       });
 
