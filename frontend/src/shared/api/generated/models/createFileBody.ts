@@ -4,6 +4,7 @@
  * NeuroBrew API
  * OpenAPI spec version: 1.0.0
  */
+import type { CreateFileBodyType } from './createFileBodyType';
 
 export type CreateFileBody = {
   /**
@@ -11,11 +12,15 @@ export type CreateFileBody = {
      * @maxLength 128
      */
   projectName: string;
+  type: CreateFileBodyType;
   /**
      * @minLength 1
-     * @maxLength 255
+     * @maxLength 128
      */
-  path: string;
-  /** @minLength 1 */
+  name: string;
+  /**
+     * @minLength 1
+     * @maxLength 32768
+     */
   content: string;
 };

@@ -7,10 +7,74 @@
 import type {
   CreateFile201,
   CreateFileBody,
-  Def0
+  Def0,
+  ListFiles200Item,
+  ListFilesBody
 } from '../../models';
 
 import { apiFetch } from '../../../fetcher';
+
+export type listFilesResponse200 = {
+  data: ListFiles200Item[]
+  status: 200
+}
+
+export type listFilesResponse400 = {
+  data: Def0
+  status: 400
+}
+
+export type listFilesResponse500 = {
+  data: Def0
+  status: 500
+}
+
+export type listFilesResponseSuccess = (listFilesResponse200) & {
+  headers: Headers;
+};
+export type listFilesResponseError = (listFilesResponse400 | listFilesResponse500) & {
+  headers: Headers;
+};
+
+export type listFilesResponse = (listFilesResponseSuccess | listFilesResponseError)
+
+export const getListFilesUrl = () => {
+
+
+
+
+  return `/file.list`
+}
+
+/**
+ * Lists files in a project by username and project name.
+ * @summary List files
+ */
+export const listFiles = async (listFilesBody: ListFilesBody, options?: Parameters<typeof apiFetch>[1]): Promise<listFilesResponse> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return apiFetch<listFilesResponse>(getListFilesUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(listFilesBody)
+  }
+);}
+
 
 export type createFileResponse201 = {
   data: CreateFile201

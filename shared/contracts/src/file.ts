@@ -1,6 +1,21 @@
 import * as v from "valibot";
 
 
+// Определяет проект, файлы которого нужно получить.
+export const FileListRequestSchema = v.object({
+  username: v.pipe(
+    v.string(),
+    v.minLength(1),
+    v.maxLength(64),
+  ),
+  projectName: v.pipe(
+    v.string(),
+    v.minLength(1),
+    v.maxLength(128),
+  ),
+});
+export type FileListRequest = v.InferInput<typeof FileListRequestSchema>;
+
 // Принимает имя проекта, тип, имя и содержимое нового файла.
 export const CreateFileRequestSchema = v.object({
   projectName: v.pipe(
@@ -38,3 +53,6 @@ export const FileResponseSchema = v.object({
   ),
 });
 export type FileResponse = v.InferOutput<typeof FileResponseSchema>;
+
+export const FileListResponseSchema = v.array(FileResponseSchema);
+export type FileListResponse = v.InferOutput<typeof FileListResponseSchema>;

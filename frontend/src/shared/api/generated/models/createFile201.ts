@@ -4,11 +4,13 @@
  * NeuroBrew API
  * OpenAPI spec version: 1.0.0
  */
+import type { CreateFile201Type } from './createFile201Type';
 
 export type CreateFile201 = {
   id: number;
   projectId: number;
-  path: string;
+  type: CreateFile201Type;
+  name: string;
   content: string;
   createdAt: string;
   updatedAt: string;

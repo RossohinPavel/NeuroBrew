@@ -6,8 +6,10 @@
  */
 import type { Health200DetailBackend } from './health200DetailBackend';
 import type { Health200DetailPostgres } from './health200DetailPostgres';
+import type { Health200DetailRedis } from './health200DetailRedis';
 
 export type Health200Detail = {
   backend: Health200DetailBackend;
   postgres: Health200DetailPostgres;
+  redis: Health200DetailRedis;
 };

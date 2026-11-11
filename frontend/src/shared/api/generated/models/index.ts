@@ -6,7 +6,9 @@
  */
 
 export * from './createFile201';
+export * from './createFile201Type';
 export * from './createFileBody';
+export * from './createFileBodyType';
 export * from './createProject201';
 export * from './createProjectBody';
 export * from './def0';
@@ -18,13 +20,18 @@ export * from './health200';
 export * from './health200Detail';
 export * from './health200DetailBackend';
 export * from './health200DetailPostgres';
+export * from './health200DetailRedis';
 export * from './health200Status';
 export * from './health503';
 export * from './health503Detail';
 export * from './health503DetailBackend';
 export * from './health503DetailPostgres';
+export * from './health503DetailRedis';
 export * from './health503Status';
 export * from './listChangelog200Item';
+export * from './listFiles200Item';
+export * from './listFiles200ItemType';
+export * from './listFilesBody';
 export * from './listProjects200Item';
 export * from './listProjectsBody';
 export * from './login200';
