@@ -77,7 +77,7 @@ export async function FileSidebarContent({ params }: { params: FileSidebarParams
     })
     .forEach(({ path }) => {
       const dirs = path.split("/");
-      const fileHref = `${projectHref}/file/${dirs.map(encodeURIComponent).join("/")}`;
+      const fileHref = `${projectHref}/blob/${dirs.map(encodeURIComponent).join("/")}`;
       const file = dirs.pop()!;
       let branch = tree;
 

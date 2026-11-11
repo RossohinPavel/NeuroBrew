@@ -3,7 +3,7 @@ import { Suspense } from "react";
 import { getFile } from "@/shared/api/generated/endpoints";
 
 
-type Props = PageProps<"/[username]/[project]/file/[...path]">;
+type Props = PageProps<"/[username]/[project]/blob/[...path]">;
 
 /** Показывает содержимое запрошенного файла проекта. */
 export default function File(props: Props) {
