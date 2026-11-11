@@ -38,12 +38,12 @@ export const file = registrySchema.table("file", {
     .defaultNow()
     .$onUpdate(() => new Date())
     .notNull(),
-  path: varchar({ length: 255 })
+  name: varchar({ length: 128 })
     .notNull(),
   content: text()
     .notNull(),
 }, (table) => [
-  uniqueIndex("file_project_id_path_unique").on(table.projectId, table.path),
+  uniqueIndex("file_project_id_name_unique").on(table.projectId, table.name),
 ]);
 
 export type FileInsert = InferInsertModel<typeof file>;
