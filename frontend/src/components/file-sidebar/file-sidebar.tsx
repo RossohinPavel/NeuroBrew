@@ -3,8 +3,6 @@ import { Input } from "@/shared/shadcn/ui/input";
 import {
   Sidebar,
   SidebarContent,
-  SidebarFooter,
-  SidebarGroup,
   SidebarHeader,
 } from "@/shared/shadcn/ui/sidebar";
 import { FileSidebarContent } from "./file-sidebar-content";
@@ -12,7 +10,7 @@ import { NewFileLink } from "./new-file-link";
 import type { FileSidebarParams } from "./types";
 
 
-/** Отображает область навигации по файлам проекта. */
+/** Показывает поиск и создание файла над пустой областью списка. */
 export function FileSidebar({ params }: { params: FileSidebarParams }) {
   return (
     <Sidebar
@@ -29,14 +27,8 @@ export function FileSidebar({ params }: { params: FileSidebarParams }) {
         </div>
       </SidebarHeader>
       <SidebarContent>
-        <SidebarGroup>
-          <Suspense fallback={null}>
-            <FileSidebarContent params={params} />
-          </Suspense>
-        </SidebarGroup>
-        <SidebarGroup />
+        <FileSidebarContent />
       </SidebarContent>
-      <SidebarFooter />
     </Sidebar>
   );
 }
