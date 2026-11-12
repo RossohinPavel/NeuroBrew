@@ -2,12 +2,12 @@
 
 import { valibotResolver } from "@hookform/resolvers/valibot";
 import { CreateFileRequestSchema, type CreateFileRequest } from "@shared/contracts";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
 import { Button } from "@/shared/shadcn/ui/button";
 import { Field, FieldError, FieldLabel } from "@/shared/shadcn/ui/field";
 import { Input } from "@/shared/shadcn/ui/input";
+import { RadioGroup, RadioGroupItem } from "@/shared/shadcn/ui/radio-group";
 import { Textarea } from "@/shared/shadcn/ui/textarea";
 import { fileCreateAction } from "./action";
 
@@ -15,17 +15,21 @@ import { fileCreateAction } from "./action";
 type Props = {
   username: string;
   project: string;
+  type?: string;
 };
 
+const fileTypes: CreateFileRequest["type"][] = ["skill", "rule", "agentsmd"];
+
 /** Создает файл в выбранном проекте и возвращает к его странице после сохранения. */
-export function FileCreateForm({ username, project }: Props) {
+export function FileCreateForm({ username, project, type }: Props) {
   const router = useRouter();
 
   const form = useForm<CreateFileRequest>({
     resolver: valibotResolver(CreateFileRequestSchema),
     defaultValues: {
       projectName: project,
-      path: "",
+      type: fileTypes.find((fileType) => fileType === type) ?? "agentsmd",
+      name: "",
       content: "",
     },
   });
@@ -53,38 +57,61 @@ export function FileCreateForm({ username, project }: Props) {
         void form.handleSubmit(onSubmit)(event);
       }}
     >
-      <div className="flex items-center gap-3">
-        <Link
-          className="max-w-48 truncate font-medium"
-          href={`/${encodeURIComponent(username)}/${encodeURIComponent(project)}`}
-          title={project}
-        >
-          {project}
-        </Link>
-        <Controller
-          control={form.control}
-          name="path"
-          render={({ field, fieldState }) => (
-            <Field className="min-w-0 flex-1" data-invalid={fieldState.invalid}>
-              <FieldLabel className="sr-only" htmlFor="file-create-path">Путь к файлу</FieldLabel>
-              <Input
-                {...field}
-                aria-invalid={fieldState.invalid}
-                id="file-create-path"
-                placeholder="Путь к файлу"
-                required
-                type="text"
-              />
-              {fieldState.invalid && (
-                <FieldError errors={[fieldState.error]} />
-              )}
-            </Field>
-          )}
-        />
-        <Button disabled={form.formState.isSubmitting} type="submit">
-          {form.formState.isSubmitting ? "Сохранение..." : "Сохранить"}
-        </Button>
-      </div>
+      <Controller
+        control={form.control}
+        name="type"
+        render={({ field, fieldState }) => (
+          <Field data-invalid={fieldState.invalid}>
+            <RadioGroup
+              aria-invalid={fieldState.invalid}
+              aria-label="Тип файла"
+              className="flex w-auto gap-4"
+              inputRef={field.ref}
+              name={field.name}
+              onBlur={field.onBlur}
+              onValueChange={field.onChange}
+              required
+              value={field.value}
+            >
+              <Field className="w-auto" orientation="horizontal">
+                <RadioGroupItem id="file-create-type-agentsmd" value="agentsmd" />
+                <FieldLabel htmlFor="file-create-type-agentsmd">AGENTS.md</FieldLabel>
+              </Field>
+              <Field className="w-auto" orientation="horizontal">
+                <RadioGroupItem id="file-create-type-rule" value="rule" />
+                <FieldLabel htmlFor="file-create-type-rule">Правило</FieldLabel>
+              </Field>
+              <Field className="w-auto" orientation="horizontal">
+                <RadioGroupItem id="file-create-type-skill" value="skill" />
+                <FieldLabel htmlFor="file-create-type-skill">Скил</FieldLabel>
+              </Field>
+            </RadioGroup>
+            {fieldState.invalid && (
+              <FieldError errors={[fieldState.error]} />
+            )}
+          </Field>
+        )}
+      />
+      <Controller
+        control={form.control}
+        name="name"
+        render={({ field, fieldState }) => (
+          <Field className="w-64 max-w-full" data-invalid={fieldState.invalid}>
+            <FieldLabel className="sr-only" htmlFor="file-create-name">Имя файла</FieldLabel>
+            <Input
+              {...field}
+              aria-invalid={fieldState.invalid}
+              id="file-create-name"
+              placeholder="Имя файла"
+              required
+              type="text"
+            />
+            {fieldState.invalid && (
+              <FieldError errors={[fieldState.error]} />
+            )}
+          </Field>
+        )}
+      />
       {form.formState.errors.root?.server && (
         <FieldError errors={[form.formState.errors.root.server]} />
       )}
@@ -113,6 +140,11 @@ export function FileCreateForm({ username, project }: Props) {
           </Field>
         )}
       />
+      <div className="flex justify-end">
+        <Button disabled={form.formState.isSubmitting} type="submit">
+          {form.formState.isSubmitting ? "Сохранение..." : "Сохранить"}
+        </Button>
+      </div>
     </form>
   );
 }

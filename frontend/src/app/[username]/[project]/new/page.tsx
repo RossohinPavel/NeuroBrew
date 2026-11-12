@@ -18,9 +18,10 @@ export default function CreateFile(props: Props) {
 }
 
 /** Показывает форму только владельцу проекта из параметров маршрута. */
-async function FileCreateContent({ params }: Props) {
-  const [{ username, project }, user] = await Promise.all([
+async function FileCreateContent({ params, searchParams }: Props) {
+  const [{ username, project }, { type }, user] = await Promise.all([
     params,
+    searchParams,
     getMeOrThrow(),
   ]);
 
@@ -28,5 +29,7 @@ async function FileCreateContent({ params }: Props) {
     notFound();
   }
 
-  return <FileCreateForm username={username} project={project} />;
+  const fileType = Array.isArray(type) ? type[0] : type;
+
+  return <FileCreateForm username={username} project={project} type={fileType} />;
 }

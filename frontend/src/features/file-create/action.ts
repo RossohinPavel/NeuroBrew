@@ -1,12 +1,13 @@
 "use server";
 
+import { refresh } from "next/cache";
 import { getSessionOrThrow } from "@/entities/session";
 import { createFile } from "@/shared/api/generated/endpoints";
 import type { ActionResponse } from "@/shared/types/server-action";
 import type { CreateFileRequest, FileResponse } from "@shared/contracts";
 
 
-/** Создает файл в проекте текущего пользователя и возвращает его данные. */
+/** Создает файл и обновляет маршрут, чтобы список файлов показал новый файл. */
 export const fileCreateAction = async (
   formData: CreateFileRequest,
 ): ActionResponse<FileResponse> => {
@@ -14,6 +15,8 @@ export const fileCreateAction = async (
   const result = await createFile(formData, session);
 
   if (result.status === 201) {
+    refresh();
+
     return {
       success: true,
       data: result.data,
