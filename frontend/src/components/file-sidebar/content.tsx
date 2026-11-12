@@ -2,6 +2,7 @@
 
 import { Collapsible } from "@base-ui/react/collapsible";
 import { RiArrowRightSLine, RiFileTextLine, RiFolderLine } from "@remixicon/react";
+import Link from "next/link";
 import type { ListFiles200Item } from "@/shared/api/generated/models";
 import {
   SidebarMenuButton,
@@ -13,7 +14,11 @@ import {
 
 
 /** Показывает файлы одного типа в раскрывающейся папке сайдбара. */
-function FileFolder({ title, files }: { title: string; files: ListFiles200Item[] }) {
+function FileFolder({ title, files, projectHref }: {
+  title: string;
+  files: ListFiles200Item[];
+  projectHref: string;
+}) {
   return (
     <Collapsible.Root className="group/collapsible" render={<SidebarMenuItem />}>
       <Collapsible.Trigger render={<SidebarMenuButton />}>
@@ -28,7 +33,9 @@ function FileFolder({ title, files }: { title: string; files: ListFiles200Item[]
         <SidebarMenuSub>
           {files.map((file) => (
             <SidebarMenuSubItem key={file.id}>
-              <SidebarMenuSubButton render={<span />}>
+              <SidebarMenuSubButton
+                render={<Link href={`${projectHref}/file/${encodeURIComponent(file.name)}`} />}
+              >
                 <RiFileTextLine aria-hidden="true" />
                 <span>{file.name}</span>
               </SidebarMenuSubButton>
@@ -41,7 +48,12 @@ function FileFolder({ title, files }: { title: string; files: ListFiles200Item[]
 }
 
 /** Распределяет плоский список файлов по типам и показывает папки правил и скилов. */
-export function FileSidebarContent({ files }: { files: ListFiles200Item[] }) {
+export function FileSidebarContent({ files, username, project }: {
+  files: ListFiles200Item[];
+  username: string;
+  project: string;
+}) {
+  const projectHref = `/${encodeURIComponent(username)}/${encodeURIComponent(project)}`;
   const filesByType: Record<ListFiles200Item["type"], ListFiles200Item[]> = {
     agentsmd: [],
     rule: [],
@@ -55,14 +67,24 @@ export function FileSidebarContent({ files }: { files: ListFiles200Item[] }) {
   return (
     <>
       {filesByType.rule.length > 0 && (
-        <FileFolder files={filesByType.rule} title="Правила" />
+        <FileFolder
+          files={filesByType.rule}
+          title="Правила"
+          projectHref={projectHref}
+        />
       )}
       {filesByType.skill.length > 0 && (
-        <FileFolder files={filesByType.skill} title="Скилы" />
+        <FileFolder
+          files={filesByType.skill}
+          title="Скилы"
+          projectHref={projectHref}
+        />
       )}
       {filesByType.agentsmd.map((file) => (
         <SidebarMenuItem key={file.id}>
-          <SidebarMenuButton render={<span />}>
+          <SidebarMenuButton
+            render={<Link href={`${projectHref}/file/${encodeURIComponent(file.name)}`} />}
+          >
             <RiFileTextLine aria-hidden="true" />
             <span>{file.name}</span>
           </SidebarMenuButton>

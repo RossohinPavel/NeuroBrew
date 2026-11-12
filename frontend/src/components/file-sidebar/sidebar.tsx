@@ -26,7 +26,9 @@ async function FileSidebarContentWrapper({ params }: { params: FileSidebarParams
     throw new Error("Failed to load project files.");
   }
 
-  return <FileSidebarContent files={response.data} />;
+  return (
+    <FileSidebarContent files={response.data} username={username} project={project} />
+  );
 }
 
 /** Показывает поиск, создание файла и область списка файлов проекта. */
