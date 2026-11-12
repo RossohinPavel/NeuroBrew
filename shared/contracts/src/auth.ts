@@ -1,8 +1,8 @@
 import * as v from "valibot";
+import { UsernameInputSchema } from "./fields.js";
 
-// Регулярные выражения ограничивают пароль печатными ASCII-символами без пробелов
-// и требуют буквы обоих регистров и цифру, а в имени пользователя разрешают
-// латинские буквы, цифры и одиночный дефис только внутри имени.
+// Пароль ограничен печатными ASCII-символами без пробелов и требует
+// буквы обоих регистров и цифру.
 export const RegisterRequestSchema = v.object({
   email: v.pipe(
     v.string(),
@@ -14,11 +14,7 @@ export const RegisterRequestSchema = v.object({
     v.maxLength(128),
     v.regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[\x21-\x7E]+$/),
   ),
-  username: v.pipe(
-    v.string(),
-    v.maxLength(64),
-    v.regex(/^(?!-)(?!.*--)(?!.*-$)[A-Za-z0-9-]+$/),
-  ),
+  username: UsernameInputSchema,
 });
 
 export type RegisterRequest = v.InferInput<typeof RegisterRequestSchema>;

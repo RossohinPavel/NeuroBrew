@@ -1,12 +1,9 @@
 import * as v from "valibot";
+import { UsernameInputSchema } from "./fields.js";
 
 
 export const UserGetRequestSchema = v.object({
-  username: v.pipe(
-    v.string(),
-    v.minLength(1),
-    v.maxLength(64),
-  ),
+  username: UsernameInputSchema,
 });
 
 export type UserGetRequest = v.InferInput<typeof UserGetRequestSchema>;

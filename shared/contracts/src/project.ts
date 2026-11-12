@@ -1,11 +1,8 @@
 import * as v from "valibot";
+import { UsernameInputSchema } from "./fields.js";
 
 export const ProjectGetRequestSchema = v.object({
-  username: v.pipe(
-    v.string(),
-    v.minLength(1),
-    v.maxLength(64),
-  ),
+  username: UsernameInputSchema,
   projectName: v.pipe(
     v.string(),
     v.minLength(1),
@@ -27,11 +24,7 @@ export type ProjectResponse = v.InferOutput<typeof ProjectResponseSchema>;
 
 export const ProjectListRequestSchema = v.object({
   mine: v.optional(v.boolean()),
-  username: v.optional(v.pipe(
-    v.string(),
-    v.minLength(1),
-    v.maxLength(64),
-  )),
+  username: v.optional(UsernameInputSchema),
 });
 export type ProjectListRequest = v.InferInput<typeof ProjectListRequestSchema>;
 
