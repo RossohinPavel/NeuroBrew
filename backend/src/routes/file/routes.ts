@@ -6,6 +6,28 @@ import { toJsonSchema } from "@valibot/to-json-schema";
 
 
 export const fileRoutes: FastifyPluginAsync = async (server) => {
+  server.post(".get", {
+    schema: {
+      operationId: "getFile",
+      summary: "Get a file",
+      description: "Returns a file by username, project name and file name.",
+      tags: ["file"],
+      body: toJsonSchema(
+        contracts.FileGetRequestSchema,
+        { typeMode: "input", errorMode: "throw" },
+      ),
+      response: {
+        200: toJsonSchema(
+          contracts.FileResponseSchema,
+          { typeMode: "output", errorMode: "throw" },
+        ),
+        400: { $ref: "HttpError" },
+        404: { $ref: "HttpError" },
+        500: { $ref: "HttpError" },
+      },
+    },
+  }, handlers.getFile);
+
   server.post(".list", {
     schema: {
       operationId: "listFiles",
