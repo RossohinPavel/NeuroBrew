@@ -54,6 +54,12 @@ export function FileSidebarContent({ files }: { files: ListFiles200Item[] }) {
 
   return (
     <>
+      {filesByType.rule.length > 0 && (
+        <FileFolder files={filesByType.rule} title="Правила" />
+      )}
+      {filesByType.skill.length > 0 && (
+        <FileFolder files={filesByType.skill} title="Скилы" />
+      )}
       {filesByType.agentsmd.map((file) => (
         <SidebarMenuItem key={file.id}>
           <SidebarMenuButton render={<span />}>
@@ -62,12 +68,6 @@ export function FileSidebarContent({ files }: { files: ListFiles200Item[] }) {
           </SidebarMenuButton>
         </SidebarMenuItem>
       ))}
-      {filesByType.rule.length > 0 && (
-        <FileFolder files={filesByType.rule} title="Правила" />
-      )}
-      {filesByType.skill.length > 0 && (
-        <FileFolder files={filesByType.skill} title="Скилы" />
-      )}
     </>
   );
 }
