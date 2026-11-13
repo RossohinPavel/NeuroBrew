@@ -17,7 +17,10 @@ const app = fastify({
   },
 });
 
-app.register(fastifyRedis, { url: ENV.REDIS_URL });
+app.register(fastifyRedis, {
+  url: ENV.REDIS_URL,
+  keyPrefix: "backend:",
+});
 app.register(drizzlePlugin, { url: ENV.DATABASE_URL });
 app.register(fastifyJwt, accessTokenConfig);
 app.register(fastifyJwt, refreshTokenConfig);
@@ -26,7 +29,10 @@ app.register(apiRoutes);
 
 
 try {
-  await app.listen({ port: 8080, host: "0.0.0.0" });
+  await app.listen({
+    host: "0.0.0.0",
+    port: 8080,
+  });
 } catch (error) {
   app.log.error(error);
 
