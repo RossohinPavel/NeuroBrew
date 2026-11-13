@@ -1,13 +1,9 @@
 import * as v from "valibot";
-import { UsernameInputSchema } from "./fields.js";
+import { ProjectNameInputSchema, UsernameInputSchema } from "./fields.js";
 
 export const ProjectGetRequestSchema = v.object({
   username: UsernameInputSchema,
-  projectName: v.pipe(
-    v.string(),
-    v.minLength(1),
-    v.maxLength(128),
-  ),
+  projectName: ProjectNameInputSchema,
 });
 export type ProjectGetRequest = v.InferInput<typeof ProjectGetRequestSchema>;
 
@@ -31,15 +27,6 @@ export type ProjectListRequest = v.InferInput<typeof ProjectListRequestSchema>;
 export const ProjectListResponseSchema = v.array(ProjectResponseSchema);
 export type ProjectListResponse = v.InferOutput<typeof ProjectListResponseSchema>;
 
-// Имя допускает только латинские буквы, цифры и одиночные дефисы внутри имени.
-// Проверка через regex сохраняется при преобразовании схемы в JSON Schema.
-export const CreateProjectRequestSchema = v.object({
-  name: v.pipe(
-    v.string(),
-    v.minLength(1),
-    v.maxLength(128),
-    v.regex(/^(?!-)(?!.*--)(?!.*-$)[A-Za-z0-9-]+$/),
-  ),
-});
+export const CreateProjectRequestSchema = v.object({ name: ProjectNameInputSchema });
 
 export type CreateProjectRequest = v.InferInput<typeof CreateProjectRequestSchema>;
