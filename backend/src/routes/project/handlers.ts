@@ -8,7 +8,7 @@ export const getProject: RouteHandler<{
   Body: contracts.GetProjectRequest;
   Reply: contracts.ProjectResponse;
 }> = async (req, res) => {
-  const { username, projectName } = req.body;
+  const { username, name } = req.body;
 
   const [result] = await req.server.drizzle
     .select({ project: tables.project })
@@ -17,7 +17,7 @@ export const getProject: RouteHandler<{
       eq(tables.project.userId, tables.profile.userId),
       eq(tables.profile.username, username),
     ))
-    .where(eq(tables.project.name, projectName))
+    .where(eq(tables.project.name, name))
     .limit(1);
 
   if (!result) {

@@ -18,7 +18,7 @@ export const getMyProjectsOrThrow = cache(async () => {
 
 /** Возвращает проект пользователя по логину и названию или показывает страницу 404. */
 export const getProjectByNameOr404 = cache(async (username: string, projectName: string) => {
-  const response = await getProject({ username, projectName });
+  const response = await getProject({ username, name: projectName });
   if (response.status !== 200) {
     return notFound();
   }

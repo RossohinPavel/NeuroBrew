@@ -15,5 +15,5 @@ export type GetProjectBody = {
      * @maxLength 128
      * @pattern ^(?!-)(?!.*--)(?!.*-$)[A-Za-z0-9-]+$
      */
-  projectName: string;
+  name: string;
 };

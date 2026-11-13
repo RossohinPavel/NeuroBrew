@@ -42,7 +42,7 @@ export const projectRoutes: FastifyPluginAsync = async (server) => {
       ),
       response: {
         200: toJsonSchema(
-        contracts.ListProjectsResponseSchema,
+          contracts.ListProjectsResponseSchema,
           { typeMode: "output", errorMode: "throw" },
         ),
         400: { $ref: "HttpError" },
