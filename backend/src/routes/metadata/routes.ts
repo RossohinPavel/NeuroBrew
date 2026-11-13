@@ -12,7 +12,7 @@ export const metadataRoutes: FastifyPluginAsync = async (server) => {
       description: "Returns the application changelog.",
       tags: ["metadata"],
       response: {
-        200: toJsonSchema(contracts.ChangelogListResponseSchema, {
+        200: toJsonSchema(contracts.ListChangelogResponseSchema, {
           typeMode: "output",
           errorMode: "throw",
         }),

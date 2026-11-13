@@ -13,7 +13,7 @@ export const fileRoutes: FastifyPluginAsync = async (server) => {
       description: "Returns a file by username, project name and file name.",
       tags: ["file"],
       body: toJsonSchema(
-        contracts.FileGetRequestSchema,
+        contracts.GetFileRequestSchema,
         { typeMode: "input", errorMode: "throw" },
       ),
       response: {
@@ -35,12 +35,12 @@ export const fileRoutes: FastifyPluginAsync = async (server) => {
       description: "Lists files in a project by username and project name.",
       tags: ["file"],
       body: toJsonSchema(
-        contracts.FileListRequestSchema,
+        contracts.ListFilesRequestSchema,
         { typeMode: "input", errorMode: "throw" },
       ),
       response: {
         200: toJsonSchema(
-          contracts.FileListResponseSchema,
+          contracts.ListFilesResponseSchema,
           { typeMode: "output", errorMode: "throw" },
         ),
         400: { $ref: "HttpError" },

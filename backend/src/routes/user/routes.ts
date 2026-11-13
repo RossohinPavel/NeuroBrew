@@ -12,7 +12,7 @@ export const userRoutes: FastifyPluginAsync = async (server) => {
       description: "Returns a user by username.",
       tags: ["user"],
       body: toJsonSchema(
-        contracts.UserGetRequestSchema,
+        contracts.GetUserRequestSchema,
         { typeMode: "input", errorMode: "throw" },
       ),
       response: {

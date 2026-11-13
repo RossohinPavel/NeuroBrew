@@ -2,7 +2,7 @@ import * as v from "valibot";
 import { loadEnvFile } from "node:process";
 
 
-const envSchema = v.object({
+const EnvSchema = v.object({
   NODE_ENV: v.picklist(["development", "production", "test"]),
   DATABASE_URL: v.pipe(
     v.string(),
@@ -27,4 +27,4 @@ if (process.env.NODE_ENV === undefined) {
   loadEnvFile(".env");
 }
 
-export const ENV = v.parse(envSchema, process.env);
+export const ENV = v.parse(EnvSchema, process.env);

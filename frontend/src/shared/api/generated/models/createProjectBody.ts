@@ -7,7 +7,6 @@
 
 export type CreateProjectBody = {
   /**
-     * @minLength 1
      * @maxLength 128
      * @pattern ^(?!-)(?!.*--)(?!.*-$)[A-Za-z0-9-]+$
      */

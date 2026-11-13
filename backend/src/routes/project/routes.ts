@@ -13,7 +13,7 @@ export const projectRoutes: FastifyPluginAsync = async (server) => {
       description: "Returns a project by username and project name.",
       tags: ["project"],
       body: toJsonSchema(
-        contracts.ProjectGetRequestSchema,
+        contracts.GetProjectRequestSchema,
         { typeMode: "input", errorMode: "throw" },
       ),
       response: {
@@ -37,12 +37,12 @@ export const projectRoutes: FastifyPluginAsync = async (server) => {
       tags: ["project"],
       security: [{}, { bearerAuth: [] }],
       body: toJsonSchema(
-        contracts.ProjectListRequestSchema,
+        contracts.ListProjectsRequestSchema,
         { typeMode: "input", errorMode: "throw" },
       ),
       response: {
         200: toJsonSchema(
-          contracts.ProjectListResponseSchema,
+        contracts.ListProjectsResponseSchema,
           { typeMode: "output", errorMode: "throw" },
         ),
         400: { $ref: "HttpError" },

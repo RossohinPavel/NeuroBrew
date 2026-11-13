@@ -14,20 +14,7 @@ export const RegisterRequestSchema = v.object({
   username: fields.UsernameInputSchema,
 });
 
-export type RegisterRequest = v.InferInput<typeof RegisterRequestSchema>;
-
-export const LoginRequestSchema = v.object({
-  email: fields.EmailInputSchema,
-  password: v.pipe(
-    v.string(),
-    v.minLength(1),
-    v.maxLength(128),
-  ),
-});
-
-export type LoginRequest = v.InferInput<typeof LoginRequestSchema>;
-
-export const authTokensResponseSchema = v.object({
+export const AuthTokensResponseSchema = v.object({
   accessToken: v.string(),
   refreshToken: v.string(),
   tokenType: v.literal("Bearer"),
@@ -38,4 +25,15 @@ export const authTokensResponseSchema = v.object({
   ),
 });
 
-export type AuthTokensResponse = v.InferOutput<typeof authTokensResponseSchema>;
+export const LoginRequestSchema = v.object({
+  email: fields.EmailInputSchema,
+  password: v.pipe(
+    v.string(),
+    v.minLength(1),
+    v.maxLength(128),
+  ),
+});
+
+export type RegisterRequest = v.InferInput<typeof RegisterRequestSchema>;
+export type AuthTokensResponse = v.InferOutput<typeof AuthTokensResponseSchema>;
+export type LoginRequest = v.InferInput<typeof LoginRequestSchema>;

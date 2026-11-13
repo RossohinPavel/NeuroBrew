@@ -1,11 +1,11 @@
 import * as v from "valibot";
 
 
-export const passSchema = v.object({
+export const PassSchema = v.object({
   status: v.literal("pass"),
 });
 
-export const failSchema = v.object({
+export const FailSchema = v.object({
   status: v.literal("fail"),
   output: v.string(),
 });
@@ -17,9 +17,9 @@ export const LiveResponseSchema = v.object({
     v.isoTimestamp(),
   ),
   detail: v.object({
-    backend: v.union([passSchema, failSchema]),
-    postgres: v.union([passSchema, failSchema]),
-    redis: v.union([passSchema, failSchema]),
+    backend: v.union([PassSchema, FailSchema]),
+    postgres: v.union([PassSchema, FailSchema]),
+    redis: v.union([PassSchema, FailSchema]),
   }),
 });
 

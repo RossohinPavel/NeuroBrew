@@ -7,7 +7,7 @@ import type { RouteHandler } from "fastify";
 
 // Возвращает файл по имени владельца, названию проекта и имени файла.
 export const getFile: RouteHandler<{
-  Body: contracts.FileGetRequest;
+  Body: contracts.GetFileRequest;
   Reply: contracts.FileResponse;
 }> = async (req, res) => {
   const { username, projectName, name } = req.body;
@@ -37,8 +37,8 @@ export const getFile: RouteHandler<{
 
 // Возвращает файлы проекта по имени владельца и названию проекта.
 export const listFiles: RouteHandler<{
-  Body: contracts.FileListRequest;
-  Reply: contracts.FileListResponse;
+  Body: contracts.ListFilesRequest;
+  Reply: contracts.ListFilesResponse;
 }> = async (req, res) => {
   const { username, projectName } = req.body;
 

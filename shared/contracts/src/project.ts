@@ -1,11 +1,10 @@
 import * as v from "valibot";
 import * as fields from "./fields.js";
 
-export const ProjectGetRequestSchema = v.object({
+export const GetProjectRequestSchema = v.object({
   username: fields.UsernameInputSchema,
-  projectName: fields.ProjectNameInputSchema,
+  name: fields.ProjectNameInputSchema,
 });
-export type ProjectGetRequest = v.InferInput<typeof ProjectGetRequestSchema>;
 
 export const ProjectResponseSchema = v.object({
   id: v.number(),
@@ -16,17 +15,20 @@ export const ProjectResponseSchema = v.object({
     v.isoTimestamp(),
   ),
 });
-export type ProjectResponse = v.InferOutput<typeof ProjectResponseSchema>;
 
-export const ProjectListRequestSchema = v.object({
+export const ListProjectsRequestSchema = v.object({
   mine: v.optional(v.boolean()),
   username: v.optional(fields.UsernameInputSchema),
 });
-export type ProjectListRequest = v.InferInput<typeof ProjectListRequestSchema>;
 
-export const ProjectListResponseSchema = v.array(ProjectResponseSchema);
-export type ProjectListResponse = v.InferOutput<typeof ProjectListResponseSchema>;
+export const ListProjectsResponseSchema = v.array(ProjectResponseSchema);
 
-export const CreateProjectRequestSchema = v.object({ name: fields.ProjectNameInputSchema });
+export const CreateProjectRequestSchema = v.object({
+  name: fields.ProjectNameInputSchema,
+});
 
+export type GetProjectRequest = v.InferInput<typeof GetProjectRequestSchema>;
+export type ProjectResponse = v.InferOutput<typeof ProjectResponseSchema>;
+export type ListProjectsRequest = v.InferInput<typeof ListProjectsRequestSchema>;
+export type ListProjectsResponse = v.InferOutput<typeof ListProjectsResponseSchema>;
 export type CreateProjectRequest = v.InferInput<typeof CreateProjectRequestSchema>;

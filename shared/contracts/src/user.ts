@@ -2,11 +2,9 @@ import * as v from "valibot";
 import * as fields from "./fields.js";
 
 
-export const UserGetRequestSchema = v.object({
+export const GetUserRequestSchema = v.object({
   username: fields.UsernameInputSchema,
 });
-
-export type UserGetRequest = v.InferInput<typeof UserGetRequestSchema>;
 
 export const UserResponseSchema = v.object({
   id: v.number(),
@@ -21,4 +19,5 @@ export const UserResponseSchema = v.object({
   ),
 });
 
+export type GetUserRequest = v.InferInput<typeof GetUserRequestSchema>;
 export type UserResponse = v.InferOutput<typeof UserResponseSchema>;

@@ -8,8 +8,8 @@ import type { CreateFileBodyType } from './createFileBodyType';
 
 export type CreateFileBody = {
   /**
-     * @minLength 1
      * @maxLength 128
+     * @pattern ^(?!-)(?!.*--)(?!.*-$)[A-Za-z0-9-]+$
      */
   projectName: string;
   type: CreateFileBodyType;

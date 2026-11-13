@@ -7,8 +7,8 @@
 
 export type GetUserBody = {
   /**
-     * @minLength 1
      * @maxLength 64
+     * @pattern ^(?!-)(?!.*--)(?!.*-$)[A-Za-z0-9-]+$
      */
   username: string;
 };

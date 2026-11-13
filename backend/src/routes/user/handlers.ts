@@ -5,7 +5,7 @@ import type { RouteHandler } from "fastify";
 
 
 export const getUser: RouteHandler<{
-  Body: contracts.UserGetRequest;
+  Body: contracts.GetUserRequest;
   Reply: contracts.UserResponse;
 }> = async (req, res) => {
   const { username } = req.body;

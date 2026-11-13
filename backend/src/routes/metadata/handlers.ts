@@ -8,13 +8,13 @@ const CHANGELOG_CACHE_KEY = "metadata:changelog:list";
 const CHANGELOG_CACHE_TTL_SECONDS = 300;
 
 export const listChangelog: RouteHandler<{
-  Reply: contracts.ChangelogListResponse;
+  Reply: contracts.ListChangelogResponse;
 }> = async (req, res) => {
   const cachedEntries = await req.server.redis.get(CHANGELOG_CACHE_KEY);
 
   if (cachedEntries !== null) {
     return res.code(200).send(
-      JSON.parse(cachedEntries) as unknown as contracts.ChangelogListResponse,
+      JSON.parse(cachedEntries) as unknown as contracts.ListChangelogResponse,
     );
   }
 

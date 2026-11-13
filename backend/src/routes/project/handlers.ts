@@ -5,7 +5,7 @@ import type { RouteHandler } from "fastify";
 
 
 export const getProject: RouteHandler<{
-  Body: contracts.ProjectGetRequest;
+  Body: contracts.GetProjectRequest;
   Reply: contracts.ProjectResponse;
 }> = async (req, res) => {
   const { username, projectName } = req.body;
@@ -31,8 +31,8 @@ export const getProject: RouteHandler<{
 };
 
 export const listProjects: RouteHandler<{
-  Body: contracts.ProjectListRequest;
-  Reply: contracts.ProjectListResponse;
+  Body: contracts.ListProjectsRequest;
+  Reply: contracts.ListProjectsResponse;
 }> = async (req, res) => {
   const { mine, username } = req.body;
 
