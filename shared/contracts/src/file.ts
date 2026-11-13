@@ -1,11 +1,11 @@
 import * as v from "valibot";
-import { ProjectNameInputSchema, UsernameInputSchema } from "./fields.js";
+import * as fields from "./fields.js";
 
 
 // Определяет файл по имени владельца, названию проекта и имени файла.
 export const FileGetRequestSchema = v.object({
-  username: UsernameInputSchema,
-  projectName: ProjectNameInputSchema,
+  username: fields.UsernameInputSchema,
+  projectName: fields.ProjectNameInputSchema,
   name: v.pipe(
     v.string(),
     v.minLength(1),
@@ -16,14 +16,14 @@ export type FileGetRequest = v.InferInput<typeof FileGetRequestSchema>;
 
 // Определяет проект, файлы которого нужно получить.
 export const FileListRequestSchema = v.object({
-  username: UsernameInputSchema,
-  projectName: ProjectNameInputSchema,
+  username: fields.UsernameInputSchema,
+  projectName: fields.ProjectNameInputSchema,
 });
 export type FileListRequest = v.InferInput<typeof FileListRequestSchema>;
 
 // Принимает имя проекта, тип, имя и содержимое нового файла.
 export const CreateFileRequestSchema = v.object({
-  projectName: ProjectNameInputSchema,
+  projectName: fields.ProjectNameInputSchema,
   type: v.picklist(["agentsmd", "skill", "rule"]),
   name: v.pipe(
     v.string(),

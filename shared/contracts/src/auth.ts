@@ -1,23 +1,23 @@
 import * as v from "valibot";
-import { EmailInputSchema, UsernameInputSchema } from "./fields.js";
+import * as fields from "./fields.js";
 
 // Пароль ограничен печатными ASCII-символами без пробелов и требует
 // буквы обоих регистров и цифру.
 export const RegisterRequestSchema = v.object({
-  email: EmailInputSchema,
+  email: fields.EmailInputSchema,
   password: v.pipe(
     v.string(),
     v.minLength(8),
     v.maxLength(128),
     v.regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[\x21-\x7E]+$/),
   ),
-  username: UsernameInputSchema,
+  username: fields.UsernameInputSchema,
 });
 
 export type RegisterRequest = v.InferInput<typeof RegisterRequestSchema>;
 
 export const LoginRequestSchema = v.object({
-  email: EmailInputSchema,
+  email: fields.EmailInputSchema,
   password: v.pipe(
     v.string(),
     v.minLength(1),

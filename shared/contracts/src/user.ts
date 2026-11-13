@@ -1,9 +1,9 @@
 import * as v from "valibot";
-import { UsernameInputSchema } from "./fields.js";
+import * as fields from "./fields.js";
 
 
 export const UserGetRequestSchema = v.object({
-  username: UsernameInputSchema,
+  username: fields.UsernameInputSchema,
 });
 
 export type UserGetRequest = v.InferInput<typeof UserGetRequestSchema>;
