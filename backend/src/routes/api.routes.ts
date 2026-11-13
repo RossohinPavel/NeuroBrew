@@ -10,7 +10,7 @@ import { userRoutes } from "./user/routes.js";
 // Подключает разделы API с их маршрутными префиксами.
 export const apiRoutes: FastifyPluginAsync = async (server) => {
   server.register(healthRoutes, { prefix: "/health" });
-  server.register(metadataRoutes, { prefix: "/metadata" });
+  server.register(metadataRoutes, { prefix: "/metadata.changelog" });
   server.register(authRoutes, { prefix: "/auth" });
   server.register(userRoutes, { prefix: "/user" });
   server.register(projectRoutes, { prefix: "/project" });
