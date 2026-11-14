@@ -9,6 +9,10 @@ const EnvSchema = v.object({
     v.string(),
     v.url(),
   ),
+  REDIS_URL: v.pipe(
+    v.string(),
+    v.url(),
+  ),
 });
 
 /** Содержит проверенные переменные серверного окружения. */
