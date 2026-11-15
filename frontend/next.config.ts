@@ -14,6 +14,10 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   cacheComponents: true,
+  partialPrefetching: true,
+  cacheHandlers: {
+    remote: require.resolve("./remote-cache-handler.mjs"),
+  },
   turbopack: {
     rules: {
       "*.svg": {

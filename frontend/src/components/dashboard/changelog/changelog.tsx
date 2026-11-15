@@ -4,6 +4,8 @@ import { ChangelogCard } from "./changelog-card";
 
 /** Представляет журнал изменений пользователя. */
 export async function Changelog() {
+  "use cache: remote";
+
   const response = await listChangelog();
 
   if (response.status !== 200) {
