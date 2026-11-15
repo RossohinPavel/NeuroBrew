@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import { Changelog, ChangelogSkeleton } from "./changelog";
+import { Changelog } from "./changelog";
 import { Feed } from "./feed";
 import { MyProjects, MyProjectsSkeleton } from "./my-projects";
 
@@ -20,9 +20,7 @@ export function Dashboard() {
           </Suspense>
         </section>
         <section className="col-span-1">
-          <Suspense fallback={<ChangelogSkeleton />}>
-            <Changelog />
-          </Suspense>
+          <Changelog />
         </section>
       </div>
     </div>
