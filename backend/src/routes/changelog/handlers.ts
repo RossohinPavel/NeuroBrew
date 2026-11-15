@@ -17,3 +17,22 @@ export const listChangelog: RouteHandler<{
     createdAt: entry.createdAt.toISOString(),
   })));
 };
+
+export const createChangelog: RouteHandler<{
+  Body: contracts.CreateChangelogRequest;
+  Reply: contracts.CreateChangelogResponse;
+}> = async (req, res) => {
+  const [entry] = await req.server.drizzle
+    .insert(tables.changelog)
+    .values({ title: req.body.title })
+    .returning();
+
+  if (!entry) {
+    throw req.server.httpErrors.internalServerError("Failed to create changelog entry");
+  }
+
+  return res.code(201).send({
+    ...entry,
+    createdAt: entry.createdAt.toISOString(),
+  });
+};

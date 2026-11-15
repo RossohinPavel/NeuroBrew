@@ -5,6 +5,8 @@
  * OpenAPI spec version: 1.0.0
  */
 
+export * from './createChangelog201';
+export * from './createChangelogBody';
 export * from './createFile201';
 export * from './createFile201Type';
 export * from './createFileBody';

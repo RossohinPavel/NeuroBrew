@@ -5,6 +5,8 @@
  * OpenAPI spec version: 1.0.0
  */
 import type {
+  CreateChangelog201,
+  CreateChangelogBody,
   Def0,
   ListChangelog200Item
 } from '../../models';
@@ -50,6 +52,68 @@ export const listChangelog = async ( options?: Parameters<typeof apiFetch>[1]): 
     method: 'POST'
 
 
+  }
+);}
+
+
+export type createChangelogResponse201 = {
+  data: CreateChangelog201
+  status: 201
+}
+
+export type createChangelogResponse400 = {
+  data: Def0
+  status: 400
+}
+
+export type createChangelogResponse500 = {
+  data: Def0
+  status: 500
+}
+
+export type createChangelogResponseSuccess = (createChangelogResponse201) & {
+  headers: Headers;
+};
+export type createChangelogResponseError = (createChangelogResponse400 | createChangelogResponse500) & {
+  headers: Headers;
+};
+
+export type createChangelogResponse = (createChangelogResponseSuccess | createChangelogResponseError)
+
+export const getCreateChangelogUrl = () => {
+
+
+
+
+  return `/metadata.changelog.create`
+}
+
+/**
+ * Creates an application changelog entry.
+ * @summary Create a changelog entry
+ */
+export const createChangelog = async (createChangelogBody: CreateChangelogBody, options?: Parameters<typeof apiFetch>[1]): Promise<createChangelogResponse> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return apiFetch<createChangelogResponse>(getCreateChangelogUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(createChangelogBody)
   }
 );}
 
