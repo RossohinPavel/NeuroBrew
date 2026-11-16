@@ -1,0 +1,1 @@
+ALTER TABLE "registry"."project" ADD COLUMN "description" varchar(256);

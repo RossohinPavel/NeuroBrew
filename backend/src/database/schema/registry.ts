@@ -14,6 +14,7 @@ export const project = registrySchema.table("project", {
     .references(() => user.id, { onDelete: "cascade" }),
   name: varchar({ length: 128 })
     .notNull(),
+  description: varchar({ length: 256 }),
   createdAt: timestamp({ withTimezone: true })
     .defaultNow()
     .notNull(),
