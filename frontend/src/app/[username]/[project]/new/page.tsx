@@ -31,5 +31,5 @@ async function FileCreateContent({ params, searchParams }: Props) {
 
   const fileType = Array.isArray(type) ? type[0] : type;
 
-  return <FileCreateForm username={username} project={project} type={fileType} />;
+  return <FileCreateForm key={fileType} username={username} project={project} type={fileType} />;
 }
