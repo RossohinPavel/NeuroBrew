@@ -38,13 +38,7 @@ export const listProjects: RouteHandler<{
   const { mine, username } = req.body;
 
   const query = req.server.drizzle
-    .select({
-      id: tables.project.id,
-      userId: tables.project.userId,
-      name: tables.project.name,
-      description: tables.project.description,
-      createdAt: tables.project.createdAt,
-    })
+    .select({ project: tables.project })
     .from(tables.project);
 
   if (mine === true) {
@@ -58,7 +52,7 @@ export const listProjects: RouteHandler<{
 
   const projects = await query;
 
-  return res.code(200).send(projects.map((project) => ({
+  return res.code(200).send(projects.map(({ project }) => ({
     ...project,
     description: project.description ?? undefined,
     createdAt: project.createdAt.toISOString(),
