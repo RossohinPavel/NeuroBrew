@@ -26,6 +26,7 @@ export const getProject: RouteHandler<{
 
   return res.code(200).send({
     ...result.project,
+    description: result.project.description ?? undefined,
     createdAt: result.project.createdAt.toISOString(),
   });
 };
@@ -41,6 +42,7 @@ export const listProjects: RouteHandler<{
       id: tables.project.id,
       userId: tables.project.userId,
       name: tables.project.name,
+      description: tables.project.description,
       createdAt: tables.project.createdAt,
     })
     .from(tables.project);
@@ -58,6 +60,7 @@ export const listProjects: RouteHandler<{
 
   return res.code(200).send(projects.map((project) => ({
     ...project,
+    description: project.description ?? undefined,
     createdAt: project.createdAt.toISOString(),
   })));
 };
@@ -72,6 +75,7 @@ export const createProject: RouteHandler<{
       .values({
         userId: req.user.userId,
         name: req.body.name,
+        description: req.body.description || null,
       })
       .onConflictDoNothing({ target: [tables.project.userId, tables.project.name] })
       .returning();
@@ -94,6 +98,7 @@ export const createProject: RouteHandler<{
 
   return res.code(201).send({
     ...project,
+    description: project.description ?? undefined,
     createdAt: project.createdAt.toISOString(),
   });
 };

@@ -10,6 +10,7 @@ export const ProjectResponseSchema = v.object({
   id: v.number(),
   userId: v.number(),
   name: v.string(),
+  description: v.optional(v.string()),
   createdAt: v.pipe(
     v.string(),
     v.isoTimestamp(),
@@ -25,6 +26,10 @@ export const ListProjectsResponseSchema = v.array(ProjectResponseSchema);
 
 export const CreateProjectRequestSchema = v.object({
   name: fields.ProjectNameInputSchema,
+  description: v.optional(v.pipe(
+    v.string(),
+    v.maxLength(256),
+  )),
 });
 
 export type GetProjectRequest = v.InferInput<typeof GetProjectRequestSchema>;
