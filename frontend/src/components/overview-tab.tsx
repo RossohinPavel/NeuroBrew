@@ -1,5 +1,6 @@
 import "server-only";
 
+import { cacheLife, cacheTag } from "next/cache";
 import { getUserOr404 } from "@/entities/user";
 
 
@@ -9,6 +10,11 @@ type Props = {
 
 /** Загружает и показывает сведения о пользователе. */
 export async function OverviewTab({ username }: Props) {
+  "use cache: remote";
+
+  cacheLife("hours");
+  cacheTag(`user:${username}`);
+
   const user = await getUserOr404(username);
 
   return (

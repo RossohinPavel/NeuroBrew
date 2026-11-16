@@ -1,6 +1,6 @@
 import { cacheLife } from "next/cache";
-import type { ComponentProps } from "react";
 import { listChangelog } from "@/shared/api/generated/endpoints";
+import type { ComponentProps } from "react";
 
 
 /** Представляет список записей журнала изменений. */
