@@ -16,6 +16,13 @@ import { buildUriPath } from "@/shared/utils";
 import type { ComponentProps } from "react";
 
 
+/** Загружает ответ со списком проектов пользователя по логину. */
+const getProjectsByUsername = async (username: string) => {
+  "use cache: remote";
+
+  return listProjects({ username });
+};
+
 /** Загружает проекты пользователя и показывает ссылки на них. */
 export async function UserProjects({
   username,
@@ -23,9 +30,7 @@ export async function UserProjects({
 }: ComponentProps<typeof ItemGroup> & {
   username: string;
 }) {
-  "use cache: remote";
-
-  const response = await listProjects({ username });
+  const response = await getProjectsByUsername(username);
 
   if (response.status !== 200) {
     return notFound();

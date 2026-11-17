@@ -3,13 +3,18 @@ import { listChangelog } from "@/shared/api/generated/endpoints";
 import type { ComponentProps } from "react";
 
 
-/** Представляет список записей журнала изменений. */
-export async function ChangelogList(props: ComponentProps<"ul">) {
-  "use cache";
+/** Загружает ответ со списком записей журнала изменений. */
+const getChangelog = async () => {
+  "use cache: remote";
 
   cacheLife("hours");
 
-  const response = await listChangelog();
+  return listChangelog();
+};
+
+/** Представляет список записей журнала изменений. */
+export async function ChangelogList(props: ComponentProps<"ul">) {
+  const response = await getChangelog();
 
   if (response.status !== 200) {
     throw new Error("Failed to load the changelog.");
