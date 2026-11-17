@@ -1,14 +1,14 @@
 import Link from "next/link";
 import { Suspense } from "react";
+import { getCurrentUser } from "@/entities/current-user";
 import { UserProjects } from "@/entities/project";
-import { getMe } from "@/entities/user";
 import { Button } from "@/shared/shadcn/ui/button";
 import { Separator } from "@/shared/shadcn/ui/separator";
 
 
 /** Показывает вкладку проектов пользователя. */
 export async function ProjectsTab({ username }: { username: string }) {
-  const user = await getMe();
+  const user = await getCurrentUser();
 
   return (
     <div className="space-y-3">

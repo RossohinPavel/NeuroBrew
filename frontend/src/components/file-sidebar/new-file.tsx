@@ -2,7 +2,7 @@ import "server-only";
 
 import { RiAddLine } from "@remixicon/react";
 import Link from "next/link";
-import { getMe } from "@/entities/user";
+import { getCurrentUser } from "@/entities/current-user";
 import { Button } from "@/shared/shadcn/ui/button";
 import {
   DropdownMenu,
@@ -18,7 +18,7 @@ import type { FileSidebarParams } from "./types";
 /** Показывает меню добавления содержимого только владельцу проекта. */
 export async function NewFile({ params }: { params: FileSidebarParams }) {
   const [user, { username, project }] = await Promise.all([
-    getMe(),
+    getCurrentUser(),
     params,
   ]);
   

@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
-import { getMeOrThrow } from "@/entities/user";
+import { getCurrentUserOrThrow } from "@/entities/current-user";
 import { FileCreateForm } from "@/features/file-create";
 
 
@@ -22,7 +22,7 @@ async function FileCreateContent({ params, searchParams }: Props) {
   const [{ username, project }, { type }, user] = await Promise.all([
     params,
     searchParams,
-    getMeOrThrow(),
+    getCurrentUserOrThrow(),
   ]);
 
   if (user.username !== username) {

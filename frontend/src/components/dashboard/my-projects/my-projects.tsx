@@ -1,5 +1,5 @@
+import { getCurrentUserOrThrow } from "@/entities/current-user";
 import { getMyProjectsOrThrow } from "@/entities/project";
-import { getMeOrThrow } from "@/entities/user";
 import { ItemGroup } from "@/shared/shadcn/ui/item";
 import { MyProjectsCard } from "./my-projects-card";
 import { ProjectItem } from "./project-item";
@@ -9,7 +9,7 @@ import { ProjectItem } from "./project-item";
 export async function MyProjects() {
   const [projects, user] = await Promise.all([
     getMyProjectsOrThrow(),
-    getMeOrThrow(),
+    getCurrentUserOrThrow(),
   ]);
 
   return (
