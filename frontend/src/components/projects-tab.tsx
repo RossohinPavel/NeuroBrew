@@ -3,19 +3,16 @@ import { Suspense } from "react";
 import { UserProjects } from "@/entities/project";
 import { getMe } from "@/entities/user";
 import { Button } from "@/shared/shadcn/ui/button";
+import { Separator } from "@/shared/shadcn/ui/separator";
 
-
-type Props = {
-  username: string;
-};
 
 /** Показывает вкладку проектов пользователя. */
-export async function ProjectsTab({ username }: Props) {
+export async function ProjectsTab({ username }: { username: string }) {
   const user = await getMe();
 
   return (
-    <div className="space-y-4">
-      <div className="flex items-center justify-between">
+    <div className="space-y-3">
+      <div className="flex items-center justify-between px-3">
         <div>Проекты</div>
         {user?.username === username && (
           <Button nativeButton={false} render={<Link href="/new" />}>
@@ -23,8 +20,11 @@ export async function ProjectsTab({ username }: Props) {
           </Button>
         )}
       </div>
+      <div className="px-3">
+        <Separator />
+      </div>
       <Suspense fallback={null}>
-        <UserProjects username={username} />
+        <UserProjects className="pt-1.5" username={username} />
       </Suspense>
     </div>
   );

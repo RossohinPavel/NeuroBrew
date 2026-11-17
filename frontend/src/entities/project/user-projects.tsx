@@ -39,7 +39,7 @@ export async function UserProjects({
           className="grid grid-cols-[minmax(0,1fr)_auto] items-start py-0"
         >
           <ItemContent className="min-w-0">
-            <ItemTitle className="text-base font-bold">
+            <ItemTitle className="text-xl font-bold">
               <Link href={buildUriPath(username, project.name)}>
                 {project.name}
               </Link>
