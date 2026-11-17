@@ -28,7 +28,7 @@ export const CreateProjectRequestSchema = v.object({
   name: fields.ProjectNameInputSchema,
   description: v.optional(v.pipe(
     v.string(),
-    v.maxLength(256),
+    v.maxLength(255),
   )),
 });
 
