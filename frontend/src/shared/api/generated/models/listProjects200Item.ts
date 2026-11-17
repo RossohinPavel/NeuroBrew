@@ -9,5 +9,7 @@ export type ListProjects200Item = {
   id: number;
   userId: number;
   name: string;
+  description?: string;
   createdAt: string;
+  updatedAt: string;
 };

@@ -11,4 +11,6 @@ export type CreateProjectBody = {
      * @pattern ^(?!-)(?!.*--)(?!.*-$)[A-Za-z0-9-]+$
      */
   name: string;
+  /** @maxLength 255 */
+  description?: string;
 };

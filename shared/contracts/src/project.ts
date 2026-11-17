@@ -15,6 +15,10 @@ export const ProjectResponseSchema = v.object({
     v.string(),
     v.isoTimestamp(),
   ),
+  updatedAt: v.pipe(
+    v.string(),
+    v.isoTimestamp(),
+  ),
 });
 
 export const ListProjectsRequestSchema = v.object({

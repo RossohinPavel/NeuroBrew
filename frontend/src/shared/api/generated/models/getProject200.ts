@@ -9,5 +9,7 @@ export type GetProject200 = {
   id: number;
   userId: number;
   name: string;
+  description?: string;
   createdAt: string;
+  updatedAt: string;
 };

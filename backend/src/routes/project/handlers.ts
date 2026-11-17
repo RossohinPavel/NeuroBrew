@@ -28,6 +28,7 @@ export const getProject: RouteHandler<{
     ...result.project,
     description: result.project.description ?? undefined,
     createdAt: result.project.createdAt.toISOString(),
+    updatedAt: result.project.updatedAt.toISOString(),
   });
 };
 
@@ -56,6 +57,7 @@ export const listProjects: RouteHandler<{
     ...project,
     description: project.description ?? undefined,
     createdAt: project.createdAt.toISOString(),
+    updatedAt: project.updatedAt.toISOString(),
   })));
 };
 
@@ -94,6 +96,7 @@ export const createProject: RouteHandler<{
     ...project,
     description: project.description ?? undefined,
     createdAt: project.createdAt.toISOString(),
+    updatedAt: project.updatedAt.toISOString(),
   });
 };
 
