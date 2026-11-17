@@ -18,6 +18,9 @@ export const project = registrySchema.table("project", {
   createdAt: timestamp({ withTimezone: true })
     .defaultNow()
     .notNull(),
+  updatedAt: timestamp({ withTimezone: true })
+    .defaultNow()
+    .notNull(),
 }, (table) => [
   uniqueIndex("project_user_id_name_unique").on(table.userId, table.name),
 ]);
