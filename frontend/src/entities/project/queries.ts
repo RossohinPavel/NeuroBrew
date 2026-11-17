@@ -24,12 +24,3 @@ export const getProjectByNameOr404 = cache(async (username: string, projectName:
   }
   return response.data;
 });
-
-/** Возвращает проекты пользователя по логину или показывает страницу 404 при неудачном запросе. */
-export const getProjectsOr404 = cache(async (username: string) => {
-  const response = await listProjects({ username });
-  if (response.status !== 200) {
-    return notFound();
-  }
-  return response.data;
-});
