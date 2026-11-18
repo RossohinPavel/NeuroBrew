@@ -44,12 +44,9 @@ export const register: RouteHandler<{
     return { ...user, username: userProfile.username };
   });
 
-  const accessToken = req.server.jwt.access.sign({ userId: user.id });
-  const refreshToken = req.server.jwt.refresh.sign({ userId: user.id });
-
   return res.code(201).send({
-    accessToken,
-    refreshToken,
+    accessToken: req.server.jwt.access.sign({ userId: user.id }),
+    refreshToken: req.server.jwt.refresh.sign({ userId: user.id }),
     tokenType: "Bearer",
     expiresIn: 900,
     user: {
@@ -82,12 +79,9 @@ export const login: RouteHandler<{
     throw req.server.httpErrors.unauthorized("Invalid email or password");
   }
 
-  const accessToken = req.server.jwt.access.sign({ userId: user.id });
-  const refreshToken = req.server.jwt.refresh.sign({ userId: user.id });
-
   return res.code(200).send({
-    accessToken,
-    refreshToken,
+    accessToken: req.server.jwt.access.sign({ userId: user.id }),
+    refreshToken: req.server.jwt.refresh.sign({ userId: user.id }),
     tokenType: "Bearer",
     expiresIn: 900,
     user: {
@@ -114,12 +108,9 @@ export const refresh: RouteHandler<{
     throw req.server.httpErrors.unauthorized("Invalid refresh token");
   }
 
-  const accessToken = req.server.jwt.access.sign({ userId: user.id });
-  const refreshToken = req.server.jwt.refresh.lookupToken(req);
-
   return res.code(200).send({
-    accessToken,
-    refreshToken,
+    accessToken: req.server.jwt.access.sign({ userId: user.id }),
+    refreshToken: req.server.jwt.refresh.lookupToken(req),
     tokenType: "Bearer",
     expiresIn: 900,
   });
