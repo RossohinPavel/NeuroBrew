@@ -19,14 +19,8 @@ export const FileResponseSchema = v.object({
   type: v.picklist(["agentsmd", "skill", "rule"]),
   name: v.string(),
   content: v.string(),
-  createdAt: v.pipe(
-    v.string(),
-    v.isoTimestamp(),
-  ),
-  updatedAt: v.pipe(
-    v.string(),
-    v.isoTimestamp(),
-  ),
+  createdAt: v.string(),
+  updatedAt: v.string(),
 });
 
 // Определяет проект, файлы которого нужно получить.

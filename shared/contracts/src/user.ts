@@ -8,15 +8,9 @@ export const GetUserRequestSchema = v.object({
 
 export const UserResponseSchema = v.object({
   id: v.number(),
-  email: v.pipe(
-    v.string(),
-    v.email(),
-  ),
+  email: v.string(),
   username: v.string(),
-  createdAt: v.pipe(
-    v.string(),
-    v.isoTimestamp(),
-  ),
+  createdAt: v.string(),
 });
 
 export type GetUserRequest = v.InferInput<typeof GetUserRequestSchema>;

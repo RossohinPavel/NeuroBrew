@@ -10,6 +10,5 @@ export type Health503Status = typeof Health503Status[keyof typeof Health503Statu
 
 export const Health503Status = {
   pass: 'pass',
-  warn: 'warn',
   fail: 'fail',
 } as const;

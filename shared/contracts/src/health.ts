@@ -11,11 +11,8 @@ export const FailSchema = v.object({
 });
 
 export const LiveResponseSchema = v.object({
-  status: v.picklist(["pass", "warn", "fail"]),
-  timestamp: v.pipe(
-    v.string(),
-    v.isoTimestamp(),
-  ),
+  status: v.picklist(["pass", "fail"]),
+  timestamp: v.string(),
   detail: v.object({
     backend: v.union([PassSchema, FailSchema]),
     postgres: v.union([PassSchema, FailSchema]),

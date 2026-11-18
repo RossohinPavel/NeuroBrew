@@ -4,10 +4,7 @@ import * as v from "valibot";
 export const ListChangelogResponseSchema = v.array(
   v.object({
     id: v.number(),
-    createdAt: v.pipe(
-      v.string(),
-      v.isoTimestamp(),
-    ),
+    createdAt: v.string(),
     title: v.string(),
   }),
 );
@@ -22,10 +19,7 @@ export const CreateChangelogRequestSchema = v.object({
 
 export const CreateChangelogResponseSchema = v.object({
   id: v.number(),
-  createdAt: v.pipe(
-    v.string(),
-    v.isoTimestamp(),
-  ),
+  createdAt: v.string(),
   title: v.string(),
 });
 

@@ -13,10 +13,7 @@ export const CurrentUserResponseSchema = v.object({
   id: v.number(),
   email: v.string(),
   username: v.string(),
-  createdAt: v.pipe(
-    v.string(),
-    v.isoTimestamp(),
-  ),
+  createdAt: v.string(),
 });
 
 // Пароль ограничен печатными ASCII-символами без пробелов и требует буквы обоих регистров и цифру.

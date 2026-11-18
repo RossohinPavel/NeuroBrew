@@ -11,14 +11,8 @@ export const ProjectResponseSchema = v.object({
   userId: v.number(),
   name: v.string(),
   description: v.optional(v.string()),
-  createdAt: v.pipe(
-    v.string(),
-    v.isoTimestamp(),
-  ),
-  updatedAt: v.pipe(
-    v.string(),
-    v.isoTimestamp(),
-  ),
+  createdAt: v.string(),
+  updatedAt: v.string(),
 });
 
 export const ListProjectsRequestSchema = v.object({
