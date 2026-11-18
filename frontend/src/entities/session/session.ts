@@ -36,7 +36,7 @@ const retryRequestOnExpiredAccessToken: ProcessResponse = async (response, url, 
   if (refreshResponse?.status !== 200) {
     return response;
   }
-
+  // Тут нет возможности записать значения в куки, так как методо может быть вызван откуда угодно.
   const headers = new Headers(options.headers);
   headers.set("Authorization", `Bearer ${refreshResponse.data.accessToken}`);
 
