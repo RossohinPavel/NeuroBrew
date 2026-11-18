@@ -10,6 +10,5 @@ export type Refresh200 = {
   accessToken: string;
   refreshToken: string;
   tokenType: Refresh200TokenType;
-  /** @minimum 1 */
   expiresIn: number;
 };

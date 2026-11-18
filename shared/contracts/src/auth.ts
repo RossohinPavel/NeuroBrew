@@ -1,8 +1,25 @@
 import * as v from "valibot";
 import * as fields from "./fields.js";
 
-// Пароль ограничен печатными ASCII-символами без пробелов и требует
-// буквы обоих регистров и цифру.
+export const RefreshResponseSchema = v.object({
+  accessToken: v.string(),
+  refreshToken: v.string(),
+  tokenType: v.literal("Bearer"),
+  expiresIn: v.number(),
+});
+
+// Данные текущего пользователя для ответа me и ответов авторизации.
+export const CurrentUserResponseSchema = v.object({
+  id: v.number(),
+  email: v.string(),
+  username: v.string(),
+  createdAt: v.pipe(
+    v.string(),
+    v.isoTimestamp(),
+  ),
+});
+
+// Пароль ограничен печатными ASCII-символами без пробелов и требует буквы обоих регистров и цифру.
 export const RegisterRequestSchema = v.object({
   email: fields.EmailInputSchema,
   password: v.pipe(
@@ -14,17 +31,14 @@ export const RegisterRequestSchema = v.object({
   username: fields.UsernameInputSchema,
 });
 
-export const AuthTokensResponseSchema = v.object({
-  accessToken: v.string(),
-  refreshToken: v.string(),
-  tokenType: v.literal("Bearer"),
-  expiresIn: v.pipe(
-    v.number(),
-    v.integer(),
-    v.minValue(1),
-  ),
+export const RegisterResponseSchema = v.object({
+  ...RefreshResponseSchema.entries,
+  user: CurrentUserResponseSchema,
 });
 
+// Добавлять дополнительные проверки для пароля в схеме логина не имеет большого смысла. 
+// Нам достаточно того, чтобы пользователь ввел какую-то строку. Сделано это именно для того, 
+// чтобы облегчить поддержку кода в будущем. Нет смысла повторно проверять все бизнес-правила.
 export const LoginRequestSchema = v.object({
   email: fields.EmailInputSchema,
   password: v.pipe(
@@ -34,6 +48,8 @@ export const LoginRequestSchema = v.object({
   ),
 });
 
+export type RefreshResponse = v.InferOutput<typeof RefreshResponseSchema>;
+export type CurrentUserResponse = v.InferOutput<typeof CurrentUserResponseSchema>;
 export type RegisterRequest = v.InferInput<typeof RegisterRequestSchema>;
-export type AuthTokensResponse = v.InferOutput<typeof AuthTokensResponseSchema>;
+export type RegisterResponse = v.InferOutput<typeof RegisterResponseSchema>;
 export type LoginRequest = v.InferInput<typeof LoginRequestSchema>;

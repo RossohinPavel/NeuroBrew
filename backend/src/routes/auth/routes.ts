@@ -17,7 +17,7 @@ export const authRoutes: FastifyPluginAsync = async (server) => {
         errorMode: "throw",
       }),
       response: { 
-        201: toJsonSchema(contracts.AuthTokensResponseSchema, {
+        201: toJsonSchema(contracts.RegisterResponseSchema, {
           typeMode: "output",
           errorMode: "throw",
         }),
@@ -38,7 +38,7 @@ export const authRoutes: FastifyPluginAsync = async (server) => {
         errorMode: "throw",
       }),
       response: {
-        200: toJsonSchema(contracts.AuthTokensResponseSchema, {
+        200: toJsonSchema(contracts.RegisterResponseSchema, {
           typeMode: "output",
           errorMode: "throw",
         }),
@@ -57,7 +57,7 @@ export const authRoutes: FastifyPluginAsync = async (server) => {
       tags: ["auth"],
       security: [{ bearerAuth: [] }],
       response: {
-        200: toJsonSchema(contracts.AuthTokensResponseSchema, {
+        200: toJsonSchema(contracts.RefreshResponseSchema, {
           typeMode: "output",
           errorMode: "throw",
         }),
@@ -77,7 +77,7 @@ export const authRoutes: FastifyPluginAsync = async (server) => {
       tags: ["auth"],
       security: [{ bearerAuth: [] }],
       response: {
-        200: toJsonSchema(contracts.UserResponseSchema, {
+        200: toJsonSchema(contracts.CurrentUserResponseSchema, {
           typeMode: "output",
           errorMode: "throw",
         }),

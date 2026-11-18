@@ -5,11 +5,12 @@
  * OpenAPI spec version: 1.0.0
  */
 import type { Login200TokenType } from './login200TokenType';
+import type { Login200User } from './login200User';
 
 export type Login200 = {
   accessToken: string;
   refreshToken: string;
   tokenType: Login200TokenType;
-  /** @minimum 1 */
   expiresIn: number;
+  user: Login200User;
 };

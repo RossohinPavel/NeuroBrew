@@ -7,7 +7,7 @@ import type { RouteHandler } from "fastify";
 
 export const register: RouteHandler<{
   Body: contracts.RegisterRequest;
-  Reply: contracts.AuthTokensResponse;
+  Reply: contracts.RegisterResponse;
 }> = async (req, res) => {
   const { email, password, username } = req.body;
 
@@ -21,7 +21,11 @@ export const register: RouteHandler<{
       .insert(tables.user)
       .values({ email, passwordHash })
       .onConflictDoNothing({ target: tables.user.email })
-      .returning({ id: tables.user.id });
+      .returning({
+        id: tables.user.id,
+        email: tables.user.email,
+        createdAt: tables.user.createdAt,
+      });
 
     if (!user) {
       throw req.server.httpErrors.conflict("Email is already registered");
@@ -31,13 +35,13 @@ export const register: RouteHandler<{
       .insert(tables.profile)
       .values({ userId: user.id, username })
       .onConflictDoNothing({ target: tables.profile.username })
-      .returning({ userId: tables.profile.userId });
+      .returning({ username: tables.profile.username });
 
     if (!userProfile) {
       throw req.server.httpErrors.conflict("Username is already registered");
     }
 
-    return user;
+    return { ...user, username: userProfile.username };
   });
 
   const accessToken = req.server.jwt.access.sign({ userId: user.id });
@@ -48,21 +52,29 @@ export const register: RouteHandler<{
     refreshToken,
     tokenType: "Bearer",
     expiresIn: 900,
+    user: {
+      ...user,
+      createdAt: user.createdAt.toISOString(),
+    },
   });
 };
 
 export const login: RouteHandler<{
   Body: contracts.LoginRequest;
-  Reply: contracts.AuthTokensResponse;
+  Reply: contracts.RegisterResponse;
 }> = async (req, res) => {
   const { email, password } = req.body;
 
   const [user] = await req.server.drizzle
     .select({
       id: tables.user.id,
+      email: tables.user.email,
+      username: tables.profile.username,
+      createdAt: tables.user.createdAt,
       passwordHash: tables.user.passwordHash,
     })
     .from(tables.user)
+    .innerJoin(tables.profile, eq(tables.profile.userId, tables.user.id))
     .where(eq(tables.user.email, email))
     .limit(1);
 
@@ -78,11 +90,16 @@ export const login: RouteHandler<{
     refreshToken,
     tokenType: "Bearer",
     expiresIn: 900,
+    user: {
+      // passwordHash отсутствует в схеме ответа и отсекается при сериализации Fastify.
+      ...user,
+      createdAt: user.createdAt.toISOString(),
+    },
   });
 };
 
 export const refresh: RouteHandler<{
-  Reply: contracts.AuthTokensResponse;
+  Reply: contracts.RefreshResponse;
 }> = async (req, res) => {
   // Это стандартное поле jwt плагина, поэтому используем его.
   const { userId } = req.user;
@@ -109,7 +126,7 @@ export const refresh: RouteHandler<{
 };
 
 export const me: RouteHandler<{
-  Reply: contracts.UserResponse;
+  Reply: contracts.CurrentUserResponse;
 }> = async (req, res) => {
   const { userId } = req.user;
 

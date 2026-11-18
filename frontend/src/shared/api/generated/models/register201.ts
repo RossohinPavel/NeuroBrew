@@ -5,11 +5,12 @@
  * OpenAPI spec version: 1.0.0
  */
 import type { Register201TokenType } from './register201TokenType';
+import type { Register201User } from './register201User';
 
 export type Register201 = {
   accessToken: string;
   refreshToken: string;
   tokenType: Register201TokenType;
-  /** @minimum 1 */
   expiresIn: number;
+  user: Register201User;
 };
