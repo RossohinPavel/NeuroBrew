@@ -3,40 +3,132 @@ import "server-only";
 import { cookies } from "next/headers";
 import { cache } from "react";
 import type { ApiRequestInit } from "@/shared/api/fetcher";
-import { refresh } from "@/shared/api/generated/endpoints";
-import { Cookies as SessionCookies } from "./cookies";
+import { refresh as refreshRequest } from "@/shared/api/generated/endpoints";
+import type { Login200, Refresh200, Register201 } from "@/shared/api/generated/models";
+import { ENV } from "@/shared/env";
+import type { ResponseCookie } from "next/dist/compiled/@edge-runtime/cookies";
+import type { NextRequest, NextResponse } from "next/server";
 
 
-/** Запрашивает обновление сессии с помощью refresh-токена. */
-export const refreshSession = async (refreshToken: string) => {
+const ACCESS_TOKEN_COOKIE_NAME = "access-token";
+const REFRESH_TOKEN_COOKIE_NAME = "refresh-token";
+const USERNAME_COOKIE_NAME = "username";
+const COOKIE_CONFIG: Partial<ResponseCookie> = {
+  httpOnly: true,
+  secure: ENV.NODE_ENV === "production",
+  sameSite: "lax",
+  path: "/",
+};
+
+/** Удаляет cookie сессии из хранилища для записи. */
+export const clear = (responseCookies: Pick<NextResponse["cookies"], "delete">) => {
+  responseCookies
+    .delete(ACCESS_TOKEN_COOKIE_NAME)
+    .delete(REFRESH_TOKEN_COOKIE_NAME)
+    .delete(USERNAME_COOKIE_NAME);
+};
+
+type SessionResult =
+  | { payload: { username: string }; apiOptions: ApiRequestInit }
+  | { payload: undefined; apiOptions: undefined };
+
+/** Возвращает данные текущей сессии и настройки запросов к API. */
+export const get = cache(async (): Promise<SessionResult> => {
+  const cookieStore = await cookies();
+  const accessToken = cookieStore.get(ACCESS_TOKEN_COOKIE_NAME)?.value;
+  const username = cookieStore.get(USERNAME_COOKIE_NAME)?.value;
+
+  if (accessToken === undefined || username === undefined) {
+    return { payload: undefined, apiOptions: undefined };
+  }
+
   const headers = new Headers();
-  headers.set("Authorization", `Bearer ${refreshToken}`);
-  return refresh({ headers });
+  headers.set("Authorization", `Bearer ${accessToken}`);
+
+  return {
+    payload: { username },
+    apiOptions: {
+      headers,
+      processResponse: retryRequestOnExpiredAccessToken,
+    },
+  };
+});
+
+/** Возвращает текущую сессию или сообщает, что пользователь не авторизован. */
+export const getOrThrow = async () => {
+  const session = await get();
+
+  if (session.payload === undefined) {
+    throw new Error("Authentication is required to perform this action.");
+  }
+
+  return session;
+};
+
+/** Проверяет наличие access token, refresh token и username в cookie запроса. */
+export const isCorrect = (requestCookies: Pick<NextRequest["cookies"], "get">) =>
+  requestCookies.get(ACCESS_TOKEN_COOKIE_NAME) !== undefined &&
+  requestCookies.get(REFRESH_TOKEN_COOKIE_NAME) !== undefined &&
+  requestCookies.get(USERNAME_COOKIE_NAME) !== undefined;
+
+/** Проверяет, что access token отсутствует, а refresh token и username есть. */
+export const isExpired = (requestCookies: Pick<NextRequest["cookies"], "get">) =>
+  requestCookies.get(ACCESS_TOKEN_COOKIE_NAME) === undefined &&
+  requestCookies.get(REFRESH_TOKEN_COOKIE_NAME) !== undefined &&
+  requestCookies.get(USERNAME_COOKIE_NAME) !== undefined;
+
+/** Обновляет токены по refresh token или очищает сессию при неудаче. */
+export const refresh = async (
+  requestCookies: Pick<NextRequest["cookies"], "get">,
+  responseCookies: Pick<NextResponse["cookies"], "set" | "delete">,
+) => {
+  const refreshToken = requestCookies.get(REFRESH_TOKEN_COOKIE_NAME)?.value;
+
+  if (refreshToken !== undefined) {
+    const headers = new Headers();
+    headers.set("Authorization", `Bearer ${refreshToken}`);
+
+    const result = await refreshRequest({ headers });
+
+    if (result.status === 200) {
+      set(responseCookies, result.data);
+      return;
+    }
+  }
+
+  clear(responseCookies);
 };
 
 type ProcessResponse = NonNullable<ApiRequestInit["processResponse"]>;
 
-// Подстраховка на случай того, что токен успел протухнуть в полете к бекенду))
+/** Повторяет запрос с новым access token, если прежний истёк во время обращения к API. */
 const retryRequestOnExpiredAccessToken: ProcessResponse = async (response, url, options) => {
   if (response.status !== 401) {
     return response;
   }
+
   const data = await response.clone().json() as { message?: string };
+
   if (data?.message !== "Authorization token expired") {
     return response;
   }
 
   const cookieStore = await cookies();
-  const refreshToken = cookieStore.get(SessionCookies.refreshToken.name)?.value;
+  const refreshToken = cookieStore.get(REFRESH_TOKEN_COOKIE_NAME)?.value;
+
   if (refreshToken === undefined) {
     return response;
   }
-  
-  const refreshResponse = await refreshSession(refreshToken);
-  if (refreshResponse?.status !== 200) {
+
+  const refreshHeaders = new Headers();
+  refreshHeaders.set("Authorization", `Bearer ${refreshToken}`);
+
+  const refreshResponse = await refreshRequest({ headers: refreshHeaders });
+
+  if (refreshResponse.status !== 200) {
     return response;
   }
-  // Тут нет возможности записать значения в куки, так как методо может быть вызван откуда угодно.
+
   const headers = new Headers(options.headers);
   headers.set("Authorization", `Bearer ${refreshResponse.data.accessToken}`);
 
@@ -47,32 +139,29 @@ const retryRequestOnExpiredAccessToken: ProcessResponse = async (response, url, 
   });
 };
 
-/** Возвращает текущую сессию. */
-export const getSession = cache(async (): Promise<ApiRequestInit | undefined> => {
-  const cookieStore = await cookies();
-  const accessToken = cookieStore.get(SessionCookies.accessToken.name)?.value;
+/** Записывает токены сессии и username, если он есть в ответе. */
+export const set = (
+  responseCookies: Pick<NextResponse["cookies"], "set">,
+  data: Login200 | Register201 | Refresh200,
+) => {
+  responseCookies.set({
+    ...COOKIE_CONFIG,
+    name: ACCESS_TOKEN_COOKIE_NAME,
+    maxAge: data.expiresIn - 30,
+    value: data.accessToken,
+  });
 
-  if (accessToken === undefined) {
-    return undefined;
+  responseCookies.set({
+    ...COOKIE_CONFIG,
+    name: REFRESH_TOKEN_COOKIE_NAME,
+    value: data.refreshToken,
+  });
+
+  if ("user" in data) {
+    responseCookies.set({
+      ...COOKIE_CONFIG,
+      name: USERNAME_COOKIE_NAME,
+      value: data.user.username,
+    });
   }
-
-  const headers = new Headers();
-  headers.set("Authorization", `Bearer ${accessToken}`);
-
-  return {
-    headers,
-    processResponse: retryRequestOnExpiredAccessToken,
-  };
-});
-
-/** Возвращает текущую сессию или сообщает, что пользователь не авторизован. */
-export const getSessionOrThrow = async () => {
-  const session = await getSession();
-
-  if (session === undefined) {
-    throw new Error("Authentication is required to perform this action.");
-  }
-
-  return session;
 };
-

@@ -1,35 +1,18 @@
 import { type NextRequest, NextResponse } from "next/server";
-import * as Session from "@/entities/session";
+import * as session from "@/entities/session";
 
 
 /** Согласует состояние session cookie перед продолжением запроса. */
 export const proxy = async (request: NextRequest) => {
-  const accessToken = request.cookies.get(Session.Cookies.accessToken.name)?.value;
-  const refreshToken = request.cookies.get(Session.Cookies.refreshToken.name)?.value;
   const response = NextResponse.next();
 
-  // Без refresh-токена сессию нельзя продлить, поэтому сбрасываем её неполное состояние.
-  if (accessToken !== undefined && refreshToken === undefined) {
-    response.cookies.delete(Session.Cookies.accessToken);
-    response.cookies.delete(Session.Cookies.refreshToken);
-
-    return response;
-  }
-
-  // Refresh-токен позволяет восстановить сессию при отсутствии access-токена.
-  if (accessToken === undefined && refreshToken !== undefined) {
-    const result = await Session.refreshSession(refreshToken);
-
-    if (result.status === 200) {
-      const { accessToken: newAccessToken, refreshToken: newRefreshToken, expiresIn } = result.data;
-      const accessTokenCookie = Session.createAccessTokenCookie(newAccessToken, expiresIn);
-      const refreshTokenCookie = Session.createRefreshTokenCookie(newRefreshToken);
-
-      response.cookies.set(accessTokenCookie);
-      response.cookies.set(refreshTokenCookie);
+  if (!session.isCorrect(request.cookies)) {
+    if (session.isExpired(request.cookies)) {
+      // Refresh-токен позволяет восстановить сессию при отсутствии access-токена.
+      await session.refresh(request.cookies, response.cookies);
     } else {
-      response.cookies.delete(Session.Cookies.accessToken);
-      response.cookies.delete(Session.Cookies.refreshToken);
+      // Неполную сессию удаляем из ответа перед продолжением запроса.
+      session.clear(response.cookies);
     }
   }
 
