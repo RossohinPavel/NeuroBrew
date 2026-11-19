@@ -1,7 +1,7 @@
 import "server-only";
 
 import { Suspense } from "react";
-import { SessionGuard } from "@/components/session-guard";
+import { SessionGuard } from "@/entities/session";
 import { ProjectCreateForm } from "@/features/project-create";
 
 
