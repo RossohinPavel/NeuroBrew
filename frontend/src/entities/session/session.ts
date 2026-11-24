@@ -13,6 +13,7 @@ import type { NextRequest, NextResponse } from "next/server";
 const ACCESS_TOKEN_COOKIE_NAME = "access-token";
 const REFRESH_TOKEN_COOKIE_NAME = "refresh-token";
 const USERNAME_COOKIE_NAME = "username";
+const USER_ID_COOKIE_NAME = "user-id";
 const COOKIE_CONFIG: Partial<ResponseCookie> = {
   httpOnly: true,
   secure: ENV.NODE_ENV === "production",
@@ -25,20 +26,37 @@ export const clear = (responseCookies: Pick<NextResponse["cookies"], "delete">) 
   responseCookies
     .delete(ACCESS_TOKEN_COOKIE_NAME)
     .delete(REFRESH_TOKEN_COOKIE_NAME)
-    .delete(USERNAME_COOKIE_NAME);
+    .delete(USERNAME_COOKIE_NAME)
+    .delete(USER_ID_COOKIE_NAME);
 };
 
-type SessionResult =
-  | { payload: { username: string }; apiOptions: ApiRequestInit }
-  | { payload: undefined; apiOptions: undefined };
+type AuthenticatedSessionResult = {
+  payload: { 
+    userId: number; 
+    username: string 
+  };
+  apiOptions: ApiRequestInit;
+};
+
+type UnauthenticatedSessionResult = {
+  payload: undefined;
+  apiOptions: undefined;
+};
+
+type SessionResult = AuthenticatedSessionResult | UnauthenticatedSessionResult;
 
 /** Возвращает данные текущей сессии и настройки запросов к API. */
 export const get = cache(async (): Promise<SessionResult> => {
   const cookieStore = await cookies();
   const accessToken = cookieStore.get(ACCESS_TOKEN_COOKIE_NAME)?.value;
+  const userId = Number(cookieStore.get(USER_ID_COOKIE_NAME)?.value);
   const username = cookieStore.get(USERNAME_COOKIE_NAME)?.value;
 
-  if (accessToken === undefined || username === undefined) {
+  if (
+    accessToken === undefined ||
+    username === undefined ||
+    !Number.isSafeInteger(userId)
+  ) {
     return { payload: undefined, apiOptions: undefined };
   }
 
@@ -46,11 +64,8 @@ export const get = cache(async (): Promise<SessionResult> => {
   headers.set("Authorization", `Bearer ${accessToken}`);
 
   return {
-    payload: { username },
-    apiOptions: {
-      headers,
-      processResponse: retryRequestOnExpiredAccessToken,
-    },
+    payload: { userId, username },
+    apiOptions: { headers, processResponse },
   };
 });
 
@@ -65,16 +80,18 @@ export const getOrThrow = async () => {
   return session;
 };
 
-/** Проверяет наличие access token, refresh token и username в cookie запроса. */
+/** Проверяет наличие токенов, username и userId в cookie запроса. */
 export const isCorrect = (requestCookies: Pick<NextRequest["cookies"], "get">) =>
   requestCookies.get(ACCESS_TOKEN_COOKIE_NAME) !== undefined &&
   requestCookies.get(REFRESH_TOKEN_COOKIE_NAME) !== undefined &&
+  requestCookies.get(USER_ID_COOKIE_NAME) !== undefined &&
   requestCookies.get(USERNAME_COOKIE_NAME) !== undefined;
 
-/** Проверяет, что access token отсутствует, а refresh token и username есть. */
+/** Проверяет, что access token отсутствует, а остальные cookie сессии есть. */
 export const isExpired = (requestCookies: Pick<NextRequest["cookies"], "get">) =>
   requestCookies.get(ACCESS_TOKEN_COOKIE_NAME) === undefined &&
   requestCookies.get(REFRESH_TOKEN_COOKIE_NAME) !== undefined &&
+  requestCookies.get(USER_ID_COOKIE_NAME) !== undefined &&
   requestCookies.get(USERNAME_COOKIE_NAME) !== undefined;
 
 /** Обновляет токены по refresh token или очищает сессию при неудаче. */
@@ -102,7 +119,7 @@ export const refresh = async (
 type ProcessResponse = NonNullable<ApiRequestInit["processResponse"]>;
 
 /** Повторяет запрос с новым access token, если прежний истёк во время обращения к API. */
-const retryRequestOnExpiredAccessToken: ProcessResponse = async (response, url, options) => {
+const processResponse: ProcessResponse = async (response, url, options) => {
   if (response.status !== 401) {
     return response;
   }
@@ -139,7 +156,7 @@ const retryRequestOnExpiredAccessToken: ProcessResponse = async (response, url, 
   });
 };
 
-/** Записывает токены сессии и username, если он есть в ответе. */
+/** Записывает токены сессии и данные пользователя, если они есть в ответе. */
 export const set = (
   responseCookies: Pick<NextResponse["cookies"], "set">,
   data: Login200 | Register201 | Refresh200,
@@ -158,6 +175,12 @@ export const set = (
   });
 
   if ("user" in data) {
+    responseCookies.set({
+      ...COOKIE_CONFIG,
+      name: USER_ID_COOKIE_NAME,
+      value: String(data.user.id),
+    });
+
     responseCookies.set({
       ...COOKIE_CONFIG,
       name: USERNAME_COOKIE_NAME,

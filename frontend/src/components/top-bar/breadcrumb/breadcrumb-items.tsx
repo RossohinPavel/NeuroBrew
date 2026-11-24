@@ -18,7 +18,7 @@ export function BreadcrumbItems() {
   // имена профиля и проекта допускают только латинские буквы, цифры и дефис.
   const segments = pathname
     .split("/")
-    .filter(s => Boolean(s) && s !== 'app')
+    .filter(s => Boolean(s) && s !== "app")
     .slice(0, 2);
 
   const segmentedPath = "/" + segments.join("/");
