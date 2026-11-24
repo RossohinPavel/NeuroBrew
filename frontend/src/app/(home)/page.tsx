@@ -3,13 +3,13 @@ import "server-only";
 import { Suspense } from "react";
 import { Dashboard } from "@/components/dashboard";
 import { Landing } from "@/components/landing";
-import { getSession } from "@/entities/session";
+import { get } from "@/entities/session";
 
 
 async function Content() {
-  const session = await getSession();
+  const { payload } = await get();
 
-  return session !== undefined ? <Dashboard /> : <Landing />;
+  return payload !== undefined ? <Dashboard /> : <Landing />;
 }
 
 export default function Home() {

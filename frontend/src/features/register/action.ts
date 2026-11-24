@@ -12,13 +12,8 @@ export const registerAction = async (formData: RegisterRequest): ActionResponse 
   const result = await register(formData);
 
   if (result.status === 201) {
-    const { accessToken, refreshToken, expiresIn } = result.data;
-    const accessTokenCookie = Session.createAccessTokenCookie(accessToken, expiresIn);
-    const refreshTokenCookie = Session.createRefreshTokenCookie(refreshToken);
-
     const cookieStore = await cookies();
-    cookieStore.set(accessTokenCookie);
-    cookieStore.set(refreshTokenCookie);
+    Session.set(cookieStore, result.data);
 
     return {
       success: true,

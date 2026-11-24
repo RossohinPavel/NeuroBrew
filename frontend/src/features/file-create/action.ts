@@ -1,7 +1,7 @@
 "use server";
 
 import { refresh } from "next/cache";
-import { getSessionOrThrow } from "@/entities/session";
+import { getOrThrow } from "@/entities/session";
 import { createFile } from "@/shared/api/generated/endpoints";
 import type { ActionResponse } from "@/shared/types/server-action";
 import type { CreateFileRequest, FileResponse } from "@shared/contracts";
@@ -11,8 +11,8 @@ import type { CreateFileRequest, FileResponse } from "@shared/contracts";
 export const fileCreateAction = async (
   formData: CreateFileRequest,
 ): ActionResponse<FileResponse> => {
-  const session = await getSessionOrThrow();
-  const result = await createFile(formData, session);
+  const { apiOptions } = await getOrThrow();
+  const result = await createFile(formData, apiOptions);
 
   if (result.status === 201) {
     refresh();

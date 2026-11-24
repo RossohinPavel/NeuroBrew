@@ -1,7 +1,7 @@
 "use server";
 
 import { getCurrentUserOrThrow } from "@/entities/current-user";
-import { getSessionOrThrow } from "@/entities/session";
+import { getOrThrow } from "@/entities/session";
 import { createProject } from "@/shared/api/generated/endpoints";
 import type { ActionResponse } from "@/shared/types/server-action";
 import type { CreateProjectRequest } from "@shared/contracts";
@@ -11,8 +11,8 @@ import type { CreateProjectRequest } from "@shared/contracts";
 export const projectCreateAction = async (
   formData: CreateProjectRequest,
 ): ActionResponse<{ name: string; username: string }> => {
-  const session = await getSessionOrThrow();
-  const result = await createProject(formData, session);
+  const { apiOptions } = await getOrThrow();
+  const result = await createProject(formData, apiOptions);
 
   if (result.status === 201) {
     const user = await getCurrentUserOrThrow();

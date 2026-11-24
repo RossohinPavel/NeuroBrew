@@ -1,19 +1,19 @@
 import "server-only";
 
 import { cache } from "react";
-import { getSession } from "@/entities/session";
+import * as session from "@/entities/session";
 import { me } from "@/shared/api/generated/endpoints";
 
 
 /** Возвращает текущего пользователя, если он авторизован. */
 export const getCurrentUser = cache(async () => {
-  const session = await getSession();
+  const {payload, apiOptions} = await session.get();
 
-  if (session === undefined) {
+  if (payload === undefined) {
     return undefined;
   }
 
-  const response = await me(session);
+  const response = await me(apiOptions);
 
   if (response.status !== 200) {
     return undefined;
