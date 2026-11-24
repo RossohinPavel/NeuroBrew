@@ -4,14 +4,6 @@ import { loadEnvFile } from "node:process";
 
 const EnvSchema = v.object({
   NODE_ENV: v.picklist(["development", "production", "test"]),
-  DATABASE_URL: v.pipe(
-    v.string(),
-    v.minLength(1),
-  ),
-  REDIS_URL: v.pipe(
-    v.string(),
-    v.minLength(1),
-  ),
   JWT_ACCESS_SECRET: v.pipe(
     v.string(),
     v.minLength(32),
@@ -19,6 +11,18 @@ const EnvSchema = v.object({
   JWT_REFRESH_SECRET: v.pipe(
     v.string(),
     v.minLength(32),
+  ),
+  DATABASE_URL: v.pipe(
+    v.string(),
+    v.url(),
+  ),
+  REDIS_URL: v.pipe(
+    v.string(),
+    v.url(),
+  ),
+  FRONTEND_API_URL: v.pipe(
+    v.string(),
+    v.url(),
   ),
 });
 
