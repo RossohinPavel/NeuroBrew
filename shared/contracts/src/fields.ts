@@ -14,8 +14,10 @@ export const ProjectNameInputSchema = v.pipe(
 );
 
 // Имя пользователя допускает латинские буквы, цифры и одиночные дефисы внутри имени.
+// Значение app зарезервировано для маршрута приложения.
 export const UsernameInputSchema = v.pipe(
   v.string(),
   v.maxLength(64),
+  v.notValue("app"),
   v.regex(/^(?!-)(?!.*--)(?!.*-$)[A-Za-z0-9-]+$/),
 );
