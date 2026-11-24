@@ -16,7 +16,11 @@ export function BreadcrumbItems() {
   const pathname = usePathname();
   // Намеренно не используем encodeURIComponent и decodeURIComponent:
   // имена профиля и проекта допускают только латинские буквы, цифры и дефис.
-  const segments = pathname.split("/").filter(Boolean).slice(0, 2);
+  const segments = pathname
+    .split("/")
+    .filter(s => Boolean(s) && s !== 'app')
+    .slice(0, 2);
+
   const segmentedPath = "/" + segments.join("/");
 
   return (
