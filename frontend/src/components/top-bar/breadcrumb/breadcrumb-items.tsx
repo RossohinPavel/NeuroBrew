@@ -23,34 +23,21 @@ export function BreadcrumbItems() {
     <>
       {segments.map((segment, index) => {
         const href = `/${segments.slice(0, index + 1).join("/")}`;
+        const isCurrent = href === segmentedPath;
 
         return (
           <Fragment key={href}>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <Item
-                href={href}
-                label={segment}
-                isCurrent={href === segmentedPath}
-              />
+              {
+                isCurrent
+                  ? <BreadcrumbPage>{segment}</BreadcrumbPage>
+                  : <BreadcrumbLink render={<Link href={href} />}>{segment}</BreadcrumbLink>
+              }
             </BreadcrumbItem>
           </Fragment>
         );
       })}
     </>
-  );
-}
-
-
-/** Показывает текущий уровень текстом, а остальные уровни — ссылками. */
-function Item(props: { href: string; label: string; isCurrent: boolean }) {
-  if (props.isCurrent) {
-    return <BreadcrumbPage>{props.label}</BreadcrumbPage>;
-  }
-
-  return (
-    <BreadcrumbLink render={<Link href={props.href} />}>
-      {props.label}
-    </BreadcrumbLink>
   );
 }

@@ -15,8 +15,13 @@ import { Separator } from "@/shared/shadcn/ui/separator";
 
 
 /** Отображает навигацию для авторизованного пользователя. */
-export function AuthenticatedNavigation({ username }: { username: string }) {
+export function AuthenticatedNavigation({ 
+  username 
+}: { 
+  username: string 
+}) {
   const [value, setValue] = useState<string | null>(null);
+  
   return (
     <NavigationMenu
       align="end"
