@@ -1,5 +1,5 @@
 import type * as contracts from "@shared/contracts";
-import * as tables from "../../database/schema/index.js";
+import * as tables from "../../database/index.js";
 import { and, DrizzleQueryError, eq, sql } from "drizzle-orm";
 import postgres from "postgres";
 import type { RouteHandler } from "fastify";

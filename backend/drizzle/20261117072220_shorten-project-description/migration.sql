@@ -1,1 +1,0 @@
-ALTER TABLE "registry"."project" ALTER COLUMN "description" SET DATA TYPE varchar(255) USING "description"::varchar(255);

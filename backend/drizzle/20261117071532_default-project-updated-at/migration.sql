@@ -1,1 +1,0 @@
-ALTER TABLE "registry"."project" ALTER COLUMN "updated_at" SET DEFAULT now();

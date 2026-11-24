@@ -1,5 +1,5 @@
 import type * as contracts from "@shared/contracts";
-import * as tables from "../../database/schema/index.js";
+import * as tables from "../../database/index.js";
 import { hash, verify } from "argon2";
 import { eq } from "drizzle-orm";
 import type { RouteHandler } from "fastify";

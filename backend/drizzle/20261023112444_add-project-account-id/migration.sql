@@ -1,2 +1,0 @@
-ALTER TABLE "registry"."project" ADD COLUMN "account_id" integer;--> statement-breakpoint
-ALTER TABLE "registry"."project" ADD CONSTRAINT "project_account_id_account_id_fkey" FOREIGN KEY ("account_id") REFERENCES "users"."account"("id") ON DELETE CASCADE;

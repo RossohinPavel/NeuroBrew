@@ -1,1 +1,0 @@
-ALTER TABLE "registry"."agentsmd" ADD CONSTRAINT "agentsmd_project_id_key" UNIQUE("project_id");

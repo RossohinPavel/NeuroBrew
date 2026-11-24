@@ -6,7 +6,7 @@ loadEnvFile(".env");
 
 export default defineConfig({
   out: "./drizzle/",
-  schema: "./src/database/schema/index.ts",
+  schema: "./src/database/index.ts",
   dialect: "postgresql",
   dbCredentials: {
     url: process.env.DATABASE_URL!,

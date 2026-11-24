@@ -1,1 +1,0 @@
-ALTER TABLE "registry"."project" ADD COLUMN "updated_at" timestamp with time zone;
