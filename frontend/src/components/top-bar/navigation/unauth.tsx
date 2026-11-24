@@ -11,16 +11,16 @@ export function UnauthenticatedNavigation() {
   return (
     <nav className="flex gap-1" aria-label="Основная навигация">
       <Link
-        href="/login"
+        href="/app/login"
         className={buttonVariants({ variant: "secondary", size: "lg" })}
-        aria-current={pathname === "/login" ? "page" : undefined}
+        aria-current={pathname === "/app/login" ? "page" : undefined}
       >
         Sign In
       </Link>
       <Link
-        href="/register"
+        href="/app/register"
         className={buttonVariants({ variant: "default", size: "lg" })}
-        aria-current={pathname === "/register" ? "page" : undefined}
+        aria-current={pathname === "/app/register" ? "page" : undefined}
       >
         Sign Up
       </Link>

@@ -1,8 +1,8 @@
 import "server-only";
 
 import { redirect } from "next/navigation";
-import type { ReactNode } from "react";
 import { get } from "./session";
+import type { ReactNode } from "react";
 
 
 type SessionGuardProps = {
@@ -13,7 +13,7 @@ type SessionGuardProps = {
 
 /** Показывает содержимое при подходящем состоянии сессии или перенаправляет пользователя. */
 export async function SessionGuard({
-  redirectTo = "/login",
+  redirectTo = "/app/login",
   guestOnly = false,
   children,
 }: SessionGuardProps) {

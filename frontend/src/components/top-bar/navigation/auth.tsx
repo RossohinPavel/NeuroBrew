@@ -16,7 +16,7 @@ import { Separator } from "@/shared/shadcn/ui/separator";
 
 /** Отображает навигацию для авторизованного пользователя. */
 export function AuthenticatedNavigation({ 
-  username 
+  username, 
 }: { 
   username: string 
 }) {
@@ -51,9 +51,9 @@ export function AuthenticatedNavigation({
             </NavigationMenuLink>
             <Separator className="my-1" />
             <NavigationMenuLink
-              href="/logout"
+              href="/app/logout"
               closeOnClick
-              render={<Link href="/logout" />}
+              render={<Link href="/app/logout" />}
             >
               Log Out
             </NavigationMenuLink>

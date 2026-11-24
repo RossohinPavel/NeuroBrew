@@ -7,7 +7,7 @@ import { me } from "@/shared/api/generated/endpoints";
 
 /** Возвращает текущего пользователя, если он авторизован. */
 export const getCurrentUser = cache(async () => {
-  const {payload, apiOptions} = await session.get();
+  const { payload, apiOptions } = await session.get();
 
   if (payload === undefined) {
     return undefined;

@@ -123,7 +123,7 @@ export function LoginForm() {
           { form.formState.isSubmitting ? "Кушаем печеньки..." : "Войти"}
         </Button>
         <FieldDescription>
-          Нет аккаунта? <Link href="/register">Зарегистрироваться</Link>
+          Нет аккаунта? <Link href="/app/register">Зарегистрироваться</Link>
         </FieldDescription>
       </CardFooter>
     </Card>
