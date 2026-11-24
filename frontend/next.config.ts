@@ -16,7 +16,7 @@ const nextConfig: NextConfig = {
   cacheComponents: true,
   partialPrefetching: true,
   cacheHandlers: {
-    remote: require.resolve("./remote-cache-handler.mjs"),
+    remote: require.resolve("./src/remote-cache-handler.mjs"),
   },
   turbopack: {
     rules: {
