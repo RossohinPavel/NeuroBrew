@@ -1,6 +1,4 @@
-import { Suspense } from "react";
 import { TopBarBreadcrumb } from "./breadcrumb";
-import { Navigation } from "./navigation";
 
 
 /** Отображает верхнюю панель приложения. */
@@ -9,9 +7,6 @@ export function TopBar() {
     <header className="min-h-[56px]">
       <div className="flex items-center justify-between px-[15px] py-[10px]">
         <TopBarBreadcrumb />
-        <Suspense fallback={<div className="h-9" aria-hidden="true" />}>
-          <Navigation />
-        </Suspense>
       </div>
     </header>
   );
