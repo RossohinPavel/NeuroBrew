@@ -1,20 +1,16 @@
-import { cacheLife } from "next/cache";
+import { cacheLife, cacheTag } from "next/cache";
 import { listChangelog } from "@/shared/api/generated/endpoints";
 import type { ComponentProps } from "react";
 
 
-/** Загружает ответ со списком записей журнала изменений. */
-const getChangelog = async () => {
+/** Загружает и показывает кешируемый список записей журнала изменений. */
+export async function ChangelogList(props: ComponentProps<"ul">) {
   "use cache: remote";
 
-  cacheLife("hours");
+  cacheLife("weeks");
+  cacheTag("changelog");
 
-  return listChangelog();
-};
-
-/** Представляет список записей журнала изменений. */
-export async function ChangelogList(props: ComponentProps<"ul">) {
-  const response = await getChangelog();
+  const response = await listChangelog();
 
   if (response.status !== 200) {
     throw new Error("Failed to load the changelog.");
