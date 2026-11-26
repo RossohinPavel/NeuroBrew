@@ -1,1 +1,2 @@
-export { Navigation } from "./navigation";
+export { AuthenticatedNavigation } from "./auth";
+export { UnauthenticatedNavigation } from "./unauth";

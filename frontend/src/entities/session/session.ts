@@ -1,7 +1,6 @@
 import "server-only";
 
 import { cookies } from "next/headers";
-import { cache } from "react";
 import type { ApiRequestInit } from "@/shared/api/fetcher";
 import { refresh as refreshRequest } from "@/shared/api/generated/endpoints";
 import type { Login200, Refresh200, Register201 } from "@/shared/api/generated/models";
@@ -30,69 +29,41 @@ export const clear = (responseCookies: Pick<NextResponse["cookies"], "delete">) 
     .delete(USER_ID_COOKIE_NAME);
 };
 
-type AuthenticatedSessionResult = {
-  payload: { 
-    userId: number; 
-    username: string 
-  };
-  apiOptions: ApiRequestInit;
-};
-
-type UnauthenticatedSessionResult = {
-  payload: undefined;
-  apiOptions: undefined;
-};
-
-type SessionResult = AuthenticatedSessionResult | UnauthenticatedSessionResult;
-
-/** Возвращает данные текущей сессии и настройки запросов к API. */
-export const get = cache(async (): Promise<SessionResult> => {
-  const cookieStore = await cookies();
-  const accessToken = cookieStore.get(ACCESS_TOKEN_COOKIE_NAME)?.value;
+/** Возвращает данные пользователя из cookie, если они заполнены корректно. */
+export const getPayload = (cookieStore: Pick<NextRequest["cookies"], "get">) => {
   const userId = Number(cookieStore.get(USER_ID_COOKIE_NAME)?.value);
   const username = cookieStore.get(USERNAME_COOKIE_NAME)?.value;
 
-  if (
-    accessToken === undefined ||
-    username === undefined ||
-    !Number.isSafeInteger(userId)
-  ) {
-    return { payload: undefined, apiOptions: undefined };
+  if (username === undefined || !Number.isSafeInteger(userId)) {
+    return undefined;
+  }
+
+  return { userId, username };
+};
+
+/** Возвращает настройки запросов к API при наличии access token в cookie. */
+export const getApiPayload = (cookieStore: Pick<NextRequest["cookies"], "get">) => {
+  const accessToken = cookieStore.get(ACCESS_TOKEN_COOKIE_NAME)?.value;
+
+  if (accessToken === undefined) {
+    return undefined;
   }
 
   const headers = new Headers();
   headers.set("Authorization", `Bearer ${accessToken}`);
 
-  return {
-    payload: { userId, username },
-    apiOptions: { headers, processResponse },
-  };
-});
-
-/** Возвращает текущую сессию или сообщает, что пользователь не авторизован. */
-export const getOrThrow = async () => {
-  const session = await get();
-
-  if (session.payload === undefined) {
-    throw new Error("Authentication is required to perform this action.");
-  }
-
-  return session;
+  return { headers, processResponse };
 };
 
-/** Проверяет наличие токенов, username и userId в cookie запроса. */
-export const isCorrect = (requestCookies: Pick<NextRequest["cookies"], "get">) =>
-  requestCookies.get(ACCESS_TOKEN_COOKIE_NAME) !== undefined &&
-  requestCookies.get(REFRESH_TOKEN_COOKIE_NAME) !== undefined &&
+/** Проверяет наличие userId и username в cookie запроса. */
+export const hasPayload = (requestCookies: Pick<NextRequest["cookies"], "get">) =>
   requestCookies.get(USER_ID_COOKIE_NAME) !== undefined &&
   requestCookies.get(USERNAME_COOKIE_NAME) !== undefined;
 
-/** Проверяет, что access token отсутствует, а остальные cookie сессии есть. */
+/** Проверяет, что access token отсутствует, а refresh token есть. */
 export const isExpired = (requestCookies: Pick<NextRequest["cookies"], "get">) =>
   requestCookies.get(ACCESS_TOKEN_COOKIE_NAME) === undefined &&
-  requestCookies.get(REFRESH_TOKEN_COOKIE_NAME) !== undefined &&
-  requestCookies.get(USER_ID_COOKIE_NAME) !== undefined &&
-  requestCookies.get(USERNAME_COOKIE_NAME) !== undefined;
+  requestCookies.get(REFRESH_TOKEN_COOKIE_NAME) !== undefined;
 
 /** Обновляет токены по refresh token или очищает сессию при неудаче. */
 export const refresh = async (
