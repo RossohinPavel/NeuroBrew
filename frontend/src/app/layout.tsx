@@ -5,9 +5,11 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 
+export const instant = false;
+
 const inter = Inter({ 
   subsets: ["latin"], 
-  variable: "--font-sans" 
+  variable: "--font-sans", 
 });
 
 export const metadata: Metadata = {
