@@ -11,10 +11,9 @@ import type { NextRequest, NextResponse } from "next/server";
 
 const ACCESS_TOKEN_COOKIE_NAME = "access-token";
 const REFRESH_TOKEN_COOKIE_NAME = "refresh-token";
-const USERNAME_COOKIE_NAME = "username";
 const USER_ID_COOKIE_NAME = "user-id";
+const USERNAME_COOKIE_NAME = "username";
 const COOKIE_CONFIG: Partial<ResponseCookie> = {
-  httpOnly: true,
   secure: ENV.NODE_ENV === "production",
   sameSite: "lax",
   path: "/",
@@ -25,8 +24,8 @@ export const clear = (responseCookies: Pick<NextResponse["cookies"], "delete">) 
   responseCookies
     .delete(ACCESS_TOKEN_COOKIE_NAME)
     .delete(REFRESH_TOKEN_COOKIE_NAME)
-    .delete(USERNAME_COOKIE_NAME)
-    .delete(USER_ID_COOKIE_NAME);
+    .delete(USER_ID_COOKIE_NAME)
+    .delete(USERNAME_COOKIE_NAME);
 };
 
 /** Возвращает данные пользователя из cookie, если они заполнены корректно. */
@@ -134,6 +133,7 @@ export const set = (
 ) => {
   responseCookies.set({
     ...COOKIE_CONFIG,
+    httpOnly: true,
     name: ACCESS_TOKEN_COOKIE_NAME,
     maxAge: data.expiresIn - 30,
     value: data.accessToken,
@@ -141,6 +141,7 @@ export const set = (
 
   responseCookies.set({
     ...COOKIE_CONFIG,
+    httpOnly: true,
     name: REFRESH_TOKEN_COOKIE_NAME,
     value: data.refreshToken,
   });
