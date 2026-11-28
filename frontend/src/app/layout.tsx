@@ -15,7 +15,6 @@ export const metadata: Metadata = {
 };
 
 export default function Layout({ children }: LayoutProps<"/">) {
-
   return (
     <html
       lang="ru"
