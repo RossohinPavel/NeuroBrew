@@ -6,9 +6,15 @@ import * as session from "@/entities/session";
 export const proxy = async (request: NextRequest) => {
   const response = NextResponse.next();
 
-  if (session.hasPayload(request.cookies) && session.isExpired(request.cookies)) {
+  if (
+    session.hasPayload(request.cookies) 
+    && session.isExpired(request.cookies)
+  ) {
     await session.refresh(request.cookies, response.cookies);
-  } else {
+  } else if (
+    !session.hasPayload(request.cookies) 
+    || !session.hasTokens(request.cookies)
+  ) {
     session.clear(response.cookies);
   }
 

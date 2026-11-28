@@ -91,6 +91,11 @@ export const hasPayload = (requestCookies: Pick<NextRequest["cookies"], "get">) 
   requestCookies.get(USER_ID_COOKIE_NAME) !== undefined &&
   requestCookies.get(USERNAME_COOKIE_NAME) !== undefined;
 
+/** Проверяет наличие обоих токенов сессии в cookie запроса. */
+export const hasTokens = (requestCookies: Pick<NextRequest["cookies"], "get">) =>
+  requestCookies.get(ACCESS_TOKEN_COOKIE_NAME) !== undefined &&
+  requestCookies.get(REFRESH_TOKEN_COOKIE_NAME) !== undefined;
+
 /** Проверяет, что access token отсутствует, а refresh token есть. */
 export const isExpired = (requestCookies: Pick<NextRequest["cookies"], "get">) =>
   requestCookies.get(ACCESS_TOKEN_COOKIE_NAME) === undefined &&
