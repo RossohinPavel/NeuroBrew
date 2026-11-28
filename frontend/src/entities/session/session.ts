@@ -50,7 +50,7 @@ export const getApiOption = (
   }
 
   return {
-    headers: [["Authorization", `Bearer ${accessToken}`]],
+    headers: new Headers([["Authorization", `Bearer ${accessToken}`]]),
     /** Повторяет запрос с новым access token, если прежний истёк во время обращения к API. */
     processResponse: async (response, url, options) => {
       const refreshToken = cookieStore.get(REFRESH_TOKEN_COOKIE_NAME)?.value;
