@@ -1,6 +1,5 @@
 import "server-only";
 
-import { cookies } from "next/headers";
 import type { ApiRequestInit } from "@/shared/api/fetcher";
 import { refresh as refreshRequest } from "@/shared/api/generated/endpoints";
 import type { Login200, Refresh200, Register201 } from "@/shared/api/generated/models";
@@ -41,7 +40,9 @@ export const getPayload = (cookieStore: Pick<NextRequest["cookies"], "get">) => 
 };
 
 /** Возвращает настройки запросов к API при наличии access token в cookie. */
-export const getApiPayload = (cookieStore: Pick<NextRequest["cookies"], "get">) => {
+export const getApiOption = (
+  cookieStore: Pick<NextRequest["cookies"], "get">
+): ApiRequestInit | undefined => {
   const accessToken = cookieStore.get(ACCESS_TOKEN_COOKIE_NAME)?.value;
 
   if (accessToken === undefined) {
@@ -51,7 +52,41 @@ export const getApiPayload = (cookieStore: Pick<NextRequest["cookies"], "get">) 
   const headers = new Headers();
   headers.set("Authorization", `Bearer ${accessToken}`);
 
-  return { headers, processResponse };
+  return {
+    headers,
+    /** Повторяет запрос с новым access token, если прежний истёк во время обращения к API. */
+    processResponse: async (response, url, options) => {
+      const refreshToken = cookieStore.get(REFRESH_TOKEN_COOKIE_NAME)?.value;
+
+      if (response.status !== 401 || refreshToken === undefined) {
+        return response;
+      }
+
+      const data = await response.clone().json() as { message?: string };
+
+      if (data?.message !== "Authorization token expired") {
+        return response;
+      }
+
+      const refreshHeaders = new Headers();
+      refreshHeaders.set("Authorization", `Bearer ${refreshToken}`);
+
+      const refreshResponse = await refreshRequest({ headers: refreshHeaders });
+
+      if (refreshResponse.status !== 200) {
+        return response;
+      }
+
+      const retryHeaders = new Headers(options.headers);
+      retryHeaders.set("Authorization", `Bearer ${refreshResponse.data.accessToken}`);
+
+      return fetch(url, {
+        ...options,
+        headers: retryHeaders,
+        signal: AbortSignal.timeout(10_000),
+      });
+    },
+  };
 };
 
 /** Проверяет наличие userId и username в cookie запроса. */
@@ -84,46 +119,6 @@ export const refresh = async (
   }
 
   clear(responseCookies);
-};
-
-type ProcessResponse = NonNullable<ApiRequestInit["processResponse"]>;
-
-/** Повторяет запрос с новым access token, если прежний истёк во время обращения к API. */
-const processResponse: ProcessResponse = async (response, url, options) => {
-  if (response.status !== 401) {
-    return response;
-  }
-
-  const data = await response.clone().json() as { message?: string };
-
-  if (data?.message !== "Authorization token expired") {
-    return response;
-  }
-
-  const cookieStore = await cookies();
-  const refreshToken = cookieStore.get(REFRESH_TOKEN_COOKIE_NAME)?.value;
-
-  if (refreshToken === undefined) {
-    return response;
-  }
-
-  const refreshHeaders = new Headers();
-  refreshHeaders.set("Authorization", `Bearer ${refreshToken}`);
-
-  const refreshResponse = await refreshRequest({ headers: refreshHeaders });
-
-  if (refreshResponse.status !== 200) {
-    return response;
-  }
-
-  const headers = new Headers(options.headers);
-  headers.set("Authorization", `Bearer ${refreshResponse.data.accessToken}`);
-
-  return fetch(url, {
-    ...options,
-    headers,
-    signal: AbortSignal.timeout(10_000),
-  });
 };
 
 /** Записывает токены сессии и данные пользователя, если они есть в ответе. */
