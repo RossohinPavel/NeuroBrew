@@ -41,7 +41,7 @@ export const getPayload = (cookieStore: Pick<NextRequest["cookies"], "get">) => 
 
 /** Возвращает настройки запросов к API при наличии access token в cookie. */
 export const getApiOption = (
-  cookieStore: Pick<NextRequest["cookies"], "get">
+  cookieStore: Pick<NextRequest["cookies"], "get">,
 ): ApiRequestInit | undefined => {
   const accessToken = cookieStore.get(ACCESS_TOKEN_COOKIE_NAME)?.value;
 
@@ -49,11 +49,8 @@ export const getApiOption = (
     return undefined;
   }
 
-  const headers = new Headers();
-  headers.set("Authorization", `Bearer ${accessToken}`);
-
   return {
-    headers,
+    headers: [["Authorization", `Bearer ${accessToken}`]],
     /** Повторяет запрос с новым access token, если прежний истёк во время обращения к API. */
     processResponse: async (response, url, options) => {
       const refreshToken = cookieStore.get(REFRESH_TOKEN_COOKIE_NAME)?.value;
