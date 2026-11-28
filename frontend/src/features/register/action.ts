@@ -1,0 +1,29 @@
+"use server";
+
+import { cookies } from "next/headers";
+import * as session from "@/entities/session";
+import { register } from "@/shared/api/generated/endpoints";
+import type { ActionResponse } from "@/shared/types/server-action";
+import type { RegisterRequest } from "@shared/contracts";
+
+
+/** Создает пользователя и завершает его аутентификацию. */
+export const registerAction = async (formData: RegisterRequest): ActionResponse => {
+  const result = await register(formData);
+
+  if (result.status === 201) {
+    const cookieStore = await cookies();
+    session.set(cookieStore, result.data);
+
+    return { success: true, data: true };
+  }
+
+  if (result.status === 409) {
+    return {
+      success: false,
+      error: { message: result.data.message ?? "Не удалось создать аккаунт." },
+    };
+  }
+
+  throw new Error(`Failed to register: ${result.status}`);
+};
